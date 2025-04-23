@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: navbar/Navbar.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: navbar/Navbar.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { useState, useEffect } from 'react';
+import { NavLink } from 'react-router-dom';
+import napoliLogo from './assets/Napoli-2020.png';
+import './navbarstyle.css'; 
+
+
+
+/**
+ * Navbar Component:
+ *
+ * This component renders the navigation bar for the application. It includes the logo,
+ * site navigation links, and social media links.  The component also handles the
+ * mobile menu functionality, including toggling the menu's visibility and preventing
+ * background scrolling when the menu is open.
+ */
+function Navbar() {
+    // State to manage the menu's open/closed state.
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+    /**
+     * toggleMenu:
+     *
+     * Function to toggle the mobile menu's visibility.  It switches the 'isMenuOpen'
+     * state between true and false.
+     */
+    const toggleMenu = () => {
+        setIsMenuOpen(!isMenuOpen);
+    };
+
+    /**
+     * useEffect Hook (Menu Open/Close):
+     *
+     * This useEffect hook handles side effects related to the mobile menu's state.
+     * When the menu is open, it adds a class to the body to prevent scrolling.
+     * When the menu is closed, it removes this class.  It also includes a cleanup
+     * function to ensure that the 'no-scroll' class is removed when the component
+     * unmounts or when 'isMenuOpen' changes.
+     *
+     * Dependency: [isMenuOpen] -  The effect runs whenever 'isMenuOpen' changes.
+     */
+    useEffect(() => {
+        if (isMenuOpen) {
+            document.body.classList.add('no-scroll'); // Prevent scrolling when menu is open
+        } else {
+            document.body.classList.remove('no-scroll'); // Re-enable scrolling when menu is closed
+        }
+
+        // Cleanup function:  Remove 'no-scroll' class when the component unmounts
+        // or when isMenuOpen changes.  This prevents unintended side-effects.
+        return () => {
+            document.body.classList.remove('no-scroll');
+        };
+    }, [isMenuOpen]);
+
+    return (
+        &lt;nav>
+            {/* Main navigation container */}
+            &lt;div className="navbar">
+
+                {/* Logo section with a link to the home page */}
+                &lt;div className="logo-section">
+                    &lt;NavLink to="/">
+                        &lt;img id="logo" src={napoliLogo} alt="napoli logo" />
+                    &lt;/NavLink>
+                &lt;/div>
+                
+                {/* Text logo */}
+                &lt;h1 id="text-logo">NSC&lt;/h1>
+
+                {/* Navigation icon (for mobile) and dropdown menu */}
+                &lt;div 
+                    className={`nav-icon ${isMenuOpen ? 'active' : ''}`} 
+                    onClick={toggleMenu}
+                    aria-expanded={isMenuOpen}
+                    aria-label={isMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+                    >
+
+                    {/* Dropdown menu list */}
+                    &lt;ul className="dropdown-menu">
+                        &lt;li>
+                            {/* NavLink to Home */}
+                            &lt;NavLink to="/" onClick={() => setIsMenuOpen(false)}>
+                                Home
+                            &lt;/NavLink>
+                        &lt;/li>
+                        &lt;li>
+                            {/* NavLink to Membership */}
+                            &lt;NavLink to="/membership" onClick={() => setIsMenuOpen(false)}>
+                                Membership
+                            &lt;/NavLink>
+                        &lt;/li>
+                        &lt;li>
+                            {/* NavLink to The Club */}
+                            &lt;NavLink to="/theclub" onClick={() => setIsMenuOpen(false)}>
+                                The Club
+                            &lt;/NavLink>
+                        &lt;/li>
+                        &lt;li>
+                            {/* NavLink to Contact */}
+                            &lt;NavLink to="/contact" onClick={() => setIsMenuOpen(false)}>
+                                Contact
+                            &lt;/NavLink>
+                        &lt;/li>
+                        &lt;li>
+                            {/* NavLink to Members */}
+                            &lt;NavLink to="/members" onClick={() => setIsMenuOpen(false)}>
+                                Members
+                            &lt;/NavLink>
+                        &lt;/li>
+                        &lt;li>
+                            {/* Social media icons */}
+                            &lt;div className='social-icon'>
+                                &lt;a href="https://www.instagram.com/napoliclub/">
+                                    &lt;img width="40" height="40" src="https://img.icons8.com/ios-filled/40/228BE6/instagram-new--v1.png" alt="instagram-new--v1"/>
+                                &lt;/a>
+                                &lt;a href="mailto:napolijhb@gmail.com">
+                                    &lt;img width="40" height="40" src="https://img.icons8.com/ios-filled/40/228BE6/new-post.png" alt="new-post"/>
+                                &lt;/a>
+                            &lt;/div>
+                        &lt;/li>
+                    &lt;/ul>
+                &lt;/div>
+            &lt;/div>
+        &lt;/nav>
+    );
+}
+
+export default Navbar;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#GameResults">GameResults</a></li><li><a href="global.html#HomeLayout">HomeLayout</a></li><li><a href="global.html#Navbar">Navbar</a></li><li><a href="global.html#TheClub">TheClub</a></li><li><a href="global.html#getInitialEvents">getInitialEvents</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Wed Apr 23 2025 16:13:39 GMT+0200 (South Africa Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

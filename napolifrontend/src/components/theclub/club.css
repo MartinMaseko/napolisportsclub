@@ -1,0 +1,90 @@
+.club-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background-color: #f0f8ff;
+}
+
+.club-heading {
+    text-align: center;
+    font-size: 2rem;
+    color: #004582;
+}
+
+.club-vision {
+    text-align: center;
+    font-size: 1.5rem;
+    color: #333333;
+    font-weight: 600;
+}
+
+.club-logo {
+    width: 80px;
+}
+
+.owner-container {
+    background-color: #303030;
+    color: #e9ecef;
+    padding: 1em;
+    text-align: center;
+} 
+
+.owner-icon {
+    margin-top: 45px;
+}
+
+@media (min-width: 768px) {
+
+    .club-header {
+        display: flex;
+        justify-content: center;
+    }
+
+    .club-logo {
+        width: 150px;
+    }
+
+    .club-heading,
+    .club-vision {
+        font-size:1.75em
+    }
+
+    #whatsapp-icon {
+        display: none;
+    }
+
+    .club-footer-container {
+        align-items: center;
+        justify-content: center;
+        font-size: 1.75em;
+        width: 100%;
+        height: 100%;
+    }
+
+    .club-footer-container h2,
+    .club-footer-container h3,
+    .club-footer-container p {
+        padding : 5px;
+    }
+
+    .club-footer-container #footer-icons {
+        width: 40px;
+        cursor: pointer;
+        padding-right: 1em;
+    }
+    
+
+    .club-footer-container #footer-icons:hover {
+        transform: scale(1.2);
+    }
+
+    .ownerinfo-container {
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr;
+        height: 100;
+    }
+
+}

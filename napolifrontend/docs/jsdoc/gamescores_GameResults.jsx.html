@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: gamescores/GameResults.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: gamescores/GameResults.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { useState, useEffect, useMemo } from "react";
+import { useLocation, useSearchParams } from "react-router-dom";
+import DashFooter from "../dashboards/dashfooter/DashFooter";
+import "./gameresult.css";
+import NapoliImg from "../assets/Napoli-2020.png";
+
+/**
+ * GameResults Component
+ * Displays game results, allows score input, and calculates wins and losses.
+ */
+const GameResults = () => {
+  const location = useLocation();
+
+  // Memoize calendarEvents to avoid unnecessary re-renders
+  const calendarEvents = useMemo(() => location.state?.calendarEvents || {}, [location.state]);
+
+  // State to store game scores
+  const [gameScores, setGameScores] = useState(() => {
+    const savedScores = localStorage.getItem("gameScores");
+    return savedScores ? JSON.parse(savedScores) : {};
+  });
+
+  // State to store the number of wins and losses
+  const [wins, setWins] = useState(0);
+  const [losses, setLosses] = useState(0);
+
+  // Retrieve username from URL search parameters
+  const [searchParams] = useSearchParams();
+  const username = searchParams.get("username");
+
+  // Save gameScores to local storage whenever it changes
+  useEffect(() => {
+    localStorage.setItem("gameScores", JSON.stringify(gameScores));
+  }, [gameScores]);
+
+  // Calculate wins and losses based on displayed games in calendarEvents
+  useEffect(() => {
+    let winCount = 0;
+    let lossCount = 0;
+
+    // Iterate over displayed games in calendarEvents
+    Object.entries(calendarEvents).forEach(([date, events]) => {
+      events.forEach((event, index) => {
+        const eventId = `${date}-${index}`;
+        const game = gameScores[eventId];
+
+        if (game?.homeScore !== undefined &amp;&amp; game?.awayScore !== undefined) {
+          if (game.homeScore > game.awayScore) {
+            winCount++;
+          } else if (game.homeScore &lt; game.awayScore) {
+            lossCount++;
+          }
+        }
+      });
+    });
+
+    setWins(winCount);
+    setLosses(lossCount);
+  }, [gameScores, calendarEvents]);
+
+  /**
+   * Handles score input changes for a specific game.
+   * @param {string} eventId - Unique identifier for the game.
+   * @param {string} team - The team being updated ("homeScore" or "awayScore").
+   * @param {string} value - The new score value.
+   */
+  const handleScoreChange = (eventId, team, value) => {
+    setGameScores((prevScores) => ({
+      ...prevScores,
+      [eventId]: {
+        ...prevScores[eventId],
+        [team]: value === "" ? "" : parseInt(value, 10), // Allow empty string for clearing input
+      },
+    }));
+  };
+
+  return (
+    &lt;>
+      &lt;div className="game-results-container">
+        {/* Header Section */}
+        &lt;div className="results-heading">
+          &lt;img id="napoli-logo" src={NapoliImg} alt="Napoli logo" />
+          &lt;h2>Game Results&lt;/h2>
+        &lt;/div>
+
+        {/* Results Summary Section */}
+        &lt;div className="results-summary">
+          &lt;h3>Results Summary&lt;/h3>
+          &lt;p>
+            &lt;strong>Wins:&lt;/strong> {wins}
+          &lt;/p>
+          &lt;p>
+            &lt;strong>Losses:&lt;/strong> {losses}
+          &lt;/p>
+        &lt;/div>
+
+        {/* Scheduled Games Section */}
+        &lt;h3>Scheduled Games&lt;/h3>
+        &lt;div className="scheduled-games">
+          {Object.entries(calendarEvents).length > 0 ? (
+            Object.entries(calendarEvents).map(([date, events]) =>
+              events.map((event, index) => (
+                &lt;div key={`${date}-${index}`} className="game-card">
+                  &lt;p>
+                    &lt;strong>Game:&lt;/strong> {event.text}
+                  &lt;/p>
+                  &lt;p>
+                    &lt;strong>Age Group:&lt;/strong> {event.ageGroup}
+                  &lt;/p>
+                  &lt;p>
+                    &lt;strong>Date:&lt;/strong> {new Date(date).toLocaleDateString()}
+                  &lt;/p>
+                  &lt;div className="score-inputs">
+                    &lt;label>
+                      Home Team Score:
+                      &lt;input
+                        type="number"
+                        value={gameScores[`${date}-${index}`]?.homeScore || ""}
+                        onChange={(e) =>
+                          handleScoreChange(`${date}-${index}`, "homeScore", e.target.value)
+                        }
+                      />
+                    &lt;/label>
+                    &lt;label>
+                      Away Team Score:
+                      &lt;input
+                        type="number"
+                        value={gameScores[`${date}-${index}`]?.awayScore || ""}
+                        onChange={(e) =>
+                          handleScoreChange(`${date}-${index}`, "awayScore", e.target.value)
+                        }
+                      />
+                    &lt;/label>
+                  &lt;/div>
+                &lt;/div>
+              ))
+            )
+          ) : (
+            &lt;p>No scheduled games available.&lt;/p>
+          )}
+        &lt;/div>
+      &lt;/div>
+
+      {/* Footer Section */}
+      &lt;DashFooter username={username} />
+    &lt;/>
+  );
+};
+
+export default GameResults;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#GameResults">GameResults</a></li><li><a href="global.html#HomeLayout">HomeLayout</a></li><li><a href="global.html#Navbar">Navbar</a></li><li><a href="global.html#TheClub">TheClub</a></li><li><a href="global.html#getInitialEvents">getInitialEvents</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Wed Apr 23 2025 16:13:39 GMT+0200 (South Africa Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

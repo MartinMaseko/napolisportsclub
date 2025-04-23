@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: dashboards/datainputdisplay/DataInputDisplay.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: dashboards/datainputdisplay/DataInputDisplay.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { useState, useEffect, useRef } from "react";
+import { useSearchParams } from 'react-router-dom';
+import axios from "axios";
+import DashFooter from "../dashfooter/DashFooter";
+import './datastyle.css'
+import NapoliImg from  "../../assets/Napoli-2020.png";
+
+const CALENDAR_EVENTS_KEY = 'calendarEvents';
+
+/**
+ * DataInputDisplay Component
+ * Manages player data, including adding, editing, deleting, and displaying player details.
+ * Allows uploading documents and filtering/searching players.
+ */
+
+export default function DataInputDisplay() {
+    // State for managing form data
+    const [formData, setFormData] = useState({
+        first_name: "",
+        last_name: "",
+        nationality: "",
+        id_number: "",
+        gender: "",
+        school: "",
+        previous_club: "",
+        years_of_training: 0,
+        age_group: "U12", 
+        notes: "",
+        position: "",
+        goals: 0,
+        assists: 0,
+        mother_name: "",
+        mother_phone: "",
+        mother_email: "",
+        father_name: "",
+        father_phone: "",
+        father_email: "",
+        amount_owed: 0.0,
+        amount_paid: 0.0,
+    });
+
+    // State variables for managing players, documents, and UI
+    const [players, setPlayers] = useState([]); 
+    const [filteredPlayers, setFilteredPlayers] = useState([]); 
+    const [selectedPlayer, setSelectedPlayer] = useState(null); 
+    const [showForm, setShowForm] = useState(false); 
+    const [loading, setLoading] = useState(true); 
+    const [documents, setDocuments] = useState([]);
+    const [file, setFile] = useState(null); 
+    const [searchQuery, setSearchQuery] = useState("");
+    const playerDetailsRef = useRef(null);
+
+    // Retrieve calendar events from local storage
+    const [calendarEvents] = useState(() => {
+        const savedEvents = localStorage.getItem(CALENDAR_EVENTS_KEY);
+        return savedEvents ? JSON.parse(savedEvents) : {};
+    });
+
+    // Retrieve username from query parameters
+    const [searchParams] = useSearchParams();
+    const username = searchParams.get('username');
+
+    const formRef = useRef(null); // Ref for the form
+    
+    /**
+   * Handles player selection and scrolls to the player's details.
+   * @param {Object} player - The selected player object.
+   */
+    const handlePlayerClick = (player) => {
+        setSelectedPlayer(player); // Set the selected player
+        setTimeout(() => {
+            playerDetailsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+        }, 100); // Small delay to ensure the details are rendered
+    };
+
+    /**
+   * Toggles the visibility of the player form.
+   */   
+    const handleToggleForm = () => {
+        setShowForm(!showForm);
+        if (!showForm) {
+            // Scroll to the form when it opens
+            setTimeout(() => {
+                formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+            }, 100); // Small delay to ensure the form is rendered
+        }
+    };
+
+    // Fetch data from the API
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const token = localStorage.getItem('authToken');
+                if (!token) {
+                    console.error("No token found. User must be logged in.");
+                    return; // Or redirect to login
+                }
+                const response = await axios.get("http://127.0.0.1:8000/api/players/", {
+                    headers: {
+                        'Authorization': `Token ${token}`
+                    }
+                });
+                setPlayers(response.data);
+                setFilteredPlayers(response.data); // Initialize filtered players
+                setLoading(false);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+        fetchData();
+    }, []);
+
+    // Filter players by age
+    const filterByAge = () => {
+        const sortedByAge = [...players].sort((a, b) => a.age_group - b.age_group);
+        setFilteredPlayers(sortedByAge);
+    };
+
+    // Filter players alphabetically
+    const filterAlphabetically = () => {
+        const sortedAlphabetically = [...players].sort((a, b) =>
+            a.first_name.localeCompare(b.first_name)
+        );
+        setFilteredPlayers(sortedAlphabetically);
+    };
+
+    /**
+   * Handles search input changes and filters players by name or ID number.
+   * @param {Object} e - The input change event.
+   */
+    const handleSearchChange = (e) => {
+        const query = e.target.value;
+        setSearchQuery(query);
+
+        // Search by both name and ID number
+        if (query) {
+            const searchedPlayers = players.filter((player) =>
+                player.id_number.toLowerCase().includes(query.toLowerCase()) ||
+                player.first_name.toLowerCase().includes(query.toLowerCase()) ||
+                player.last_name.toLowerCase().includes(query.toLowerCase())
+            );
+            setFilteredPlayers(searchedPlayers);
+        } else {
+            setFilteredPlayers(players); // Reset to all players if query is empty
+        }
+    };
+
+    // Fetch documents for the selected player
+    useEffect(() => {
+        if (selectedPlayer) {
+            const fetchDocuments = async () => {
+                try {
+                    const token = localStorage.getItem('authToken');
+                    if (!token) {
+                        console.error("No token found. User must be logged in.");
+                        return; // Or redirect to login
+                    }
+                    const response = await axios.get(`http://127.0.0.1:8000/api/documents/?player=${selectedPlayer.id}`, {
+                        headers: {
+                            'Authorization': `Token ${token}`
+                        }
+                    });
+                    setDocuments(response.data);
+                } catch (error) {
+                    console.error("Error fetching documents:", error);
+                }
+            };
+            fetchDocuments();
+        }
+    }, [selectedPlayer]);
+
+    /**
+   * Handles form submission for adding a new player.
+   * @param {Object} e - The form submission event.
+   */
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const token = localStorage.getItem('authToken');
+            if (!token) {
+                console.error("No token found. User must be logged in.");
+                return; // Or redirect to login
+            }
+            const response = await axios.post("http://127.0.0.1:8000/api/data/", formData, {
+                headers: {
+                    'Authorization': `Token ${token}`
+                }
+            });
+            setPlayers([...players, response.data]); // Add the new player to the list
+            setFormData({
+                first_name: "",
+                last_name: "",
+                nationality: "",
+                id_number: "",
+                gender: "",
+                school: "",
+                previous_club: "",
+                years_of_training: 0,
+                age_group: "U12", // Default value
+                notes: "",
+                position: "",
+                goals: 0,
+                assists: 0,
+                mother_name: "",
+                mother_phone: "",
+                mother_email: "",
+                father_name: "",
+                father_phone: "",
+                father_email: "",
+                amount_owed: 0.0,
+                amount_paid: 0.0,
+            }); // Reset the form
+            setShowForm(false); // Hide the form after submission
+        } catch (error) {
+            console.error("Error submitting data:", error);
+        }
+    };
+
+    /**
+   * Handles document upload for the selected player.
+   * @param {Object} e - The form submission event.
+   */
+    const handleDocumentUpload = async (e) => {
+        e.preventDefault();
+        if (!file || !selectedPlayer) {
+            alert("Please select a file and a player.");
+            return;
+        }
+        const formData = new FormData();
+        formData.append("player", selectedPlayer.id);
+        formData.append("file", file);
+        formData.append("document_type", "other"); 
+        try {
+            const token = localStorage.getItem('authToken'); // Retrieve token from local storage
+            console.log("Token:", token); 
+            if (!token) {
+                console.error("No authentication token found. User must log in.");
+                alert("Please log in to upload documents.");
+                return;
+            }
+            const response = await axios.post("http://127.0.0.1:8000/api/documents/upload/", formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    "Authorization": `Token ${token}`, 
+                },
+            });
+            setDocuments([...documents, response.data]); 
+            setFile(null); 
+        } catch (error) {
+            console.error("Error uploading document:", error);
+        }
+    };
+
+    /**
+   * Handles form submission for editing an existing player.
+   * @param {Object} e - The form submission event.
+   */
+    const handleEditSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const token = localStorage.getItem('authToken');
+            if (!token) {
+                console.error("No token found. User must be logged in.");
+                return; // Or redirect to login
+            }
+            const response = await axios.put(`http://127.0.0.1:8000/api/players/${formData.id}/`, formData, {
+                headers: {
+                    'Authorization': `Token ${token}`
+                }
+            });
+            setPlayers(players.map(player =>
+                player.id === response.data.id ? response.data : player
+            ));
+            setFormData({
+                first_name: "",
+                last_name: "",
+                nationality: "",
+                id_number: "",
+                gender: "",
+                school: "",
+                previous_club: "",
+                years_of_training: 0,
+                age_group: "U12", // Default value
+                notes: "",
+                position: "",
+                goals: 0,
+                assists: 0,
+                mother_name: "",
+                mother_phone: "",
+                mother_email: "",
+                father_name: "",
+                father_phone: "",
+                father_email: "",
+                amount_owed: 0.0,
+                amount_paid: 0.0,
+            });
+            setShowForm(false);
+            setSelectedPlayer(response.data);
+        } catch (error) {
+            console.error("Error updating player:", error);
+            alert("Error updating player data. Please try again.");
+        }
+    };
+
+    /**
+   * Handles registering a player as a user.
+   * @param {number} playerId - The ID of the player to register.
+   */
+    const handleRegisterUser = async (playerId) => {
+        try {
+            const token = localStorage.getItem('authToken');
+            if (!token) {
+                console.error("No token found. User must be logged in.");
+                return; // Or redirect to login
+            }
+
+            const response = await axios.post(`http://127.0.0.1:8000/api/players/${playerId}/register/`, {}, {
+                headers: {
+                    'Authorization': `Token ${token}`
+                }
+            });
+
+            alert(response.data.message); // Show success message
+        } catch (error) {
+            console.error("Error registering user:", error.response?.data || error.message);
+            alert(error.response?.data?.error || "Failed to register user.");
+        }
+    };
+
+    return (
+        &lt;>
+        &lt;div className="data-input-display">
+             {/* Header Section */}
+            &lt;div className="heading-text">
+                &lt;img id="napoli-logo" src={NapoliImg} alt="napoli logo"/>
+                &lt;h2 className="data-header">Players: {filteredPlayers.length}&lt;/h2>
+            &lt;/div>
+            {/* Filter and Search Controls */}
+            &lt;div className="filter-btns-container">
+                &lt;input
+                    id="search-input"
+                    type="text"
+                    placeholder="Search by Name or ID Number"
+                    value={searchQuery}
+                    onChange={handleSearchChange}
+                    style={{ marginLeft: "10px", padding: "5px" }}
+                />
+                &lt;button id="age-filterbtn" onClick={filterByAge}>Filter by Age&lt;/button>
+                &lt;button id="alphabet-filterbtn" onClick={filterAlphabetically}>Filter Alphabetically&lt;/button>
+                &lt;button id="addplayer-btn" onClick={handleToggleForm}>
+                    {showForm ? (
+                        &lt;>
+                            &lt;img width="35" height="35" src="https://img.icons8.com/ios/35/FFFFFF/cancel.png" alt="cancel" />
+                            Cancel
+                        &lt;/>
+                    ) : (
+                        &lt;>
+                            &lt;img width="35" height="35" src="https://img.icons8.com/windows/35/FFFFFF/add-user-male--v1.png" alt="add-user-male--v1" />
+                            Add Player
+                        &lt;/>
+                    )}
+                &lt;/button>
+            &lt;/div>
+
+            {/* Form for adding a new player */}
+            {showForm &amp;&amp; (
+                &lt;form ref={formRef} onSubmit={formData.id ? handleEditSubmit : handleSubmit} className="bordered-form">
+                    &lt;div className="form-group">
+                    &lt;label>First Name:&lt;/label>
+                    &lt;input
+                        type="text"
+                        name="first_name"
+                        value={formData.first_name}
+                        onChange={(e) => setFormData({ ...formData, [e.target.name]: e.target.value })}
+                        required
+                    />
+                    &lt;/div>
+                    &lt;div className="form-group">
+                    &lt;label>Last Name:&lt;/label>
+                    &lt;input
+                        type="text"
+                        name="last_name"
+                        value={formData.last_name}
+                        onChange={(e) => setFormData({ ...formData, [e.target.name]: e.target.value })}
+                        required
+                    />
+                    &lt;/div>
+                    &lt;div className="form-group">
+                    &lt;label>Nationality:&lt;/label>
+                    &lt;input
+                        type="text"
+                        name="nationality"
+                        value={formData.nationality}
+                        onChange={(e) => setFormData({ ...formData, [e.target.name]: e.target.value })}
+                    />
+                    &lt;/div>
+                    &lt;div className="form-group">
+                    &lt;label>ID Number:&lt;/label>
+                    &lt;input
+                        type="text"
+                        name="id_number"
+                        value={formData.id_number}
+                        onChange={(e) => setFormData({ ...formData, [e.target.name]: e.target.value })}
+                        required
+                    />
+                    &lt;/div>
+                    &lt;div className="form-group">
+                    &lt;label>Gender:&lt;/label>
+                    &lt;input
+                        type="text"
+                        name="gender"
+                        value={formData.gender}
+                        onChange={(e) => setFormData({ ...formData, [e.target.name]: e.target.value })}
+                    />
+                    &lt;/div>
+                    &lt;div className="form-group">
+                    &lt;label>School:&lt;/label>
+                    &lt;input
+                        type="text"
+                        name="school"
+                        value={formData.school}
+                        onChange={(e) => setFormData({ ...formData, [e.target.name]: e.target.value })}
+                    />
+                    &lt;/div>
+                    &lt;div className="form-group">
+                    &lt;label>Previous Club:&lt;/label>
+                    &lt;input
+                        type="text"
+                        name="previous_club"
+                        value={formData.previous_club}
+                        onChange={(e) => setFormData({ ...formData, [e.target.name]: e.target.value })}
+                    />
+                    &lt;/div>
+                    &lt;div className="form-group">
+                    &lt;label>Years of Training:&lt;/label>
+                    &lt;input
+                        type="number"
+                        name="years_of_training"
+                        value={formData.years_of_training}
+                        onChange={(e) => setFormData({ ...formData, [e.target.name]: parseInt(e.target.value) })}
+                    />
+                    &lt;/div>
+                    &lt;div className="form-group">
+                    &lt;label>Age Group:&lt;/label>
+                    &lt;select
+                        name="age_group"
+                        value={formData.age_group}
+                        onChange={(e) => setFormData({ ...formData, age_group: e.target.value })}
+                        required
+                    >
+                        &lt;option value="">Select Age Group&lt;/option>
+                        &lt;option value="U12">U12&lt;/option>
+                        &lt;option value="U14">U14&lt;/option>
+                        &lt;option value="U17">U17&lt;/option>
+                        &lt;option value="SENIOR">SENIOR&lt;/option>
+                    &lt;/select>
+                    &lt;/div>
+                    &lt;div className="form-group">
+                    &lt;label>Notes:&lt;/label>
+                    &lt;textarea
+                        id="formtext-area"
+                        name="notes"
+                        value={formData.notes}
+                        onChange={(e) => setFormData({ ...formData, [e.target.name]: e.target.value })}
+                    />
+                    &lt;/div>
+                    &lt;div className="form-group">
+                    &lt;label>Position:&lt;/label>
+                    &lt;input
+                        type="text"
+                        name="position"
+                        value={formData.position}
+                        onChange={(e) => setFormData({ ...formData, [e.target.name]: e.target.value })}
+                    />
+                    &lt;/div>
+                    &lt;div className="form-group">
+                    &lt;label>Goals:&lt;/label>
+                    &lt;input
+                        type="number"
+                        name="goals"
+                        value={formData.goals}
+                        onChange={(e) => setFormData({ ...formData, [e.target.name]: parseInt(e.target.value) })}
+                    />
+                    &lt;/div>
+                    &lt;div className="form-group">
+                    &lt;label>Assists:&lt;/label>
+                    &lt;input
+                        type="number"
+                        name="assists"
+                        value={formData.assists}
+                        onChange={(e) => setFormData({ ...formData, [e.target.name]: parseInt(e.target.value) })}
+                    />
+                    &lt;/div>
+                    &lt;div className="form-group">
+                    &lt;label>Mother's Name:&lt;/label>
+                    &lt;input
+                        type="text"
+                        name="mother_name"
+                        value={formData.mother_name}
+                        onChange={(e) => setFormData({ ...formData, [e.target.name]: e.target.value })}
+                    />
+                    &lt;/div>
+                    &lt;div className="form-group">
+                    &lt;label>Mother's Phone:&lt;/label>
+                    &lt;input
+                        type="text"
+                        name="mother_phone"
+                        value={formData.mother_phone}
+                        onChange={(e) => setFormData({ ...formData, [e.target.name]: e.target.value })}
+                    />
+                    &lt;/div>
+                    &lt;div className="form-group">
+                    &lt;label>Mother's Email:&lt;/label>
+                    &lt;input
+                        type="email"
+                        name="mother_email"
+                        value={formData.mother_email}
+                        onChange={(e) => setFormData({ ...formData, [e.target.name]: e.target.value })}
+                    />
+                    &lt;/div>
+                    &lt;div className="form-group">
+                    &lt;label>Father's Name:&lt;/label>
+                    &lt;input
+                        type="text"
+                        name="father_name"
+                        value={formData.father_name}
+                        onChange={(e) => setFormData({ ...formData, [e.target.name]: e.target.value })}
+                    />
+                    &lt;/div>
+                    &lt;div className="form-group">
+                    &lt;label>Father's Phone:&lt;/label>
+                    &lt;input
+                        type="text"
+                        name="father_phone"
+                        value={formData.father_phone}
+                        onChange={(e) => setFormData({ ...formData, [e.target.name]: e.target.value })}
+                    />
+                    &lt;/div>
+                    &lt;div className="form-group">
+                    &lt;label>Father's Email:&lt;/label>
+                    &lt;input
+                        type="email"
+                        name="father_email"
+                        value={formData.father_email}
+                        onChange={(e) => setFormData({ ...formData, [e.target.name]: e.target.value })}
+                    />
+                    &lt;/div>
+                    &lt;div className="form-group">
+                    &lt;label>Amount Owed:&lt;/label>
+                    &lt;input
+                        type="number"
+                        name="amount_owed"
+                        value={formData.amount_owed}
+                        onChange={(e) => setFormData({ ...formData, [e.target.name]: parseFloat(e.target.value) })}
+                    />
+                    &lt;/div>
+                    &lt;div className="form-group">
+                    &lt;label>Amount Paid:&lt;/label>
+                    &lt;input
+                        type="number"
+                        name="amount_paid"
+                        value={formData.amount_paid}
+                        onChange={(e) => setFormData({ ...formData, [e.target.name]: parseFloat(e.target.value) })}
+                    />
+                    &lt;/div>
+                    &lt;button type="submit">Submit&lt;/button>
+                &lt;/form>
+                )}
+
+            {/* Display fetched data */}
+            {loading ? (
+                &lt;p>Loading...&lt;/p>
+            ) : (
+                &lt;dl>
+                    {filteredPlayers.map((player, index) => (
+                        &lt;dt key={index} onClick={() => {
+                            handlePlayerClick(player);
+                            setSelectedPlayer(player);
+                            }}>
+                            &lt;strong>{player.first_name} {player.last_name}&lt;/strong>
+                        &lt;/dt>
+                    ))}
+                &lt;/dl>
+            )}
+
+            {/* Display selected player details */}
+            {selectedPlayer &amp;&amp; (
+                &lt;div ref={playerDetailsRef} className="player-details">
+                    &lt;h3>Details for {selectedPlayer.first_name} {selectedPlayer.last_name}&lt;/h3>
+                    &lt;p>&lt;strong>Nationality:&lt;/strong> {selectedPlayer.nationality}&lt;/p>
+                    &lt;p>&lt;strong>ID Number:&lt;/strong> {selectedPlayer.id_number}&lt;/p>
+                    &lt;p>&lt;strong>Gender:&lt;/strong> {selectedPlayer.gender}&lt;/p>
+                    &lt;p>&lt;strong>School:&lt;/strong> {selectedPlayer.school}&lt;/p>
+                    &lt;p>&lt;strong>Previous Club:&lt;/strong> {selectedPlayer.previous_club}&lt;/p>
+                    &lt;p>&lt;strong>Years of Training:&lt;/strong> {selectedPlayer.years_of_training}&lt;/p>
+                    &lt;p>&lt;strong>Age Group:&lt;/strong> {selectedPlayer.age_group}&lt;/p>
+                    &lt;p>&lt;strong>Notes:&lt;/strong> {selectedPlayer.notes}&lt;/p>
+                    &lt;p>&lt;strong>Position:&lt;/strong> {selectedPlayer.position}&lt;/p>
+                    &lt;p>&lt;strong>Goals:&lt;/strong> {selectedPlayer.goals}&lt;/p>
+                    &lt;p>&lt;strong>Assists:&lt;/strong> {selectedPlayer.assists}&lt;/p>
+                    &lt;p>&lt;strong>Mother's Name:&lt;/strong> {selectedPlayer.mother_name}&lt;/p>
+                    &lt;p>&lt;strong>Mother's Phone:&lt;/strong> {selectedPlayer.mother_phone}&lt;/p>
+                    &lt;p>&lt;strong>Mother's Email:&lt;/strong> {selectedPlayer.mother_email}&lt;/p>
+                    &lt;p>&lt;strong>Father's Name:&lt;/strong> {selectedPlayer.father_name}&lt;/p>
+                    &lt;p>&lt;strong>Father's Phone:&lt;/strong> {selectedPlayer.father_phone}&lt;/p>
+                    &lt;p>&lt;strong>Father's Email:&lt;/strong> {selectedPlayer.father_email}&lt;/p>
+                    &lt;p>&lt;strong>Amount Owed:&lt;/strong> {selectedPlayer.amount_owed}&lt;/p>
+                    &lt;p>&lt;strong>Amount Paid:&lt;/strong> {selectedPlayer.amount_paid}&lt;/p>
+                    &lt;p>&lt;strong>Balance:&lt;/strong> {selectedPlayer.balance}&lt;/p>
+
+                    {/* Document Upload Form */}
+                    &lt;form onSubmit={handleDocumentUpload}>
+                        &lt;div>
+                            &lt;label>Upload Document:&lt;/label>
+                            &lt;input
+                                type="file"
+                                onChange={(e) => setFile(e.target.files[0])}
+                            />
+                        &lt;/div>
+                        &lt;button type="submit">Upload&lt;/button>
+                    &lt;/form>
+
+                    {/* Display Documents */}
+                    &lt;h4>Documents&lt;/h4>
+                    &lt;ul>
+                        {documents.map((doc, index) => {
+                            const fileUrl = doc.file.startsWith("http")
+                                ? doc.file
+                                : `http://127.0.0.1:8000${doc.file}`; // Prepend backend URL if needed
+
+                            return (
+                                &lt;li key={index} style={{ marginBottom: "10px" }}>
+                                    {fileUrl.endsWith(".png") || fileUrl.endsWith(".jpg") || fileUrl.endsWith(".jpeg") || fileUrl.endsWith(".gif") ? (
+                                        // Render image files with clickable links
+                                        &lt;a href={fileUrl} target="_blank" rel="noopener noreferrer">
+                                            &lt;img
+                                                src={fileUrl}
+                                                alt={doc.document_type}
+                                                style={{ width: "100px", height: "auto", marginRight: "10px", cursor: "pointer" }}
+                                            />
+                                        &lt;/a>
+                                    ) : fileUrl.endsWith(".pdf") ? (
+                                        // Render PDF files as clickable links
+                                        &lt;a href={fileUrl} target="_blank" rel="noopener noreferrer">
+                                            {doc.document_type} - View PDF
+                                        &lt;/a>
+                                    ) : (
+                                        // Render other file types as clickable links
+                                        &lt;a href={fileUrl} target="_blank" rel="noopener noreferrer">
+                                            {doc.document_type} - {doc.description || "Download"}
+                                        &lt;/a>
+                                    )}
+                                &lt;/li>
+                            );
+                        })}
+                    &lt;/ul>
+
+                    {/* Buttons Container */}
+                    &lt;div style={{ display: "flex", gap: "10px", marginTop: "10px" }}>
+                        {/* Edit Button */}
+                        &lt;button onClick={() => {
+                            setFormData(selectedPlayer); // Populate the form with the selected player's data
+                            setShowForm(true); // Show the form for editing
+                            setSelectedPlayer(null); // Close the details view
+                        }}>
+                            Edit
+                        &lt;/button>
+
+                        {/* Delete Button */}
+                        &lt;button
+                            onClick={async () => {
+                                try {
+                                    const token = localStorage.getItem('authToken'); // Retrieve the token
+                                    if (!token) {
+                                        console.error("No authentication token found. User must log in.");
+                                        alert("Please log in to delete players.");
+                                        return;
+                                    }
+
+                                    await axios.delete(`http://127.0.0.1:8000/api/players/${selectedPlayer.id}/`, {
+                                        headers: {
+                                            'Authorization': `Token ${token}`, // Include the token in the headers
+                                        },
+                                    });
+
+                                    setPlayers(players.filter(player => player.id !== selectedPlayer.id)); // Remove the player from the list
+                                    setSelectedPlayer(null); // Close the details view
+                                } catch (error) {
+                                    console.error("Error deleting player:", error.response?.data || error.message);
+                                    alert("Error deleting player. Please try again.");
+                                }
+                            }}
+                        >
+                            Delete
+                        &lt;/button>
+
+                        {/* Register Button */}
+                        &lt;button onClick={() => handleRegisterUser(selectedPlayer.id)}>Register&lt;/button>
+
+                        {/* Close Button */}
+                        &lt;button onClick={() => setSelectedPlayer(null)}>Close&lt;/button>
+                    &lt;/div>
+                &lt;/div>
+            )}
+        &lt;/div>
+        &lt;DashFooter username={username} calendarEvents={calendarEvents} />
+        &lt;/>
+    );
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#GameResults">GameResults</a></li><li><a href="global.html#HomeLayout">HomeLayout</a></li><li><a href="global.html#Navbar">Navbar</a></li><li><a href="global.html#TheClub">TheClub</a></li><li><a href="global.html#getInitialEvents">getInitialEvents</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Wed Apr 23 2025 16:13:39 GMT+0200 (South Africa Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

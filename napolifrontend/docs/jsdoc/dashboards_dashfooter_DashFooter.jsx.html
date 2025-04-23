@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: dashboards/dashfooter/DashFooter.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: dashboards/dashfooter/DashFooter.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { useState, useEffect } from 'react';
+import './dashfooter.css';
+import { Link } from 'react-router-dom';
+
+/**
+ * DashFooter Component
+ * Renders the footer for the dashboard with navigation links and user profile management.
+ * @param {string} username - The username of the logged-in user.
+ * @param {Object} calendarEvents - The calendar events to pass to other components.
+ */
+export default function DashFooter({ username, calendarEvents }) {
+  // State to manage the visibility of the user profile dropdown
+  const [showUserProfile, setShowUserProfile] = useState(false);
+
+  // State to manage the user's profile image
+  const [profileImage, setProfileImage] = useState(
+    localStorage.getItem('profileImage') || null
+  );
+
+  /**
+   * Effect to sync the profile image with local storage.
+   * Adds or removes the profile image from local storage based on its state.
+   */
+  useEffect(() => {
+    if (profileImage) {
+      localStorage.setItem('profileImage', profileImage);
+    } else {
+      localStorage.removeItem('profileImage');
+    }
+  }, [profileImage]);
+
+  /**
+   * Handles the profile image upload and updates the profile image state.
+   * @param {Object} event - The file input change event.
+   */
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setProfileImage(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  return (
+    &lt;>
+      &lt;footer className="dashfooter">
+        &lt;div className="dashfooter-content">
+          {/* Calendar Link */}
+          &lt;Link to={`/calendar?username=${encodeURIComponent(username)}`}>
+            &lt;img
+              className="dash-icon"
+              width="40"
+              height="40"
+              src="https://img.icons8.com/ios/40/e9ecef/calendar--v1.png"
+              alt="Calendar"
+            />
+          &lt;/Link>
+
+          {/* Data Input Display Link */}
+          &lt;Link to={`/data-input-display?username=${encodeURIComponent(username)}`}>
+            &lt;img
+              className="dash-icon"
+              width="40"
+              height="40"
+              src="https://img.icons8.com/ios/40/e9ecef/opened-folder.png"
+              alt="Data Input Display"
+            />
+          &lt;/Link>
+
+          {/* Manager Dashboard Link */}
+          &lt;Link to={`/managersdashboard?username=${encodeURIComponent(username)}`}>
+            &lt;img
+              className="dash-icon"
+              width="45"
+              height="45"
+              src="https://img.icons8.com/glyph-neue/45/e9ecef/football2--v1.png"
+              alt="Manager Dashboard"
+            />
+          &lt;/Link>
+
+          {/* Game Results Link */}
+          &lt;Link
+            to={`/gameresults?username=${encodeURIComponent(username)}`}
+            state={{ calendarEvents }}
+          >
+            &lt;img
+              className="dash-icon"
+              width="45"
+              height="45"
+              src="https://img.icons8.com/ios/45/e9ecef/notepad.png"
+              alt="Game Results"
+            />
+          &lt;/Link>
+
+          {/* User Profile Section */}
+          &lt;div>
+            &lt;img
+              className="dash-icon"
+              width="50"
+              height="50"
+              src="https://img.icons8.com/windows/50/e9ecef/user.png"
+              alt="User Profile"
+              onClick={() => setShowUserProfile(!showUserProfile)}
+              style={{ cursor: 'pointer' }}
+            />
+            {showUserProfile &amp;&amp; (
+              &lt;div className="user-dropdown">
+                &lt;div className="profile-image-container">
+                  {/* Profile Image Preview */}
+                  {profileImage &amp;&amp; (
+                    &lt;img
+                      src={profileImage}
+                      alt="Profile"
+                      className="profile-preview"
+                    />
+                  )}
+                  &lt;h4>Username: {username}&lt;/h4>
+                  &lt;h4>Role: Manager&lt;/h4>
+
+                  {/* Edit Profile Image */}
+                  &lt;div className="edit-profile">
+                    &lt;label htmlFor="profile-image-upload" className="upload-button">
+                      Edit Profile Image
+                    &lt;/label>
+                    &lt;input
+                      id="profile-image-upload"
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageChange}
+                      style={{ display: 'none' }}
+                    />
+                  &lt;/div>
+                &lt;/div>
+
+                {/* Logout Link */}
+                &lt;Link to="/members">
+                  &lt;img
+                    className="dash-icon"
+                    id="logout-icon"
+                    width="50"
+                    height="50"
+                    src="https://img.icons8.com/windows/50/e9ecef/logout-rounded.png"
+                    alt="Logout"
+                  />
+                &lt;/Link>
+              &lt;/div>
+            )}
+          &lt;/div>
+        &lt;/div>
+      &lt;/footer>
+    &lt;/>
+  );
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#GameResults">GameResults</a></li><li><a href="global.html#HomeLayout">HomeLayout</a></li><li><a href="global.html#Navbar">Navbar</a></li><li><a href="global.html#TheClub">TheClub</a></li><li><a href="global.html#getInitialEvents">getInitialEvents</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Wed Apr 23 2025 16:13:39 GMT+0200 (South Africa Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

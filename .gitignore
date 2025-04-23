@@ -1,0 +1,22 @@
+# Node.js
+node_modules/
+build/
+dist/
+
+# Python
+napolivenv/
+__pycache__/
+*.pyc
+*.pyo
+
+# Django
+db.sqlite3
+media/
+
+# Logs
+*.log
+
+# IDE/Editor
+.vscode/
+.idea/
+.DS_Store

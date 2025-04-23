@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: theclub/TheClub.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: theclub/TheClub.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React from "react";
+import "./club.css";
+import Footer from "../footer/Footer";
+import logo from "../assets/Napoli-2020.png";
+
+/**
+ * TheClub Component:
+ *
+ * This component displays information about the Napoli Sports Club, including its vision
+ * and details about the club's owners. It also includes a link to contact the club via
+ * WhatsApp and renders a Footer component.
+ */
+
+function TheClub() {
+    return (
+      &lt;>
+        {/* Club Header Section: Contains logo, vision statement, and contact link */}
+        &lt;div className="club-header">
+          {/* Container for logo and vision details */}
+          &lt;div className="club-container">
+            {/* Club Logo */}
+            &lt;img src={logo} alt="Napoli Logo" className="club-logo" />
+  
+            {/* Vision Heading */}
+            &lt;h1 className="club-heading">Our Vision&lt;/h1>
+  
+            {/* Vision Statement */}
+            &lt;p className="club-vision" aria-live="polite">
+              To provide a first class football programme that will produce
+              outstanding football players ready for local and international clubs.
+              &lt;br />
+              To be an intermediary talent pool for professional clubs.
+            &lt;/p>
+  
+            {/* WhatsApp Contact Link */}
+            &lt;a href="https://wa.me/+27737378310">
+              &lt;img
+                id="whatsapp-icon"
+                width="40"
+                height="40"
+                src="https://img.icons8.com/ios-filled/40/228BE6/whatsapp--v1.png"
+                alt="WhatsApp icon"
+              />
+            &lt;/a>
+          &lt;/div>
+  
+          {/* Owner Information Section: Displays details about club owners */}
+          &lt;div className="ownerinfo-container">
+            {/* Owner 1: Mary Maseko */}
+            &lt;div className="owner-container">
+              &lt;img
+                className="owner-icon"
+                width="75"
+                height="75"
+                src="https://img.icons8.com/pastel-glyph/75/e9ecef/user-male-circle.png"
+                alt="user-male-circle"
+              />
+              &lt;h2 className="owner-name">Mary Maseko&lt;/h2>
+              &lt;p className="owner-detials">
+                Mary Maseko is a co-owner of Napoli Sports Club. She is responsible
+                for the day-to-day running of the club.
+                &lt;br />
+                &lt;br />
+                Mary holds a B.Sc degree (Genetics and Botany) from the University
+                of the Witwatersrand. She also holds a Post-graduate diploma in
+                Human Resources Management from Wits Business School.
+                &lt;br />
+                &lt;br />
+                Mary is passionate about nurturing talent and assisting talented
+                young people to achieve their dreams. A passion she shares with her
+                business partners.
+              &lt;/p>
+            &lt;/div>
+  
+            {/* Owner 2: Nancy Maseko */}
+            &lt;div className="owner-container">
+              &lt;img
+                className="owner-icon"
+                width="75"
+                height="75"
+                src="https://img.icons8.com/pastel-glyph/75/e9ecef/user-male-circle.png"
+                alt="user-male-circle"
+              />
+              &lt;h2 className="owner-name">Nancy Maseko&lt;/h2>
+              &lt;p className="owner-detials">
+                Nancy Maseko is a co-owner of Napoli Sports Club. She is
+                responsible for the sponsorship program of the club. Nancy holds a
+                B.A. degree in International Relations from Wheaton College,
+                Massachusetts, USA.
+                &lt;br />
+                &lt;br />
+                She also holds a BA Honours degree in Political Science and
+                Comparative Studies from the University of Cape Town. Nancy is
+                passionate about nurturing talent and assisting talented young
+                people to achieve their dreams.
+                &lt;br />
+                &lt;br />
+                A passion she shares with her business partners.
+              &lt;/p>
+            &lt;/div>
+  
+            {/* Owner 3: Karabo Khumalo */}
+            &lt;div className="owner-container">
+              &lt;img
+                className="owner-icon"
+                width="75"
+                height="75"
+                src="https://img.icons8.com/pastel-glyph/75/e9ecef/user-male-circle.png"
+                alt="user-male-circle"
+              />
+              &lt;h2 className="owner-name">Karabo Khumalo&lt;/h2>
+              &lt;p className="owner-detials">
+                Karabo Khumalo is a co-owner of Napoli Sports Club. Karabo is a well
+                seasoned ex player of the game we love and currently also serves as
+                the Sporting Director of the club.
+                &lt;br />
+                &lt;br />
+                Furthermore, he possesses a Bachelor of Commerce in Law degree and
+                his love for the game in developing the next generation of football
+                icons is where he excels. Moulding footballers while young enables
+                the organisation to carefully manage their development correctly
+                and allow them a high ceiling in this unforgiving industry.
+                &lt;br />
+                &lt;br />
+                Paving this 5-10 year plan for these youngsters is what Mr.Khumalo
+                delivers to an excellent level.
+              &lt;/p>
+            &lt;/div>
+          &lt;/div>
+        &lt;/div>
+  
+        {/* Club Footer Section */}
+        &lt;div className="club-footer-container">
+          &lt;Footer />
+        &lt;/div>
+      &lt;/>
+    );
+  }
+
+export default TheClub;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#GameResults">GameResults</a></li><li><a href="global.html#HomeLayout">HomeLayout</a></li><li><a href="global.html#Navbar">Navbar</a></li><li><a href="global.html#TheClub">TheClub</a></li><li><a href="global.html#getInitialEvents">getInitialEvents</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Wed Apr 23 2025 16:13:39 GMT+0200 (South Africa Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

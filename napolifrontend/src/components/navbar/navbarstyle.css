@@ -1,0 +1,126 @@
+body {
+  font-family: "Lexend", sans-serif;
+}
+
+.navbar {
+  height: 60px;
+  position: relative; 
+  z-index: 100;
+  color: #1F3B6D;
+  font-weight: 800;
+}
+
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
+#logo {
+  width: 35px;
+  cursor: pointer;
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0em 0.8em;
+}
+
+.nav-icon {
+  cursor: pointer;
+  font-size: 1.5em;
+  margin-right: 5px;
+  position: relative;
+}
+
+.dropdown-menu {
+  display: none;
+  position: fixed;
+  top: 8%;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: white;
+  border: none;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  min-width: 150px;
+  z-index: 1;
+  opacity: 0;
+  transform: translateY(-20px); /* Start slightly above */
+  transition: opacity 1.0s ease, transform 1.0s ease;
+}
+
+.dropdown-menu li {
+  padding: 10px;
+}
+
+.dropdown-menu li a {
+  text-decoration: none;
+  font-size: 1em;
+  font-weight: 600;
+  padding: 5px;
+  color: #004582;
+  display: block;
+  margin: 5px;
+}
+
+.dropdown-menu li a:hover {
+  background-color: #f0f0f0;
+}
+
+.nav-icon.active .dropdown-menu {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.nav-icon::before {
+  content: url('https://img.icons8.com/fluency/32/menu--v3.png');
+  transition: content 0.2s ease;
+}
+
+.nav-icon.active::before {
+  content: url('https://img.icons8.com/parakeet-line/40/228BE6/close-window.png'); 
+  transition: content 0.s ease;
+}
+
+.social-icon {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.no-scroll {
+  overflow: hidden;
+  height: 100vh;
+}
+
+/* Media query for laptop/PC view */
+@media (min-width: 768px) {
+  .navbar {
+    height: 80px;
+  }
+
+  .dropdown-menu {
+    top: 10%;
+    text-align: center;
+    width: 100vw;
+    height: 100vh;
+  }
+
+  .dropdown-menu li a{
+    font-size: 1.2em;
+    padding: 10px;
+  }
+
+  #logo{
+    width: 50px;
+  }
+
+}

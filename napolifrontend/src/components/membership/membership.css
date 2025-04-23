@@ -1,0 +1,68 @@
+/*--------------------------------------------------------------
+ Membership CSS
+--------------------------------------------------------------*/
+
+.membership-grid {
+  display: grid;
+  grid-template-columns: 1fr; 
+  gap: 0; 
+}
+
+.grid-item {
+  position: relative; 
+  width: 100%; 
+}
+
+.grid-image {
+  width: 100%;
+  height: 400px; /* Adjust height as needed */
+  background-size: cover;
+  background-position: center;
+}
+
+
+
+.grid-text {
+  animation: fontSizePulse 0.5s ease-in-out 1; /* Adjust duration and easing as needed */
+  display: inline-block;
+  position: absolute; /* Layer text on top of image */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white; /* Or any desired text color */
+  text-align: center;
+  padding: 10px;
+  width: 90%;
+  font-size: 30px;
+  font-weight: 900;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); 
+}
+
+.grid-text:hover {
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+  font-size: 35px; 
+  transition: smooth 0.5s;
+}
+
+.club-logo {
+  width: 100px
+}
+
+@media (min-width: 768px) {
+  .membership-grid {
+      grid-template-columns: 1fr 1fr; 
+      grid-template-rows: 1fr 1fr; 
+  }
+  .grid-image{
+      height: 500px;
+  }
+
+  .grid-text {
+    font-size: 45px;
+  }
+
+  .grid-text:hover {
+    font-size: 55px;
+    transition: smooth 0.5s;
+  }
+}

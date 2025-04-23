@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: dashboards/managersdashboard/ManagerDashboard.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: dashboards/managersdashboard/ManagerDashboard.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { useState, useEffect, useRef } from "react";
+import { Link, useSearchParams } from "react-router-dom";
+import "../dashboard.css";
+import loadingGif from "../../homepage/assets/soccer-ball-gif.gif";
+import NapoliImg from "../../assets/Napoli-2020.png";
+import DashFooter from "../dashfooter/DashFooter";
+
+const CALENDAR_EVENTS_KEY = "calendarEvents";
+
+/**
+ * ManagerDashboard Component
+ * Displays the manager's dashboard with weather updates, notifications, and navigation links.
+ */
+export default function ManagerDashboard() {
+  // State variables for managing UI and data
+  const [dateTime, setDateTime] = useState(""); // Current date and time
+  const [loading, setLoading] = useState(true); // Loading state
+  const [weatherData, setWeatherData] = useState(null); // Weather data
+  const [showNotifications, setShowNotifications] = useState(false); // Notification dropdown visibility
+  const [calendarEvents, setCalendarEvents] = useState(() => {
+    const storedEvents = localStorage.getItem(CALENDAR_EVENTS_KEY);
+    return storedEvents ? JSON.parse(storedEvents) : {};
+  }); // Calendar events from local storage
+  const [hasCalendarEvents, setHasCalendarEvents] = useState(false); // Check if there are calendar events
+
+  const welcomeHeaderRef = useRef(null); // Ref for the welcome header
+
+  // Retrieve username from query parameters
+  const [searchParams] = useSearchParams();
+  const username = searchParams.get("username");
+
+  /**
+   * Scroll to the top of the page and focus on the welcome header on mount.
+   */
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    if (welcomeHeaderRef.current) {
+      welcomeHeaderRef.current.focus();
+    }
+  }, []);
+
+  /**
+   * Simulate loading state for the dashboard.
+   */
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 700);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  /**
+   * Update the current date and time every minute.
+   */
+  useEffect(() => {
+    const updateDateTime = () => {
+      const now = new Date();
+      const options = { weekday: "short", day: "numeric", month: "long" };
+      const formattedDateTime = now.toLocaleDateString("en-US", options);
+      setDateTime(formattedDateTime);
+    };
+
+    updateDateTime(); // Initial update
+    const intervalId = setInterval(updateDateTime, 60000); // Update every minute
+
+    return () => clearInterval(intervalId); // Cleanup on unmount
+  }, []);
+
+  /**
+   * Fetch weather data for the manager's location.
+   */
+  useEffect(() => {
+    const fetchWeather = async () => {
+      try {
+        const apiKey = "310d3f519dd049d6582d6edaa9424ea3";
+        const location = "Northcliff, ZA";
+        const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${location}&amp;appid=${apiKey}&amp;units=metric`;
+
+        const response = await fetch(apiUrl);
+        if (response.ok) {
+          const data = await response.json();
+          setWeatherData(data);
+        } else {
+          console.error("Failed to fetch weather data");
+        }
+      } catch (error) {
+        console.error("Error fetching weather data:", error);
+      }
+    };
+
+    fetchWeather();
+  }, []);
+
+  /**
+   * Load calendar events from local storage and check if there are any events.
+   */
+  useEffect(() => {
+    const storedEvents = localStorage.getItem(CALENDAR_EVENTS_KEY);
+    if (storedEvents) {
+      const parsedEvents = JSON.parse(storedEvents);
+      setCalendarEvents(parsedEvents);
+      setHasCalendarEvents(Object.keys(parsedEvents).length > 0);
+    } else {
+      setHasCalendarEvents(false);
+    }
+  }, []);
+
+  /**
+   * Continuously check for updates to calendar events in local storage.
+   */
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      const storedEvents = localStorage.getItem(CALENDAR_EVENTS_KEY);
+      if (storedEvents) {
+        const parsedEvents = JSON.parse(storedEvents);
+        setCalendarEvents(parsedEvents);
+        setHasCalendarEvents(Object.keys(parsedEvents).length > 0);
+      } else {
+        setHasCalendarEvents(false);
+      }
+    }, 1000); // Check for updates every second
+
+    return () => clearInterval(intervalId); // Cleanup on unmount
+  }, []);
+
+  // Show loading screen while data is being fetched
+  if (loading) {
+    return (
+      &lt;div className="loading-container" aria-live="polite">
+        &lt;img
+          src={loadingGif}
+          alt="Loading soccer club content"
+          className="loading-gif"
+        />
+      &lt;/div>
+    );
+  }
+
+  return (
+    &lt;>
+      &lt;main className="dashboard-container">
+        {/* Header Section */}
+        &lt;header className="dashboard-header">&lt;/header>
+        &lt;nav className="dashboard-nav">
+          &lt;img src={NapoliImg} alt="Napoli Logo" className="dash-logo" />
+          &lt;div className="user-text">
+            &lt;h2 className="welcome-user">Welcome, {username}!&lt;/h2>
+          &lt;/div>
+
+          {/* Notifications Section */}
+          &lt;div style={{ position: "relative" }}>
+            &lt;img
+              className="notifications-icon"
+              width="40"
+              height="40"
+              src="https://img.icons8.com/external-creatype-outline-colourcreatype/40/e9ecef/external-alarm-essential-ui-v2-creatype-outline-colourcreatype-2.png"
+              alt="Notifications Icon"
+              onClick={() => setShowNotifications(!showNotifications)}
+              style={{ cursor: "pointer" }}
+            />
+            {showNotifications &amp;&amp; (
+              &lt;div className="notifications-dropdown">
+                &lt;h3>Notifications&lt;/h3>
+                {hasCalendarEvents ? (
+                  &lt;ul>
+                    &lt;h3>FIXTURES&lt;/h3>
+                    {Object.entries(calendarEvents).map(
+                      ([date, eventsForDate]) =>
+                        eventsForDate.map((event, index) => (
+                          &lt;li key={`${date}-${index}`}>
+                            &lt;p className="notification-event">
+                              &lt;strong>Date:&lt;/strong>{" "}
+                              {new Date(date).toLocaleDateString()} &lt;br />
+                              &lt;strong>Event:&lt;/strong> {event.text} &lt;br />
+                              &lt;strong>Time:&lt;/strong> {event.time || "N/A"} &lt;br />
+                              &lt;strong>Age Group:&lt;/strong>{" "}
+                              {event.ageGroup || "N/A"}
+                            &lt;/p>
+                          &lt;/li>
+                        ))
+                    )}
+                  &lt;/ul>
+                ) : (
+                  &lt;p>No new notifications&lt;/p>
+                )}
+              &lt;/div>
+            )}
+          &lt;/div>
+        &lt;/nav>
+
+        {/* Current Date and Time */}
+        &lt;p className="current-datetime">{dateTime}&lt;/p>
+
+        {/* Dashboard Tabs */}
+        &lt;div className="dashboard-tabs">
+          {/* Game Results Tab */}
+          &lt;div className="dashboard-option-1">
+            &lt;Link
+              to={`/gameresults?username=${encodeURIComponent(username)}`}
+              state={{ calendarEvents }}
+            >
+              &lt;div className="dash-header-content">
+                &lt;img
+                  width="35"
+                  height="35"
+                  src="https://img.icons8.com/ios/35/e9ecef/notepad.png"
+                  alt="Game Results Icon"
+                />
+                &lt;p className="icon-text">Game Results&lt;/p>
+              &lt;/div>
+            &lt;/Link>
+          &lt;/div>
+
+          {/* Admin and Calendar Tabs */}
+          &lt;div className="dashtab-divider">
+            &lt;div className="dashboard-option-2">
+              &lt;Link
+                to={`/data-input-display?username=${encodeURIComponent(
+                  username
+                )}`}
+              >
+                &lt;img
+                  width="55"
+                  height="55"
+                  src="https://img.icons8.com/ios/50/F2F2F2/opened-folder.png"
+                  alt="Admin Icon"
+                />
+                &lt;p className="icon-text">Admin&lt;/p>
+              &lt;/Link>
+            &lt;/div>
+            &lt;Link
+              to={`/calendar?username=${encodeURIComponent(username)}`}
+              className="dashboard-option-3"
+            >
+              &lt;img
+                width="55"
+                height="55"
+                src="https://img.icons8.com/ios/50/F2F2F2/calendar--v1.png"
+                alt="Calendar Icon"
+              />
+              &lt;p className="icon-text">Calendar&lt;/p>
+            &lt;/Link>
+          &lt;/div>
+
+          {/* Weather Section */}
+          &lt;div className="dashboard-option-4">
+            &lt;h2 className="option-text">⛅ Weather&lt;/h2>
+            {weatherData ? (
+              &lt;div className="weather-content">
+                &lt;p>
+                  {weatherData.name}, {weatherData.sys.country}
+                &lt;/p>
+                &lt;p>Temperature: {Math.round(weatherData.main.temp)}°C&lt;/p>
+                &lt;p>Weather: {weatherData.weather[0].description}&lt;/p>
+                &lt;img
+                  src={`http://openweathermap.org/img/w/${weatherData.weather[0].icon}.png`}
+                  alt="Weather Icon"
+                />
+              &lt;/div>
+            ) : (
+              &lt;p>Loading weather...&lt;/p>
+            )}
+          &lt;/div>
+        &lt;/div>
+
+        {/* Footer Section */}
+        &lt;DashFooter username={username} calendarEvents={calendarEvents} />
+      &lt;/main>
+    &lt;/>
+  );
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#GameResults">GameResults</a></li><li><a href="global.html#HomeLayout">HomeLayout</a></li><li><a href="global.html#Navbar">Navbar</a></li><li><a href="global.html#TheClub">TheClub</a></li><li><a href="global.html#getInitialEvents">getInitialEvents</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Wed Apr 23 2025 16:13:39 GMT+0200 (South Africa Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

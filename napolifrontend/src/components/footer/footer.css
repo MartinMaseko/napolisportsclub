@@ -1,0 +1,39 @@
+/*--------------------------------------------------------------
+  Footer Section
+--------------------------------------------------------------*/
+
+footer {
+    background-color: #1E4670;
+    display: flex;
+    flex-direction: column;
+    padding: 1.25em;
+    font-size: 0.8em;
+    font-weight: 500;
+    text-align: center;
+    color: white;
+}
+
+#footer-icons {
+    width: 30px;
+    cursor: pointer;
+    padding-right: 1em;
+    padding-bottom: 1.75em;
+}
+
+#footer-icons:hover {
+    transform: scale(1.2);
+}
+
+a {
+    color: white;
+    text-decoration: none;
+}
+
+a:hover {
+    font-weight: 800;
+}
+
+.text-bold {
+    font-weight: 700;
+}
+

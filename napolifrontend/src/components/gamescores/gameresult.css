@@ -1,0 +1,65 @@
+.game-results-container {
+    padding: 20px;
+    padding-bottom: 250px;
+    background-color: #303030;
+    color: #e9ecef;
+
+}
+
+h2, h3 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.scheduled-games {
+    margin-bottom: 30px;
+}
+
+.game-card {
+    border: none;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 15px;
+    background-color: #1e4670;
+}
+
+.score-inputs {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.score-inputs label {
+    display: flex;
+    flex-direction: column;
+    font-size: 14px;
+}
+
+.score-inputs input {
+    padding: 5px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100px;
+}
+
+.results-summary {
+    text-align: center;
+    font-size: 18px;
+}
+
+.results-heading {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+@media (min-width: 768px) {
+    .scheduled-games {
+        display: grid;
+        grid-template-columns: auto auto auto;
+        gap: 10px;
+    }
+}

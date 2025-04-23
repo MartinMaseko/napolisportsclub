@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: dashboards/playersdashboard/PlayerDashboard.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: dashboards/playersdashboard/PlayerDashboard.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { useState, useEffect } from "react";
+import "./playersdashboard.css";
+import loadingGif from "../../homepage/assets/soccer-ball-gif.gif";
+import napoliLogo from "../../assets/Napoli-2020.png";
+import Profile from "./Profile";
+import ClubFees from "./ClubFees";
+import Fixtures from "./Fixtures";
+import axios from "axios";
+
+/**
+ * PlayerDashboard Component
+ * Displays the player's dashboard with navigation to Profile, Fixtures, and Club Fees.
+ * Handles fetching player details and calendar events.
+ * @param {string} username - The username of the logged-in player.
+ */
+export default function PlayerDashboard({ username }) {
+  // State variables for managing UI and data
+  const [dateTime, setDateTime] = useState(""); // Current date and time
+  const [loading, setLoading] = useState(true); // Loading state
+  const [dropdownOpen, setDropdownOpen] = useState(false); // Dropdown menu visibility
+  const [calendarEvents, setCalendarEvents] = useState({}); // Calendar events
+  const [activeComponent, setActiveComponent] = useState("Fixtures"); // Active dashboard tab
+  const [playerDetails, setPlayerDetails] = useState(null); // Player details
+
+  // Retrieve player name from local storage
+  const firstName = localStorage.getItem("firstName");
+  const lastName = localStorage.getItem("lastName");
+
+  /**
+   * Fetches player details from the API.
+   */
+  useEffect(() => {
+    const fetchPlayerDetails = async () => {
+      const token = localStorage.getItem("authToken");
+      const idNumber = localStorage.getItem("username");
+
+      if (!token || !idNumber) {
+        console.error("No authentication token or player ID found.");
+        return;
+      }
+
+      try {
+        const response = await axios.get(`http://127.0.0.1:8000/api/players/`, {
+          headers: {
+            Authorization: `Token ${token}`,
+          },
+          params: {
+            id_number: idNumber,
+          },
+        });
+
+        if (response.data.length > 0) {
+          setPlayerDetails(response.data[0]);
+        } else {
+          console.error("Player not found.");
+        }
+      } catch (err) {
+        console.error("Error fetching player details:", err);
+      }
+    };
+
+    fetchPlayerDetails();
+  }, []);
+
+  /**
+   * Simulates a loading state for the dashboard.
+   */
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1500);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  /**
+   * Updates the current date and time every minute.
+   */
+  useEffect(() => {
+    const updateDateTime = () => {
+      const now = new Date();
+      const options = { weekday: "short", day: "numeric", month: "long" };
+      const formattedDateTime = now.toLocaleDateString("en-US", options);
+      setDateTime(formattedDateTime);
+    };
+
+    updateDateTime(); // Initial update
+    const intervalId = setInterval(updateDateTime, 60000); // Update every minute
+
+    return () => clearInterval(intervalId); // Cleanup on unmount
+  }, []);
+
+  /**
+   * Loads calendar events from local storage.
+   */
+  useEffect(() => {
+    const savedEvents = JSON.parse(localStorage.getItem("calendarEvents")) || {};
+    setCalendarEvents(savedEvents);
+  }, []);
+
+  /**
+   * Toggles the visibility of the dropdown menu.
+   */
+  const toggleDropdown = () => {
+    setDropdownOpen((prevState) => !prevState);
+  };
+
+  /**
+   * Handles menu option clicks.
+   * @param {string} option - The selected menu option.
+   */
+  const handleMenuClick = (option) => {
+    setDropdownOpen(false);
+
+    if (option === "Logout") {
+      // Clear session data
+      localStorage.removeItem("authToken");
+      localStorage.removeItem("username");
+      localStorage.removeItem("firstName");
+      localStorage.removeItem("lastName");
+
+      // Redirect to Members page
+      window.location.href = "/members";
+      return;
+    }
+    setActiveComponent(option);
+  };
+
+  /**
+   * Renders the active dashboard component based on the selected tab.
+   * @returns {JSX.Element} - The active component.
+   */
+  const renderActiveComponent = () => {
+    switch (activeComponent) {
+      case "Profile":
+        return &lt;Profile playerDetails={playerDetails} />;
+      case "Fixtures":
+        return &lt;Fixtures calendarEvents={calendarEvents} />;
+      case "Club Fees":
+        return &lt;ClubFees playerDetails={playerDetails} />;
+      default:
+        return &lt;Profile playerDetails={playerDetails} />;
+    }
+  };
+
+  // Show loading screen while data is being fetched
+  if (loading) {
+    return (
+      &lt;div className="loading-container" aria-live="polite">
+        &lt;img
+          src={loadingGif}
+          alt="Loading soccer club content"
+          className="loading-gif"
+        />
+      &lt;/div>
+    );
+  }
+
+  return (
+    &lt;div className="playerdashboard-container">
+      &lt;div className="playerlout-container">
+        {/* Header Section */}
+        &lt;div className="playerheader-display">
+          &lt;img className="napoli-logo" src={napoliLogo} alt="Napoli Logo" />
+          &lt;h2 className="welcome-players">NSC&lt;/h2>
+          &lt;div id="dropdown-container">
+            &lt;img
+              className="player-menuicon"
+              width="40"
+              height="40"
+              src="https://img.icons8.com/material-outlined/100/000000/menu--v1.png"
+              alt="Menu Icon"
+              style={{ cursor: "pointer" }}
+              onClick={toggleDropdown}
+            />
+            &lt;ul id="dropdown-menu" className={dropdownOpen ? "show" : ""}>
+              &lt;li onClick={() => handleMenuClick("Profile")}>Profile&lt;/li>
+              &lt;li onClick={() => handleMenuClick("Fixtures")}>Fixtures&lt;/li>
+              &lt;li onClick={() => handleMenuClick("Club Fees")}>Club Fees&lt;/li>
+              &lt;li onClick={() => handleMenuClick("Logout")}>Logout&lt;/li>
+            &lt;/ul>
+          &lt;/div>
+        &lt;/div>
+
+        {/* Player Info Section */}
+        &lt;p>
+          &lt;strong>Player:&lt;/strong> {firstName} {lastName}
+        &lt;/p>
+        &lt;p>
+          &lt;strong>{dateTime}&lt;/strong>
+        &lt;/p>
+
+        {/* Active Component Section */}
+        &lt;div className="active-component-container">
+          {renderActiveComponent()}
+        &lt;/div>
+      &lt;/div>
+    &lt;/div>
+  );
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#GameResults">GameResults</a></li><li><a href="global.html#HomeLayout">HomeLayout</a></li><li><a href="global.html#Navbar">Navbar</a></li><li><a href="global.html#TheClub">TheClub</a></li><li><a href="global.html#getInitialEvents">getInitialEvents</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Wed Apr 23 2025 16:13:39 GMT+0200 (South Africa Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

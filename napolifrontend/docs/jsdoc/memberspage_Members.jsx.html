@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: memberspage/Members.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: memberspage/Members.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import "./members.css";
+import mobileBanner from "./assests/mobile-ad-banner.png";
+import pcBanner from "./assests/pc-banner.png";
+
+/**
+ * Members Component
+ * Handles user login for members and redirects them to the appropriate dashboard based on their role.
+ */
+export default function Members() {
+  // State to manage form data
+  const [formData, setFormData] = useState({
+    username: "",
+    password: "",
+  });
+
+  // State to manage error messages
+  const [error, setError] = useState("");
+
+  // React Router's navigate function for redirection
+  const navigate = useNavigate();
+
+  /**
+   * Handles input changes and updates the form data state.
+   * @param {Object} e - The event object from the input field.
+   */
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+    setError(""); // Clear error message on input change
+  };
+
+  /**
+   * Handles form submission for login.
+   * Validates the input fields, sends a login request, and redirects based on the user's role.
+   * @param {Object} e - The event object from the form submission.
+   */
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+
+    // Validate form fields
+    if (!formData.username || !formData.password) {
+      setError("Username and password are required.");
+      return;
+    }
+
+    try {
+      // Send login request to the backend
+      const response = await axios.post(
+        "http://127.0.0.1:8000/api/login/",
+        {
+          username: formData.username,
+          password: formData.password,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      // Extract data from the response
+      const { token, role, first_name: firstName, last_name: lastName } = response.data;
+
+      // Store the token and user details in localStorage
+      localStorage.setItem("authToken", token);
+      localStorage.setItem("username", formData.username); // Store the username (used as ID number)
+      localStorage.setItem("firstName", firstName);
+      localStorage.setItem("lastName", lastName);
+      localStorage.setItem("role", role);
+
+      // Navigate to the appropriate dashboard based on the user's role
+      if (role === "manager") {
+        navigate(`/managersdashboard?username=${encodeURIComponent(formData.username)}`);
+      } else if (role === "player") {
+        navigate(`/playersdashboard?username=${encodeURIComponent(firstName)}`);
+      } else {
+        setError("Access restricted.");
+      }
+    } catch (error) {
+      console.error("Login failed:", error.response?.data || error.message);
+      setError(error.response?.data?.error || "Incorrect username or password.");
+    }
+  };
+
+  return (
+    &lt;>
+      {/* Header Section */}
+      &lt;div className="members-header">
+        &lt;img src={pcBanner} alt="PC banner" className="pc-banner" />
+        &lt;img src={mobileBanner} alt="Mobile banner" className="mobile-banner" />
+
+        {/* Login Form Section */}
+        &lt;div className="login-container">
+          &lt;form id="loginForm" onSubmit={handleSubmit}>
+            &lt;div className="member-header">
+              &lt;img
+                id="member-icon"
+                src="https://img.icons8.com/?size=100&amp;id=XOn9u5ajbq8a&amp;format=png&amp;color=000000"
+                alt="Profile icon"
+              />
+              &lt;h2>Members Login&lt;/h2>
+            &lt;/div>
+
+            {/* Username Input */}
+            &lt;input
+              type="text"
+              id="login-username"
+              name="username"
+              placeholder="Username"
+              required
+              value={formData.username}
+              onChange={handleChange}
+            />
+
+            {/* Password Input */}
+            &lt;input
+              type="password"
+              id="login-password"
+              name="password"
+              placeholder="Password"
+              required
+              value={formData.password}
+              onChange={handleChange}
+            />
+
+            {/* Submit Button */}
+            &lt;button type="submit" id="memberLogin">
+              Login
+            &lt;/button>
+
+            {/* Error Message */}
+            &lt;p id="error" className="error-message">
+              {error}
+            &lt;/p>
+          &lt;/form>
+
+          {/* WhatsApp Contact Link */}
+          &lt;a
+            href="https://wa.me/+27737378310"
+            aria-label="Contact us on WhatsApp"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            &lt;img
+              id="whatsapp-icon"
+              width="40"
+              height="40"
+              src="https://img.icons8.com/ios-filled/40/228BE6/whatsapp--v1.png"
+              alt="WhatsApp icon"
+            />
+          &lt;/a>
+        &lt;/div>
+      &lt;/div>
+    &lt;/>
+  );
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#GameResults">GameResults</a></li><li><a href="global.html#HomeLayout">HomeLayout</a></li><li><a href="global.html#Navbar">Navbar</a></li><li><a href="global.html#TheClub">TheClub</a></li><li><a href="global.html#getInitialEvents">getInitialEvents</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Wed Apr 23 2025 16:13:39 GMT+0200 (South Africa Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: homepage/JoinForm.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: homepage/JoinForm.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { useState } from "react";
+import "./homepage.css";
+
+/**
+ * JoinForm Component
+ * A form for users to join the Napoli Sports Club by submitting their details.
+ * 
+ * Props:
+ * - onClose (function): Callback function to close the form.
+ */
+export default function JoinForm({ onClose }) {
+  // State to manage form data
+  const [formData, setFormData] = useState({
+    name: "",
+    surname: "",
+    age: "",
+    address: "",
+    schoolName: "",
+    grade: "",
+    previousClub: "",
+    position: "",
+    email: "",
+    phone: "",
+    migrateReason: "",
+  });
+
+  /**
+   * Handles input changes and updates the form data state.
+   * @param {Object} e - The event object from the input field.
+   */
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  /**
+   * Handles form submission.
+   * Logs the form data and triggers the onClose callback.
+   * @param {Object} e - The event object from the form submission.
+   */
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("Form Data:", formData);
+    onClose(); // Close the form after submission
+  };
+
+  return (
+    &lt;div className="join-form active" id="joinForm">
+      &lt;form id="membershipForm" onSubmit={handleSubmit}>
+        {/* Name Input */}
+        &lt;label htmlFor="name">Name&lt;/label>
+        &lt;input
+          type="text"
+          id="name"
+          name="name"
+          value={formData.name}
+          onChange={handleInputChange}
+          required
+        />
+
+        {/* Surname Input */}
+        &lt;label htmlFor="surname">Surname&lt;/label>
+        &lt;input
+          type="text"
+          id="surname"
+          name="surname"
+          value={formData.surname}
+          onChange={handleInputChange}
+          required
+        />
+
+        {/* Age Input */}
+        &lt;label htmlFor="age">Age&lt;/label>
+        &lt;input
+          type="number"
+          id="age"
+          name="age"
+          value={formData.age}
+          onChange={handleInputChange}
+          min="8"
+          max="23"
+          required
+        />
+
+        {/* Address Input */}
+        &lt;label htmlFor="address">Address&lt;/label>
+        &lt;input
+          type="text"
+          id="address"
+          name="address"
+          value={formData.address}
+          onChange={handleInputChange}
+          required
+        />
+
+        {/* School Name Input */}
+        &lt;label htmlFor="school-name">School Name&lt;/label>
+        &lt;input
+          type="text"
+          id="school-name"
+          name="schoolName"
+          value={formData.schoolName}
+          onChange={handleInputChange}
+          required
+        />
+
+        {/* Grade Input */}
+        &lt;label htmlFor="grade">Grade&lt;/label>
+        &lt;input
+          type="number"
+          id="grade"
+          name="grade"
+          value={formData.grade}
+          onChange={handleInputChange}
+          max="12"
+          required
+        />
+
+        {/* Previous Club Input */}
+        &lt;label htmlFor="previous-club">Previous Club&lt;/label>
+        &lt;input
+          type="text"
+          id="previous-club"
+          name="previousClub"
+          value={formData.previousClub}
+          onChange={handleInputChange}
+          required
+        />
+
+        {/* Position Dropdown */}
+        &lt;label htmlFor="position">Position&lt;/label>
+        &lt;select
+          id="position"
+          name="position"
+          value={formData.position}
+          onChange={handleInputChange}
+        >
+          &lt;option value="Goalkeeper">Goalkeeper&lt;/option>
+          &lt;option value="Center Back">Center Back&lt;/option>
+          &lt;option value="Fullback">Fullback&lt;/option>
+          &lt;option value="Defending/Holding Midfielder">Defending/Holding Midfielder&lt;/option>
+          &lt;option value="Central Midfielder">Central Midfielder&lt;/option>
+          &lt;option value="Attacking Midfielder">Attacking Midfielder&lt;/option>
+          &lt;option value="Winger">Winger&lt;/option>
+          &lt;option value="Striker">Striker&lt;/option>
+          &lt;option value="Second Striker">Second Striker&lt;/option>
+        &lt;/select>
+
+        {/* Email Input */}
+        &lt;label htmlFor="email">Email&lt;/label>
+        &lt;input
+          type="email"
+          id="email"
+          name="email"
+          value={formData.email}
+          onChange={handleInputChange}
+          required
+        />
+
+        {/* Phone Input */}
+        &lt;label htmlFor="phone">Phone&lt;/label>
+        &lt;input
+          type="tel"
+          id="phone"
+          name="phone"
+          value={formData.phone}
+          onChange={handleInputChange}
+          required
+        />
+
+        {/* Reason for Leaving Previous Club */}
+        &lt;label htmlFor="migrate-reason">Reason for leaving your previous club&lt;/label>
+        &lt;textarea
+          id="migrate-reason"
+          name="migrateReason"
+          value={formData.migrateReason}
+          onChange={handleInputChange}
+          rows="4"
+        />
+
+        {/* Submit Button */}
+        &lt;button type="submit">Submit&lt;/button>
+      &lt;/form>
+    &lt;/div>
+  );
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#GameResults">GameResults</a></li><li><a href="global.html#HomeLayout">HomeLayout</a></li><li><a href="global.html#Navbar">Navbar</a></li><li><a href="global.html#TheClub">TheClub</a></li><li><a href="global.html#getInitialEvents">getInitialEvents</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Wed Apr 23 2025 16:13:39 GMT+0200 (South Africa Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

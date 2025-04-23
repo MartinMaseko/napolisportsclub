@@ -1,0 +1,208 @@
+body {
+  overflow-x: hidden;
+}
+
+/*--------------------------------------------------------------
+  Loading Screen
+--------------------------------------------------------------*/
+
+.loading-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.loading-gif {
+  width: 50px;
+}
+
+.image-container {
+    width: 100%;
+    height: 100%;
+  }
+
+  #mobileBanner {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+#mobileBanner {
+    width: 100%;
+    height: auto;
+    z-index: 1;
+    top: 0;
+}
+
+.welcome-text {
+  color: white;
+  font-size: 45px; 
+  font-weight: 900;
+  margin-top: 100px;
+  text-align: center;
+  background-color: #1F3B6D;
+  display: inline;
+}
+
+.home-container {
+  text-align: center;
+  margin-top: 10px;
+}
+
+/*--------------------------------------------------------------
+  Whatsapp Icon
+--------------------------------------------------------------*/
+
+#whatsapp-icon{
+  width: 45px;
+  position: fixed; 
+  bottom: 10px; 
+  left: 10px; 
+  z-index: 1000;
+}
+
+/*--------------------------------------------------------------
+  Modal Form
+--------------------------------------------------------------*/
+
+.join-form {
+  display: none; /* Initially hide the form */
+  padding: 0.5em;
+  margin: 0em;
+}
+
+.join-form.active {
+  display: block;
+}
+
+
+.join-form input,
+.join-form select {
+  display: block;
+  margin-top: 10px;
+  width: calc(100%);
+  border: none;
+  border-bottom: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+
+.join-form textarea{
+  display: block;
+  margin-top: 5px;
+  width: calc(100%);
+  border: 1px solid #ccc;
+  resize: none;
+  background-color: white;
+  color: #252422;
+  padding: 5px;
+  border-radius: 4px;
+  box-sizing: border-box;
+  height: 150px;
+}
+
+.join-form label {
+  border: none;
+  font-weight: bold;
+  display: block; /* Ensure labels are on their own lines */
+  margin-top: 20px;
+  font-size: 18px;
+  color: #004582;
+}
+
+.join-form button[type="submit"] {
+  display: block; /* Make it a block-level element */
+  margin: 10px auto; /* Center it horizontally */
+  background-color: #004582;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.join-form button[type="submit"]:hover {
+  background-color: #2272A2;
+}
+
+/*--------------------------------------------------------------
+  About & Club Container
+--------------------------------------------------------------*/
+
+.about-container, .clubinfo-container {
+  text-align: center;
+  padding: 0.8em;
+  margin: 0.5em;
+}
+
+.about-container h2, .clubinfo-container h2 {
+  text-align: center;
+  color: #004582;
+  font-weight: 900;
+}
+.about-container, .clubinfo-container p{
+  text-align: start;
+  color: #333333;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.about-container h2 {
+  opacity: 1;
+  transform: translateY(10px); /* Move it down initially */
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.about-container p {
+  opacity: 1;
+  transform: translateY(10px); /* Move it down initially */
+  transition: opacity 0.5s ease 0.2s, transform 0.5s ease 0.2s; /* Delay the paragraph */
+}
+
+.about-container h2.appear,
+.about-container p.appear {
+  opacity: 0.5;
+  transform: translateY(0); /* Move it to its original position */
+}
+
+/*--------------------------------------------------------------
+  Buttons
+--------------------------------------------------------------*/
+
+button {
+  padding: 0.5em 0.5em;
+  background-color: #004582;
+  color: #f0f0f0;
+  font-size: 1.25em;
+  font-weight: 700;
+  border: none;
+  border-radius: 5px;
+  display: block; /* Make it a block-level element */
+  margin: 10px auto; /* Center it horizontally */
+  margin-bottom: 30px;
+  margin-top: 30px;
+}
+
+button:hover {
+  background-color: #2272A2;
+  font-size: 1.25em;
+}
+
+@media (min-width: 768px) {
+  #mobileBanner {
+    content: url('./assets/Website Banner.png');
+    background-size: contain;
+    height: 800px;
+  }
+
+  .about-container h2,
+  .about-container p {
+    text-align: center;
+    font-size: 1.25em;
+  }
+
+  
+}
