@@ -55,10 +55,11 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000", 
-    "http://192.168.0.140:3000", 
-    "https://napoliapp.netlify.app",
-    "https://martinmaseko.pythonanywhere.com",
+    "http://localhost:3000",  
+    "http://192.168.0.140:3000",  
+    "https://napoliapp.netlify.app",  
+    "https://napoliclubbapp.netlify.app",  
+    "https://martinmaseko.pythonanywhere.com",  
 ]
 
 ROOT_URLCONF = 'napoliclub_backend.urls'
