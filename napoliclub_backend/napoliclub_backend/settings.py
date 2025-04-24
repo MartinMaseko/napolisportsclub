@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure--5ela^67fb9c*g-srh6js&vv9t3&8r9q8!3kh0xmx1@w(ksif_
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['MartinMaseko.pythonanywhere.com', 'localhost']
+ALLOWED_HOSTS = ['MartinMaseko.pythonanywhere.com', 'localhost', '192.168.0.140:3000']
 
 
 # Application definition
@@ -57,6 +57,8 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000", 
     "http://192.168.0.140:3000", 
+    "https://napoliapp.netlify.app",
+    "https://martinmaseko.pythonanywhere.com",
 ]
 
 ROOT_URLCONF = 'napoliclub_backend.urls'
