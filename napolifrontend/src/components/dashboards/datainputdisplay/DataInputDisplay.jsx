@@ -95,7 +95,7 @@ export default function DataInputDisplay() {
                     console.error("No token found. User must be logged in.");
                     return; // Or redirect to login
                 }
-                const response = await axios.get("http://127.0.0.1:8000/api/players/", {
+                const response = await axios.get("https://MartinMaseko.pythonanywhere.com/api/players/", {
                     headers: {
                         'Authorization': `Token ${token}`
                     }
@@ -155,7 +155,7 @@ export default function DataInputDisplay() {
                         console.error("No token found. User must be logged in.");
                         return; // Or redirect to login
                     }
-                    const response = await axios.get(`http://127.0.0.1:8000/api/documents/?player=${selectedPlayer.id}`, {
+                    const response = await axios.get(`https://MartinMaseko.pythonanywhere.com/api/documents/?player=${selectedPlayer.id}`, {
                         headers: {
                             'Authorization': `Token ${token}`
                         }
@@ -181,7 +181,7 @@ export default function DataInputDisplay() {
                 console.error("No token found. User must be logged in.");
                 return; // Or redirect to login
             }
-            const response = await axios.post("http://127.0.0.1:8000/api/data/", formData, {
+            const response = await axios.post("https://MartinMaseko.pythonanywhere.com/api/data/", formData, {
                 headers: {
                     'Authorization': `Token ${token}`
                 }
@@ -238,7 +238,7 @@ export default function DataInputDisplay() {
                 alert("Please log in to upload documents.");
                 return;
             }
-            const response = await axios.post("http://127.0.0.1:8000/api/documents/upload/", formData, {
+            const response = await axios.post("https://MartinMaseko.pythonanywhere.com/api/documents/upload/", formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                     "Authorization": `Token ${token}`, 
@@ -263,7 +263,7 @@ export default function DataInputDisplay() {
                 console.error("No token found. User must be logged in.");
                 return; // Or redirect to login
             }
-            const response = await axios.put(`http://127.0.0.1:8000/api/players/${formData.id}/`, formData, {
+            const response = await axios.put(`https://MartinMaseko.pythonanywhere.com/api/players/${formData.id}/`, formData, {
                 headers: {
                     'Authorization': `Token ${token}`
                 }
@@ -314,7 +314,7 @@ export default function DataInputDisplay() {
                 return; // Or redirect to login
             }
 
-            const response = await axios.post(`http://127.0.0.1:8000/api/players/${playerId}/register/`, {}, {
+            const response = await axios.post(`https://MartinMaseko.pythonanywhere.com/api/players/${playerId}/register/`, {}, {
                 headers: {
                     'Authorization': `Token ${token}`
                 }
@@ -626,7 +626,7 @@ export default function DataInputDisplay() {
                         {documents.map((doc, index) => {
                             const fileUrl = doc.file.startsWith("http")
                                 ? doc.file
-                                : `http://127.0.0.1:8000${doc.file}`; // Prepend backend URL if needed
+                                : `https://MartinMaseko.pythonanywhere.com/${doc.file}`; // Prepend backend URL if needed
 
                             return (
                                 <li key={index} style={{ marginBottom: "10px" }}>
@@ -677,7 +677,7 @@ export default function DataInputDisplay() {
                                         return;
                                     }
 
-                                    await axios.delete(`http://127.0.0.1:8000/api/players/${selectedPlayer.id}/`, {
+                                    await axios.delete(`https://MartinMaseko.pythonanywhere.com//api/players/${selectedPlayer.id}/`, {
                                         headers: {
                                             'Authorization': `Token ${token}`, // Include the token in the headers
                                         },

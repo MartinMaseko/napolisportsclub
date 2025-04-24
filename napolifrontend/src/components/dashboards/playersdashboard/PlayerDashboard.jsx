@@ -40,7 +40,7 @@ export default function PlayerDashboard({ username }) {
       }
 
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/players/`, {
+        const response = await axios.get(`https://MartinMaseko.pythonanywhere.com/api/players/`, {
           headers: {
             Authorization: `Token ${token}`,
           },
