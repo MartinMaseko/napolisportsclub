@@ -14,6 +14,7 @@
     color: white;
 }
 
+
 #contactForm input, textarea{
     width: 100%;
     height: 30px;
@@ -21,14 +22,15 @@
     font-size: 16px;
     color: white;
     border-bottom: 1px solid #ccc5b9;
-    margin-top: 20px;
+    margin-top: 10px;
     resize: none;
     background-color: #252422;
 }
 
-#contactForm label{
+#contactForm h3{
     color: white;
     font-weight: bold;
+    text-align: start;
 }
 
 textarea{

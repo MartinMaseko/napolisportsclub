@@ -51,7 +51,7 @@ export default function ContactPage() {
         <h1>Contact Us</h1>
         <form id="contactForm" onSubmit={handleSubmit}>
           {/* Name Field */}
-          <label htmlFor="name">Name</label>
+          <h3 htmlFor="name">Name</h3>
           <input
             type="text"
             id="name"
@@ -62,7 +62,7 @@ export default function ContactPage() {
           />
 
           {/* Phone Number Field */}
-          <label htmlFor="phone">Phone Number</label>
+          <h3 htmlFor="phone">Phone Number</h3>
           <input
             type="tel"
             id="phone"
@@ -73,7 +73,7 @@ export default function ContactPage() {
           />
 
           {/* Email Field */}
-          <label htmlFor="email">Email</label>
+          <h3 htmlFor="email">Email</h3>
           <input
             type="email"
             id="email"
@@ -84,7 +84,7 @@ export default function ContactPage() {
           />
 
           {/* Message Field */}
-          <label htmlFor="message">Message</label>
+          <h3 htmlFor="message">Message</h3>
           <textarea
             id="message"
             name="message"
