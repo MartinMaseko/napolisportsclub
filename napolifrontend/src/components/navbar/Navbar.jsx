@@ -74,6 +74,7 @@ function Navbar() {
                     aria-expanded={isMenuOpen}
                     aria-label={isMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
                     >
+                    <img width="35" height="35" src="https://img.icons8.com/material-outlined/35/004582/menu--v1.png" alt="menu--v1"/>
 
                     {/* Dropdown menu list */}
                     <ul className="dropdown-menu">
@@ -111,10 +112,10 @@ function Navbar() {
                             {/* Social media icons */}
                             <div className='social-icon'>
                                 <a href="https://www.instagram.com/napoliclub/">
-                                    <img width="40" height="40" src="https://img.icons8.com/ios-filled/40/228BE6/instagram-new--v1.png" alt="instagram-new--v1"/>
+                                    <img width="40" height="40" src="https://img.icons8.com/fluency/40/instagram-new.png" alt="instagram-new"/>
                                 </a>
                                 <a href="mailto:napolijhb@gmail.com">
-                                    <img width="40" height="40" src="https://img.icons8.com/ios-filled/40/228BE6/new-post.png" alt="new-post"/>
+                                    <img width="40" height="40" src="https://img.icons8.com/fluency/40/new-post.png" alt="new-post"/>
                                 </a>
                             </div>
                         </li>
