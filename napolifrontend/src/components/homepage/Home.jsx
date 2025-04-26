@@ -58,11 +58,11 @@ export default function Home() {
         {/* About Section */}
         <section className="about-container">
           <header>
-            <h2>BECOME A MEMBER TODAY!</h2>
+            <h2 className="home-headertext">BECOME A MEMBER TODAY!</h2>
           </header>
           <p>
             Don't just dream of playing – do it! Napoli Sports Club is your pathway
-            to competitive soccer for boys 8 to 23.<br />
+            to competitive soccer for players 8 to 23.<br />
             <br />
             We provide top-tier training and a platform to showcase your talent. Register today and take the
             first step towards achieving your soccer goals with a team that's
@@ -72,6 +72,7 @@ export default function Home() {
           {/* Join Button */}
           <button
             id="join-btn"
+            className="neumorphism-btn"
             onClick={handleJoinButtonClick}
             aria-expanded={isJoinFormVisible}
             aria-controls="joinForm"

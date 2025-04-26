@@ -193,9 +193,9 @@ button:hover {
 
 @media (min-width: 768px) {
   #mobileBanner {
-    content: url('./assets/Website Banner.png');
+    content: url('./assets/Website Banner01.png');
     background-size: contain;
-    height: 800px;
+    animation: none;
   }
 
   .about-container h2,
