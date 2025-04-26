@@ -55,10 +55,9 @@ body {
 --------------------------------------------------------------*/
 
 #whatsapp-icon{
-  width: 45px;
   position: fixed; 
-  bottom: 10px; 
-  left: 10px; 
+  bottom: 30px; 
+  left: 30px; 
   z-index: 1000;
 }
 
@@ -193,9 +192,9 @@ button:hover {
 
 @media (min-width: 768px) {
   #mobileBanner {
-    content: url('./assets/Website Banner.png');
+    content: url('./assets/Website Banner01.png');
     background-size: contain;
-    height: 800px;
+    animation: none;
   }
 
   .about-container h2,

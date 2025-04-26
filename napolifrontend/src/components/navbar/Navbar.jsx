@@ -74,8 +74,9 @@ function Navbar() {
                     aria-expanded={isMenuOpen}
                     aria-label={isMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
                     >
-                    <img width="35" height="35" src="https://img.icons8.com/material-outlined/35/004582/menu--v1.png" alt="menu--v1"/>
-
+                    {isMenuOpen ? 
+                    <img width="35" height="35" src="https://img.icons8.com/ios-glyphs/35/delete-sign.png" alt="delete-sign"/>
+                    : <img width="35" height="35" src="https://img.icons8.com/material-outlined/35/004582/menu--v1.png" alt="menu--v1"/> }
                     {/* Dropdown menu list */}
                     <ul className="dropdown-menu">
                         <li>
