@@ -72,7 +72,6 @@ export default function Home() {
           {/* Join Button */}
           <button
             id="join-btn"
-            className="neumorphism-btn"
             onClick={handleJoinButtonClick}
             aria-expanded={isJoinFormVisible}
             aria-controls="joinForm"
@@ -95,7 +94,7 @@ export default function Home() {
             id="whatsapp-icon"
             width="40"
             height="40"
-            src="https://img.icons8.com/ios-filled/40/228BE6/whatsapp--v1.png"
+            src="https://img.icons8.com/fluency/40/whatsapp.png"
             alt="WhatsApp icon"
           />
         </a>
