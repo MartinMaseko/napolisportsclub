@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./homepage.css";
-import bannerImage from "./assets/mobileBanner01.png";
+import bannerImage from "./assets/mobileBanner01.gif";
 import Footer from "../footer/Footer.jsx";
 import JoinForm from "./JoinForm.jsx";
 import loadingGif from "./assets/soccer-ball-gif.gif";

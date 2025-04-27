@@ -106,17 +106,17 @@ body {
 .join-form label {
   border: none;
   font-weight: bold;
-  display: block; /* Ensure labels are on their own lines */
+  display: block; 
   margin-top: 20px;
   font-size: 18px;
   color: #004582;
 }
 
 .join-form button[type="submit"] {
-  display: block; /* Make it a block-level element */
-  margin: 10px auto; /* Center it horizontally */
-  background-color: #004582;
-  color: white;
+  display: block; 
+  margin: 10px auto; 
+  background: #e0e0e0;
+  color: #004582;
   padding: 10px 15px;
   border: none;
   border-radius: 4px;
@@ -124,7 +124,8 @@ body {
 }
 
 .join-form button[type="submit"]:hover {
-  background-color: #2272A2;
+  background-color: #004582;
+  color: #e0e0e0;
 }
 
 /*--------------------------------------------------------------
@@ -144,27 +145,27 @@ body {
 }
 .about-container, .clubinfo-container p{
   text-align: start;
-  color: #333333;
+  color: #0D0D0D;
   font-size: 18px;
   font-weight: 500;
 }
 
 .about-container h2 {
   opacity: 1;
-  transform: translateY(10px); /* Move it down initially */
+  transform: translateY(10px); 
   transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
 .about-container p {
   opacity: 1;
-  transform: translateY(10px); /* Move it down initially */
-  transition: opacity 0.5s ease 0.2s, transform 0.5s ease 0.2s; /* Delay the paragraph */
+  transform: translateY(10px); 
+  transition: opacity 0.5s ease 0.2s, transform 0.5s ease 0.2s; 
 }
 
 .about-container h2.appear,
 .about-container p.appear {
   opacity: 0.5;
-  transform: translateY(0); /* Move it to its original position */
+  transform: translateY(0); 
 }
 
 /*--------------------------------------------------------------
@@ -173,26 +174,29 @@ body {
 
 button {
   padding: 0.5em 0.5em;
-  background-color: #004582;
-  color: #f0f0f0;
+  background: #e0e0e0;
+  box-shadow: 6px 6px 12px #bebebe, -6px -6px 12px #ffffff;
+  color: #004582;
   font-size: 1.25em;
   font-weight: 700;
   border: none;
   border-radius: 5px;
-  display: block; /* Make it a block-level element */
-  margin: 10px auto; /* Center it horizontally */
+  display: block; 
+  margin: 10px auto; 
   margin-bottom: 30px;
   margin-top: 30px;
 }
 
-button:hover {
-  background-color: #2272A2;
+button:hover,
+button:active{
+  background: #004582;
+  color: #e0e0e0;
   font-size: 1.25em;
 }
 
 @media (min-width: 768px) {
   #mobileBanner {
-    content: url('./assets/Website Banner01.png');
+    content: url('./assets/WebsiteBanner01.gif');
     background-size: contain;
     animation: none;
   }
