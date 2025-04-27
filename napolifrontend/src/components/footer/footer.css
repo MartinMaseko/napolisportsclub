@@ -14,10 +14,11 @@ footer {
 }
 
 #footer-icons {
-    width: 30px;
+    width: 40px;
+    height: 40px;
     cursor: pointer;
     padding-right: 1em;
-    padding-bottom: 1.75em;
+    padding-top: 1em;
 }
 
 #footer-icons:hover {
@@ -30,7 +31,7 @@ a {
 }
 
 a:hover {
-    font-weight: 800;
+    font-weight: 900;
 }
 
 .text-bold {
