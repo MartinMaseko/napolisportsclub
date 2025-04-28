@@ -95,12 +95,17 @@ export default function ContactPage() {
             placeholder="Enter your message"
           />
 
-          {/* WhatsApp Link */}
-          <a href="https://wa.me/+27737378310" aria-label="Contact us on WhatsApp">
+          {/* WhatsApp Contact Link */}
+          <a
+            href="https://wa.me/+27737378310"
+            aria-label="Contact us on WhatsApp"
+          >
             <img
               id="whatsapp-icon"
-              src="https://img.icons8.com/ios-filled/40/228BE6/whatsapp--v1.png"
-              alt="WhatsApp Icon"
+              width="40"
+              height="40"
+              src="https://img.icons8.com/fluency/40/whatsapp.png"
+              alt="WhatsApp icon"
             />
           </a>
 
