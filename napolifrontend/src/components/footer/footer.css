@@ -38,3 +38,7 @@ a:hover {
     font-weight: 700;
 }
 
+.map-iframe {
+    border-radius: 5px;
+}
+
