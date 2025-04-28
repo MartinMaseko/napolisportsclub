@@ -145,7 +145,7 @@ export default function ManagerDashboard() {
         <nav className="dashboard-nav">
           <img src={NapoliImg} alt="Napoli Logo" className="dash-logo" />
           <div className="user-text">
-            <h2 className="welcome-user">Welcome, {username}!</h2>
+            <h2 className="welcome-user">Welcome {username}!</h2>
           </div>
 
           {/* Notifications Section */}
@@ -154,7 +154,7 @@ export default function ManagerDashboard() {
               className="notifications-icon"
               width="40"
               height="40"
-              src="https://img.icons8.com/external-creatype-outline-colourcreatype/40/e9ecef/external-alarm-essential-ui-v2-creatype-outline-colourcreatype-2.png"
+              src="https://img.icons8.com/external-creatype-outline-colourcreatype/40/000000/external-alarm-essential-ui-v2-creatype-outline-colourcreatype-2.png"
               alt="Notifications Icon"
               onClick={() => setShowNotifications(!showNotifications)}
               style={{ cursor: "pointer" }}
@@ -202,9 +202,9 @@ export default function ManagerDashboard() {
             >
               <div className="dash-header-content">
                 <img
-                  width="35"
-                  height="35"
-                  src="https://img.icons8.com/ios/35/e9ecef/notepad.png"
+                  width="55"
+                  height="55"
+                  src="https://img.icons8.com/ios/35/0D0D0D/notepad.png"
                   alt="Game Results Icon"
                 />
                 <p className="icon-text">Game Results</p>
@@ -223,7 +223,7 @@ export default function ManagerDashboard() {
                 <img
                   width="55"
                   height="55"
-                  src="https://img.icons8.com/ios/50/F2F2F2/opened-folder.png"
+                  src="https://img.icons8.com/ios/50/0D0D0D/opened-folder.png"
                   alt="Admin Icon"
                 />
                 <p className="icon-text">Admin</p>
@@ -236,7 +236,7 @@ export default function ManagerDashboard() {
               <img
                 width="55"
                 height="55"
-                src="https://img.icons8.com/ios/50/F2F2F2/calendar--v1.png"
+                src="https://img.icons8.com/ios/50/0D0D0D/calendar--v1.png"
                 alt="Calendar Icon"
               />
               <p className="icon-text">Calendar</p>
@@ -245,18 +245,19 @@ export default function ManagerDashboard() {
 
           {/* Weather Section */}
           <div className="dashboard-option-4">
-            <h2 className="option-text">⛅ Weather</h2>
             {weatherData ? (
               <div className="weather-content">
+                <h2 className="weather-text">
+                <img
+                    src={`http://openweathermap.org/img/w/${weatherData.weather[0].icon}.png`}
+                    alt="Weather Icon"
+                  /> 
+                  Weather</h2>
                 <p>
                   {weatherData.name}, {weatherData.sys.country}
                 </p>
                 <p>Temperature: {Math.round(weatherData.main.temp)}°C</p>
                 <p>Weather: {weatherData.weather[0].description}</p>
-                <img
-                  src={`http://openweathermap.org/img/w/${weatherData.weather[0].icon}.png`}
-                  alt="Weather Icon"
-                />
               </div>
             ) : (
               <p>Loading weather...</p>
