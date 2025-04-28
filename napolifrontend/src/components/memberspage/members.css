@@ -38,6 +38,7 @@
     width: calc(100% - 22px); 
     padding: 0.8em;
     margin: 0.5em;
+    font-size: 16px;
     border: none;
     border-bottom: 1px solid #ccc;
     box-sizing: border-box; 
