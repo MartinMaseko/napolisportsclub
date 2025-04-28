@@ -14,7 +14,7 @@ function TheClub() {
       <div className="club-header">
         <div className="club-container">
           <img src={logo} alt="Napoli Logo" className="club-logo" />
-          <h1 className="club-heading">Our Vision</h1>
+          <h1 className="club-heading">Napoli Sports Club Vision</h1>
           <p className="club-vision" aria-live="polite">
             To provide a first class football programme that will produce
             outstanding football players ready for local and international clubs.
