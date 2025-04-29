@@ -152,9 +152,9 @@ export default function ManagerDashboard() {
           <div style={{ position: "relative" }}>
             <img
               className="notifications-icon"
-              width="40"
-              height="40"
-              src="https://img.icons8.com/external-creatype-outline-colourcreatype/40/000000/external-alarm-essential-ui-v2-creatype-outline-colourcreatype-2.png"
+              width="50"
+              height="50"
+              src="https://img.icons8.com/external-kiranshastry-solid-kiranshastry/50/FFFFFF/external-menu-multimedia-kiranshastry-solid-kiranshastry-1.png"
               alt="Notifications Icon"
               onClick={() => setShowNotifications(!showNotifications)}
               style={{ cursor: "pointer" }}
@@ -204,10 +204,10 @@ export default function ManagerDashboard() {
                 <img
                   width="55"
                   height="55"
-                  src="https://img.icons8.com/ios/35/0D0D0D/notepad.png"
-                  alt="Game Results Icon"
+                  src="https://img.icons8.com/cotton/55/football-goal.png" 
+                  alt="football-goal"
                 />
-                <p className="icon-text">Game Results</p>
+                <p className="icon-text"> Game Results</p>
               </div>
             </Link>
           </div>
@@ -223,8 +223,8 @@ export default function ManagerDashboard() {
                 <img
                   width="55"
                   height="55"
-                  src="https://img.icons8.com/ios/50/0D0D0D/opened-folder.png"
-                  alt="Admin Icon"
+                  src="https://img.icons8.com/3d-fluency/100/opened-folder.png" 
+                  alt="opened-folder"
                 />
                 <p className="icon-text">Admin</p>
               </Link>
@@ -233,12 +233,12 @@ export default function ManagerDashboard() {
               to={`/calendar?username=${encodeURIComponent(username)}`}
               className="dashboard-option-3"
             >
-              <img
-                width="55"
-                height="55"
-                src="https://img.icons8.com/ios/50/0D0D0D/calendar--v1.png"
-                alt="Calendar Icon"
-              />
+              <img 
+                width="55" 
+                height="55" 
+                src="https://img.icons8.com/external-flat-kendis-lasman/55/external-notif-schedule-notification-alert-flat-flat-kendis-lasman.png" 
+                alt="external-notif-schedule-notification-alert-flat-flat-kendis-lasman"
+                />
               <p className="icon-text">Calendar</p>
             </Link>
           </div>
@@ -248,16 +248,17 @@ export default function ManagerDashboard() {
             {weatherData ? (
               <div className="weather-content">
                 <h2 className="weather-text">
-                <img
-                    src={`http://openweathermap.org/img/w/${weatherData.weather[0].icon}.png`}
-                    alt="Weather Icon"
-                  /> 
+                <img width="40" height="40" src="https://img.icons8.com/fluency/40/clouds--v3.png" alt="clouds--v3"/>
                   Weather</h2>
                 <p>
                   {weatherData.name}, {weatherData.sys.country}
                 </p>
                 <p>Temperature: {Math.round(weatherData.main.temp)}°C</p>
                 <p>Weather: {weatherData.weather[0].description}</p>
+                <img
+                    src={`http://openweathermap.org/img/w/${weatherData.weather[0].icon}.png`}
+                    alt="Weather Icon"
+                  />
               </div>
             ) : (
               <p>Loading weather...</p>
