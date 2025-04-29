@@ -101,7 +101,7 @@ const GameResults = () => {
             Object.entries(calendarEvents).map(([date, events]) =>
               events.map((event, index) => (
                 <div key={`${date}-${index}`} className="game-card">
-                  <p>
+                  <p className="game-card-title">
                     <strong>Game:</strong> {event.text}
                   </p>
                   <p>
@@ -111,7 +111,7 @@ const GameResults = () => {
                     <strong>Date:</strong> {new Date(date).toLocaleDateString()}
                   </p>
                   <div className="score-inputs">
-                    <label>
+                    <label className="score-label">
                       Home Team Score:
                       <input
                         type="number"

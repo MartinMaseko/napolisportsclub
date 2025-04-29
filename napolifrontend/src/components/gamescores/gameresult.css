@@ -1,8 +1,8 @@
 .game-results-container {
     padding: 20px;
     padding-bottom: 250px;
-    background-color: #303030;
-    color: #e9ecef;
+    background-color: #262525;
+    color: whitesmoke;
 
 }
 
@@ -20,7 +20,20 @@ h2, h3 {
     border-radius: 5px;
     padding: 15px;
     margin-bottom: 15px;
-    background-color: #1e4670;
+    color: whitesmoke;
+    background: #1D1D1D; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.game-card-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #57bcdd;
+}
+
+.score-label {
+    color: #57bcdd;
 }
 
 .score-inputs {
