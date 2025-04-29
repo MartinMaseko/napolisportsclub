@@ -279,10 +279,9 @@ export default function ManagerDashboard() {
             )}
           </div>
         </div>
-
-        {/* Footer Section */}
-        <DashFooter username={username} calendarEvents={calendarEvents} />
       </main>
+      {/* Footer Section */}
+      <DashFooter username={username} calendarEvents={calendarEvents} />
     </>
   );
 }
