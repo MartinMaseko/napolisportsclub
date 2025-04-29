@@ -124,6 +124,20 @@ export default function ManagerDashboard() {
     return () => clearInterval(intervalId); // Cleanup on unmount
   }, []);
 
+  // Toggle the no-scroll class on the body element
+  useEffect(() => {
+    if (showNotifications) {
+      document.body.classList.add("no-scroll");
+    } else {
+      document.body.classList.remove("no-scroll");
+    }
+
+    // Cleanup on unmount
+    return () => {
+      document.body.classList.remove("no-scroll");
+    };
+  }, [showNotifications]);
+
   // Show loading screen while data is being fetched
   if (loading) {
     return (
