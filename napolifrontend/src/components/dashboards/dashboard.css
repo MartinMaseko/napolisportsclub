@@ -79,12 +79,10 @@
 }
 
 .current-datetime {
-   padding: 0em 1em;
    color: whitesmoke;
 }
 
 .dashboard-tabs {
-  padding: 1em;
   margin-bottom: 80px;
 }
 
@@ -206,9 +204,7 @@
 
   .dashboard-option-4 {
     margin-top: 50px;
-    width: 90%;
     height: 360px;
-
   }
 
   .dashboard-option-1:hover,
