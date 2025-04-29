@@ -54,8 +54,8 @@ export default function DashFooter({ username, calendarEvents }) {
               className="dash-icon"
               width="40"
               height="40"
-              src="https://img.icons8.com/ios/40/e9ecef/calendar--v1.png"
-              alt="Calendar"
+              src="https://img.icons8.com/external-flat-kendis-lasman/55/external-notif-schedule-notification-alert-flat-flat-kendis-lasman.png" 
+              alt="external-notif-schedule-notification-alert-flat-flat-kendis-lasman"
             />
           </Link>
 
@@ -65,8 +65,8 @@ export default function DashFooter({ username, calendarEvents }) {
               className="dash-icon"
               width="40"
               height="40"
-              src="https://img.icons8.com/ios/40/e9ecef/opened-folder.png"
-              alt="Data Input Display"
+              src="https://img.icons8.com/3d-fluency/100/opened-folder.png" 
+              alt="opened-folder"
             />
           </Link>
 
@@ -90,8 +90,8 @@ export default function DashFooter({ username, calendarEvents }) {
               className="dash-icon"
               width="45"
               height="45"
-              src="https://img.icons8.com/ios/45/e9ecef/notepad.png"
-              alt="Game Results"
+              src="https://img.icons8.com/cotton/55/football-goal.png" 
+              alt="football-goal"
             />
           </Link>
 
@@ -101,8 +101,8 @@ export default function DashFooter({ username, calendarEvents }) {
               className="dash-icon"
               width="50"
               height="50"
-              src="https://img.icons8.com/windows/50/e9ecef/user.png"
-              alt="User Profile"
+              src="https://img.icons8.com/3d-fluency/50/user-male-circle.png" 
+              alt="user-male-circle"
               onClick={() => setShowUserProfile(!showUserProfile)}
               style={{ cursor: 'pointer' }}
             />
@@ -136,15 +136,8 @@ export default function DashFooter({ username, calendarEvents }) {
                 </div>
 
                 {/* Logout Link */}
-                <Link to="/members">
-                  <img
-                    className="dash-icon"
-                    id="logout-icon"
-                    width="50"
-                    height="50"
-                    src="https://img.icons8.com/windows/50/e9ecef/logout-rounded.png"
-                    alt="Logout"
-                  />
+                <Link to="/members"> 
+                  <div className='logout-section'> Logout</div>
                 </Link>
               </div>
             )}
