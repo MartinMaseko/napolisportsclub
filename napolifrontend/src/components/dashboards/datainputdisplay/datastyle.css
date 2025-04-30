@@ -1,9 +1,9 @@
 .data-input-display {
-    margin: 0.5em;
-    padding: 0.5em;
-    background-color: #e9ecef;
-    margin-bottom: 100px;
-    border-radius: 10px;
+  min-height: 100vh;
+  padding: 1em;
+  background-color: #262525;
+  padding-bottom: 100px;
+  color: whitesmoke;
 }
 
 .data-header {
@@ -20,15 +20,16 @@
     list-style: none;
     padding: 1em;
     font-weight: 400;
-    background-color: #394855;
     color: whitesmoke;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     border-radius: 10px;
     text-align: center;
     transition: transform 0.3s ease;
 }
 
 .data-input-display dt:hover {
-    transform: scale(1.02);
+  color: #57bcdd;
+  transform: scale(1.02);
 }
 
 
@@ -51,12 +52,35 @@
     gap: 10px;
 }
 
+.Btns-Container {
+    display: grid;
+    grid-template-columns: auto auto;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.Dark-Btns {
+    background: #1D1D1D;
+    color: whitesmoke;
+    width: 100px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
+}
+
+.Dark-Btns:hover {
+  background: #1D1D1D;
+  color: #57bcdd;
+  transform: scale(1.05);
+}
+
 .bordered-form {
     border-bottom: 1px solid #ccc;
     padding-bottom: 20px;
   }
   
 .form-group {
+    margin-top: 10px;
     margin-bottom: 15px;
   }
   
@@ -77,12 +101,12 @@
     border-radius: 4px; 
   }
   
-  .form-group textarea {
+.form-group textarea {
     min-height: 80px; 
-  }
+}
 
-  #formtext-area {
-    background-color: white;
+#formtext-area {
+    background-color: whitesmoke;
     color: black;
   }
 
@@ -108,8 +132,12 @@ ul li a img:hover {
 }
 
 .filter-btns-container {
+  width: 100%;
   text-align: center;
+  margin-top: 20px;
   margin-bottom: 20px;
+  border-bottom: 1px solid #1D1D1D;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
 #age-filterbtn {
@@ -117,9 +145,29 @@ ul li a img:hover {
   height: 45px;
 }
 
-#alphabet-filterbtn {
+#search-input {
+  font-size: 1em;
+  width: 250px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+#alphabet-filterbtn,
+#age-filterbtn,
+#addplayer-btn {
   width: 250px;
   height: 45px;
+  padding: 10px;
+  background: #1D1D1D;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  color: whitesmoke;
+  transition: transform 0.3s ease;
+}
+
+#alphabet-filterbtn:hover,
+#age-filterbtn:hover,
+#addplayer-btn:hover {
+  color: #004582;
+  transform: scale(1.05);
 }
 
 #search-input {
@@ -129,18 +177,27 @@ ul li a img:hover {
   height: 45px;
 }
 
+#playerDetails-Heading {
+  color: #57bcdd;
+}
+
 @media (min-width: 768px) {
   .filter-btns-container {
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    flex-wrap: wrap;
-    width: 80%;
+    gap: 0px;
+  }
+
+  .Btns-Container {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
   }
 
   dl {
     display: grid;
-    grid-template-columns: auto auto auto; /* Three equal-width columns */
+    grid-template-columns: auto auto auto auto auto; /* Five equal-width columns */
     grid-template-rows: auto auto;
     gap: 10px;
   }
