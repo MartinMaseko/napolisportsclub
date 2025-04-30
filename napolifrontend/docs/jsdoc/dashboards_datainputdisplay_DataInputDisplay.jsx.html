@@ -37,8 +37,61 @@ const CALENDAR_EVENTS_KEY = 'calendarEvents';
 
 /**
  * DataInputDisplay Component
- * Manages player data, including adding, editing, deleting, and displaying player details.
- * Allows uploading documents and filtering/searching players.
+ * 
+ * This component is responsible for managing and displaying player data, including
+ * adding, editing, deleting, and filtering players. It also handles document uploads
+ * and player registration.
+ * 
+ * @component
+ * 
+ * @returns {JSX.Element} The rendered DataInputDisplay component.
+ * 
+ * @description
+ * - Fetches player data from an API and displays it grouped by age group.
+ * - Allows users to add, edit, and delete player information.
+ * - Provides search and filtering functionality for players.
+ * - Displays detailed information for a selected player.
+ * - Handles document uploads for players.
+ * - Allows registering a player as a user.
+ * 
+ * @state
+ * - `formData` {Object} - State for managing form data for adding/editing players.
+ * - `players` {Array} - List of all players fetched from the API.
+ * - `filteredPlayers` {Array} - List of players filtered based on search or sorting.
+ * - `selectedPlayer` {Object|null} - The currently selected player for viewing details.
+ * - `showForm` {boolean} - Toggles the visibility of the player form.
+ * - `loading` {boolean} - Indicates whether data is being loaded.
+ * - `documents` {Array} - List of documents associated with the selected player.
+ * - `file` {File|null} - The file selected for upload.
+ * - `searchQuery` {string} - The current search query for filtering players.
+ * - `calendarEvents` {Object} - Calendar events retrieved from local storage.
+ * 
+ * @refs
+ * - `formRef` {React.RefObject} - Reference to the player form element.
+ * - `playerDetailsRef` {React.RefObject} - Reference to the player details section.
+ * 
+ * @functions
+ * - `handlePlayerClick(player)` - Handles player selection and scrolls to their details.
+ * - `handleToggleForm()` - Toggles the visibility of the player form.
+ * - `filterByAge()` - Filters players by age group.
+ * - `filterAlphabetically()` - Filters players alphabetically by first name.
+ * - `handleSearchChange(e)` - Handles search input changes and filters players by name or ID.
+ * - `handleSubmit(e)` - Handles form submission for adding a new player.
+ * - `handleEditSubmit(e)` - Handles form submission for editing an existing player.
+ * - `handleDocumentUpload(e)` - Handles document upload for the selected player.
+ * - `handleRegisterUser(playerId)` - Registers a player as a user.
+ * 
+ * @effects
+ * - `useEffect(fetchData, [])` - Fetches player data from the API on component mount.
+ * - `useEffect(fetchDocuments, [selectedPlayer])` - Fetches documents for the selected player.
+ * 
+ * @dependencies
+ * - `axios` - For making API requests.
+ * - `useState`, `useEffect`, `useRef` - React hooks for managing state and references.
+ * - `useSearchParams` - React Router hook for retrieving query parameters.
+ * 
+ * @example
+ * &lt;DataInputDisplay />
  */
 
 export default function DataInputDisplay() {
@@ -123,7 +176,7 @@ export default function DataInputDisplay() {
                     console.error("No token found. User must be logged in.");
                     return; // Or redirect to login
                 }
-                const response = await axios.get("http://127.0.0.1:8000/api/players/", {
+                const response = await axios.get("https://MartinMaseko.pythonanywhere.com/api/players/", {
                     headers: {
                         'Authorization': `Token ${token}`
                     }
@@ -183,7 +236,7 @@ export default function DataInputDisplay() {
                         console.error("No token found. User must be logged in.");
                         return; // Or redirect to login
                     }
-                    const response = await axios.get(`http://127.0.0.1:8000/api/documents/?player=${selectedPlayer.id}`, {
+                    const response = await axios.get(`https://MartinMaseko.pythonanywhere.com/api/documents/?player=${selectedPlayer.id}`, {
                         headers: {
                             'Authorization': `Token ${token}`
                         }
@@ -209,7 +262,7 @@ export default function DataInputDisplay() {
                 console.error("No token found. User must be logged in.");
                 return; // Or redirect to login
             }
-            const response = await axios.post("http://127.0.0.1:8000/api/data/", formData, {
+            const response = await axios.post("https://MartinMaseko.pythonanywhere.com/api/data/", formData, {
                 headers: {
                     'Authorization': `Token ${token}`
                 }
@@ -266,7 +319,7 @@ export default function DataInputDisplay() {
                 alert("Please log in to upload documents.");
                 return;
             }
-            const response = await axios.post("http://127.0.0.1:8000/api/documents/upload/", formData, {
+            const response = await axios.post("https://MartinMaseko.pythonanywhere.com/api/documents/upload/", formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                     "Authorization": `Token ${token}`, 
@@ -291,7 +344,7 @@ export default function DataInputDisplay() {
                 console.error("No token found. User must be logged in.");
                 return; // Or redirect to login
             }
-            const response = await axios.put(`http://127.0.0.1:8000/api/players/${formData.id}/`, formData, {
+            const response = await axios.put(`https://MartinMaseko.pythonanywhere.com/api/players/${formData.id}/`, formData, {
                 headers: {
                     'Authorization': `Token ${token}`
                 }
@@ -342,7 +395,7 @@ export default function DataInputDisplay() {
                 return; // Or redirect to login
             }
 
-            const response = await axios.post(`http://127.0.0.1:8000/api/players/${playerId}/register/`, {}, {
+            const response = await axios.post(`https://MartinMaseko.pythonanywhere.com/api/players/${playerId}/register/`, {}, {
                 headers: {
                     'Authorization': `Token ${token}`
                 }
@@ -378,17 +431,18 @@ export default function DataInputDisplay() {
                 &lt;button id="addplayer-btn" onClick={handleToggleForm}>
                     {showForm ? (
                         &lt;>
-                            &lt;img width="35" height="35" src="https://img.icons8.com/ios/35/FFFFFF/cancel.png" alt="cancel" />
-                            Cancel
+                            &lt;img width="35" height="35" src="https://img.icons8.com/ios/35/004582/cancel.png" alt="cancel" />
+
                         &lt;/>
                     ) : (
                         &lt;>
-                            &lt;img width="35" height="35" src="https://img.icons8.com/windows/35/FFFFFF/add-user-male--v1.png" alt="add-user-male--v1" />
+                            &lt;img width="30" height="30" src="https://img.icons8.com/external-kmg-design-flat-kmg-design/30/external-add-user-interface-essentials-kmg-design-flat-kmg-design.png" alt="external-add-user-interface-essentials-kmg-design-flat-kmg-design"/>
                             Add Player
                         &lt;/>
                     )}
                 &lt;/button>
             &lt;/div>
+
 
             {/* Form for adding a new player */}
             {showForm &amp;&amp; (
@@ -596,17 +650,33 @@ export default function DataInputDisplay() {
                 )}
 
             {/* Display fetched data */}
+            &lt;h3 id="data-headings">Club Players&lt;/h3>
             {loading ? (
                 &lt;p>Loading...&lt;/p>
             ) : (
                 &lt;dl>
-                    {filteredPlayers.map((player, index) => (
-                        &lt;dt key={index} onClick={() => {
-                            handlePlayerClick(player);
-                            setSelectedPlayer(player);
-                            }}>
-                            &lt;strong>{player.first_name} {player.last_name}&lt;/strong>
-                        &lt;/dt>
+                    {Object.entries(
+                        filteredPlayers.reduce((groups, player) => {
+                            const { age_group } = player;
+                            if (!groups[age_group]) {
+                                groups[age_group] = [];
+                            }
+                            groups[age_group].push(player);
+                            return groups;
+                        }, {})
+                    ).map(([ageGroup, players]) => (
+                        &lt;div key={ageGroup}>
+                            {/* Age Group Heading */}
+                            &lt;h3>{ageGroup}&lt;/h3>
+                            {players.map((player, index) => (
+                                &lt;dt key={index} onClick={() => {
+                                    handlePlayerClick(player);
+                                    setSelectedPlayer(player);
+                                }}>
+                                    &lt;strong>{player.first_name} {player.last_name}&lt;/strong>
+                                &lt;/dt>
+                            ))}
+                        &lt;/div>
                     ))}
                 &lt;/dl>
             )}
@@ -614,7 +684,7 @@ export default function DataInputDisplay() {
             {/* Display selected player details */}
             {selectedPlayer &amp;&amp; (
                 &lt;div ref={playerDetailsRef} className="player-details">
-                    &lt;h3>Details for {selectedPlayer.first_name} {selectedPlayer.last_name}&lt;/h3>
+                    &lt;h3 id="playerDetails-Heading">Details for {selectedPlayer.first_name} {selectedPlayer.last_name}&lt;/h3>
                     &lt;p>&lt;strong>Nationality:&lt;/strong> {selectedPlayer.nationality}&lt;/p>
                     &lt;p>&lt;strong>ID Number:&lt;/strong> {selectedPlayer.id_number}&lt;/p>
                     &lt;p>&lt;strong>Gender:&lt;/strong> {selectedPlayer.gender}&lt;/p>
@@ -645,7 +715,7 @@ export default function DataInputDisplay() {
                                 onChange={(e) => setFile(e.target.files[0])}
                             />
                         &lt;/div>
-                        &lt;button type="submit">Upload&lt;/button>
+                        &lt;button className="Dark-Btns" type="submit">Upload&lt;/button>
                     &lt;/form>
 
                     {/* Display Documents */}
@@ -654,7 +724,7 @@ export default function DataInputDisplay() {
                         {documents.map((doc, index) => {
                             const fileUrl = doc.file.startsWith("http")
                                 ? doc.file
-                                : `http://127.0.0.1:8000${doc.file}`; // Prepend backend URL if needed
+                                : `https://MartinMaseko.pythonanywhere.com/${doc.file}`; // Prepend backend URL if needed
 
                             return (
                                 &lt;li key={index} style={{ marginBottom: "10px" }}>
@@ -684,9 +754,9 @@ export default function DataInputDisplay() {
                     &lt;/ul>
 
                     {/* Buttons Container */}
-                    &lt;div style={{ display: "flex", gap: "10px", marginTop: "10px" }}>
+                    &lt;div className="Btns-Container">
                         {/* Edit Button */}
-                        &lt;button onClick={() => {
+                        &lt;button className="Dark-Btns" onClick={() => {
                             setFormData(selectedPlayer); // Populate the form with the selected player's data
                             setShowForm(true); // Show the form for editing
                             setSelectedPlayer(null); // Close the details view
@@ -696,6 +766,7 @@ export default function DataInputDisplay() {
 
                         {/* Delete Button */}
                         &lt;button
+                            className="Dark-Btns"
                             onClick={async () => {
                                 try {
                                     const token = localStorage.getItem('authToken'); // Retrieve the token
@@ -705,7 +776,7 @@ export default function DataInputDisplay() {
                                         return;
                                     }
 
-                                    await axios.delete(`http://127.0.0.1:8000/api/players/${selectedPlayer.id}/`, {
+                                    await axios.delete(`https://MartinMaseko.pythonanywhere.com//api/players/${selectedPlayer.id}/`, {
                                         headers: {
                                             'Authorization': `Token ${token}`, // Include the token in the headers
                                         },
@@ -723,10 +794,14 @@ export default function DataInputDisplay() {
                         &lt;/button>
 
                         {/* Register Button */}
-                        &lt;button onClick={() => handleRegisterUser(selectedPlayer.id)}>Register&lt;/button>
+                        &lt;button 
+                            className="Dark-Btns"
+                            onClick={() => handleRegisterUser(selectedPlayer.id)}>Register&lt;/button>
 
                         {/* Close Button */}
-                        &lt;button onClick={() => setSelectedPlayer(null)}>Close&lt;/button>
+                        &lt;button 
+                            className="Dark-Btns"
+                            onClick={() => setSelectedPlayer(null)}>Close&lt;/button>
                     &lt;/div>
                 &lt;/div>
             )}
@@ -744,13 +819,13 @@ export default function DataInputDisplay() {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#GameResults">GameResults</a></li><li><a href="global.html#HomeLayout">HomeLayout</a></li><li><a href="global.html#Navbar">Navbar</a></li><li><a href="global.html#TheClub">TheClub</a></li><li><a href="global.html#getInitialEvents">getInitialEvents</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#Calendar">Calendar</a></li><li><a href="global.html#GameResults">GameResults</a></li><li><a href="global.html#HomeLayout">HomeLayout</a></li><li><a href="global.html#TheClub">TheClub</a></li><li><a href="global.html#getInitialEvents">getInitialEvents</a></li><li><a href="global.html#handleSubmit-Handlestheformsubmission.Itpreventsthedefaultformsubmission,validatestheinputfields,sendsaPOSTrequesttothebackendforauthentication,anduponsuccessfulauthentication,storesuserinformationin%2560localStorage%2560andredirectstheusertotheirdashboardbasedontheirassignedrole.Displaysanerrormessageifauthenticationfails.">handleSubmit - Handles the form submission. It prevents the default form submission,validates the input fields, sends a POST request to the backend for authentication,and upon successful authentication, stores user information in `localStorage` and redirectsthe user to their dashboard based on their assigned role. Displays an error message ifauthentication fails.</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Wed Apr 23 2025 16:13:39 GMT+0200 (South Africa Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Thu May 01 2025 00:39:55 GMT+0200 (South Africa Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -43,6 +43,49 @@ const getInitialEvents = () => {
   return savedEvents ? JSON.parse(savedEvents) : {};
 };
 
+/**
+ * Calendar Component
+ *
+ * This component renders an interactive calendar that allows users to view, add, edit, and delete events.
+ * Users can navigate between months, select specific dates, and manage events for each date.
+ *
+ * Features:
+ * - Displays a calendar grid for the current month.
+ * - Allows navigation to previous and next months.
+ * - Enables users to add events with details such as text, time, address, and age group.
+ * - Supports editing and deleting existing events.
+ * - Saves events to local storage for persistence.
+ * - Displays events for the selected date in a list format.
+ *
+ * State Variables:
+ * - `events`: Stores the events for each date.
+ * - `currentDate`: Tracks the currently displayed month and year.
+ * - `selectedDate`: Tracks the currently selected date.
+ * - `newEventText`, `newEventTime`, `newEventAddress`, `newEventAgeGroup`: Manage input fields for adding new events.
+ * - `isEditing`, `editingIndex`, `editText`, `editTime`, `editAddress`, `editAgeGroup`: Manage editing state and input fields for editing events.
+ *
+ * Props:
+ * - None
+ *
+ * Dependencies:
+ * - `useState`, `useEffect`: React hooks for managing state and side effects.
+ * - `useSearchParams`: React Router hook for retrieving query parameters.
+ *
+ * Methods:
+ * - `daysInMonth(year, month)`: Calculates the number of days in a given month.
+ * - `firstDayOfMonth(year, month)`: Determines the first day of the month.
+ * - `nextMonth()`: Navigates to the next month.
+ * - `prevMonth()`: Navigates to the previous month.
+ * - `handleAddEvent()`: Adds a new event to the selected date.
+ * - `handleDeleteEvent(indexToDelete)`: Deletes an event from the selected date.
+ * - `handleEditEvent(index)`: Initiates the editing process for an event.
+ * - `handleSaveEdit()`: Saves the edited event.
+ * - `handleCancelEdit()`: Cancels the editing process.
+ * - `deselectDate()`: Deselects the currently selected date.
+ *
+ * Returns:
+ * - JSX structure for rendering the calendar, event input section, and event list.
+ */
 const Calendar = () => {
   // State variables for managing calendar data and UI
   const [events, setEvents] = useState(getInitialEvents());
@@ -252,7 +295,7 @@ const Calendar = () => {
           &lt;img
             width="35"
             height="35"
-            src="https://img.icons8.com/303030/35/circled-left-2--v1.png"
+            src="https://img.icons8.com/fluency/35/left.png"
             alt="Previous Month"
             onClick={prevMonth}
             style={{ cursor: 'pointer' }}
@@ -261,7 +304,7 @@ const Calendar = () => {
           &lt;img
             width="35"
             height="35"
-            src="https://img.icons8.com/303030/35/circled-right-2--v1.png"
+            src="https://img.icons8.com/fluency/35/right.png"
             alt="Next Month"
             onClick={nextMonth}
             style={{ cursor: 'pointer' }}
@@ -270,13 +313,13 @@ const Calendar = () => {
 
         {/* Calendar Grid */}
         &lt;div className="calendar-grid">
-          &lt;div className="calendar-weekday">Sun&lt;/div>
-          &lt;div className="calendar-weekday">Mon&lt;/div>
-          &lt;div className="calendar-weekday">Tue&lt;/div>
-          &lt;div className="calendar-weekday">Wed&lt;/div>
-          &lt;div className="calendar-weekday">Thu&lt;/div>
-          &lt;div className="calendar-weekday">Fri&lt;/div>
-          &lt;div className="calendar-weekday">Sat&lt;/div>
+          &lt;div className="calendar-weekday">S&lt;/div>
+          &lt;div className="calendar-weekday">M&lt;/div>
+          &lt;div className="calendar-weekday">T&lt;/div>
+          &lt;div className="calendar-weekday">W&lt;/div>
+          &lt;div className="calendar-weekday">T&lt;/div>
+          &lt;div className="calendar-weekday">F&lt;/div>
+          &lt;div className="calendar-weekday">S&lt;/div>
           {days}
         &lt;/div>
 
@@ -429,13 +472,13 @@ export default Calendar;</code></pre>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#GameResults">GameResults</a></li><li><a href="global.html#HomeLayout">HomeLayout</a></li><li><a href="global.html#Navbar">Navbar</a></li><li><a href="global.html#TheClub">TheClub</a></li><li><a href="global.html#getInitialEvents">getInitialEvents</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#Calendar">Calendar</a></li><li><a href="global.html#GameResults">GameResults</a></li><li><a href="global.html#HomeLayout">HomeLayout</a></li><li><a href="global.html#TheClub">TheClub</a></li><li><a href="global.html#getInitialEvents">getInitialEvents</a></li><li><a href="global.html#handleSubmit-Handlestheformsubmission.Itpreventsthedefaultformsubmission,validatestheinputfields,sendsaPOSTrequesttothebackendforauthentication,anduponsuccessfulauthentication,storesuserinformationin%2560localStorage%2560andredirectstheusertotheirdashboardbasedontheirassignedrole.Displaysanerrormessageifauthenticationfails.">handleSubmit - Handles the form submission. It prevents the default form submission,validates the input fields, sends a POST request to the backend for authentication,and upon successful authentication, stores user information in `localStorage` and redirectsthe user to their dashboard based on their assigned role. Displays an error message ifauthentication fails.</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Wed Apr 23 2025 16:13:39 GMT+0200 (South Africa Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Thu May 01 2025 00:39:55 GMT+0200 (South Africa Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

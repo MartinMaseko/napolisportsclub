@@ -2,14 +2,30 @@ import React, { useState } from "react";
 
 /**
  * ClubFees Component
- * Displays and manages the payment details for a player's club fees.
  * 
- * Props:
- * - playerDetails (object): Contains details about the player's fees, including:
- *   - amount_owed (number): Total amount owed by the player.
- *   - amount_paid (number): Total amount paid by the player.
- *   - balance (number): Remaining balance to be paid.
+ * This component displays and manages the club fee details for a player. It allows users to view 
+ * the amount owed, amount paid, and balance due, and provides functionality to make payments.
+ * 
+ * @component
+ * @param {Object} props - The component props.
+ * @param {Object} props.playerDetails - The details of the player including fee information.
+ * @param {number} props.playerDetails.amount_owed - The total amount owed by the player.
+ * @param {number} props.playerDetails.amount_paid - The total amount paid by the player.
+ * @param {number} props.playerDetails.balance - The remaining balance due by the player.
+ * 
+ * @returns {JSX.Element} The rendered ClubFees component.
+ * 
+ * @example
+ * // Example usage:
+ * const playerDetails = {
+ *   amount_owed: 500,
+ *   amount_paid: 200,
+ *   balance: 300
+ * };
+ * 
+ * <ClubFees playerDetails={playerDetails} />
  */
+
 export default function ClubFees({ playerDetails }) {
   // State to store the payment amount entered by the user
   const [paymentAmount, setPaymentAmount] = useState("");

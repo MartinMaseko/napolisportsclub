@@ -8,8 +8,32 @@ import img04 from "../assets/img13.png";
 
 /**
  * Membership Component
- * Displays the benefits of membership in a grid format and includes a WhatsApp contact link.
+ *
+ * This component renders the Membership section of the application, showcasing
+ * the benefits of joining the club. It includes a grid layout displaying various
+ * membership perks, a WhatsApp contact link, and a footer section.
+ *
+ * @component
+ *
+ * @returns {JSX.Element} The rendered Membership component.
+ *
+ * @example
+ * <Membership />
+ *
+ * Features:
+ * - Membership Benefits Section:
+ *   - Training Programs: Excellent training programs using modern equipment 3 times a week.
+ *   - Fitness Training: Dedicated fitness training sessions.
+ *   - Games and Tournaments: Participation in league games, tournaments, and cup games.
+ *   - Affordable Fees: Competitive and affordable membership fees.
+ *
+ * - WhatsApp Contact Link:
+ *   - Provides a direct link to contact the club via WhatsApp.
+ *
+ * - Footer Section:
+ *   - Displays the footer of the application.
  */
+
 export default function Membership() {
   return (
     <>

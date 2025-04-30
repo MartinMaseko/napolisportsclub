@@ -4,9 +4,21 @@ import Footer from '../footer/Footer.jsx';
 
 /**
  * ContactPage Component
- * Renders a contact form for users to submit their details and message.
- * Includes a WhatsApp link and a footer.
+ * 
+ * This component renders a contact form where users can input their name, phone number, email, and message.
+ * It includes a WhatsApp contact link and a submit button to handle form submissions.
+ * 
+ * Features:
+ * - Form state management using React's useState hook.
+ * - Input fields for name, phone, email, and message.
+ * - Form submission handler that logs the form data and resets the form fields.
+ * - WhatsApp contact link with an icon.
+ * - Footer section included at the bottom of the page.
+ * 
+ * @component
+ * @returns {JSX.Element} The rendered ContactPage component.
  */
+
 export default function ContactPage() {
   // State to manage form data
   const [formData, setFormData] = useState({

@@ -6,8 +6,41 @@ import NapoliImg from "../assets/Napoli-2020.png";
 
 /**
  * GameResults Component
- * Displays game results, allows score input, and calculates wins and losses.
+ *
+ * This component displays game results, including a summary of wins and losses,
+ * and allows users to input scores for scheduled games. It retrieves game data
+ * from the `location.state` and manages scores using local storage.
+ *
+ * Features:
+ * - Displays a summary of wins and losses based on game scores.
+ * - Lists scheduled games with input fields for home and away team scores.
+ * - Saves and retrieves game scores from local storage.
+ * - Dynamically calculates wins and losses based on the entered scores.
+ *
+ * Hooks:
+ * - `useLocation`: Retrieves the current location object to access state data.
+ * - `useMemo`: Memoizes the `calendarEvents` to prevent unnecessary re-renders.
+ * - `useState`: Manages state for game scores, wins, and losses.
+ * - `useSearchParams`: Retrieves the username from URL search parameters.
+ * - `useEffect`: Saves game scores to local storage and recalculates wins/losses
+ *   whenever relevant data changes.
+ *
+ * Props:
+ * - None
+ *
+ * State:
+ * - `calendarEvents` (object): Memoized events data from `location.state`.
+ * - `gameScores` (object): Stores scores for each game, persisted in local storage.
+ * - `wins` (number): Count of games won based on scores.
+ * - `losses` (number): Count of games lost based on scores.
+ *
+ * Functions:
+ * - `handleScoreChange(eventId, team, value)`: Updates the score for a specific game.
+ *
+ * Returns:
+ * - JSX structure displaying the game results, score inputs, and summary.
  */
+
 const GameResults = () => {
   const location = useLocation();
 

@@ -7,6 +7,16 @@ import "./club.css";
 import Footer from "../footer/Footer";
 import logo from "../assets/Napoli-2020.png";
 
+/**
+ * @component
+ * @description Renders the 'The Club' page, providing information about the Napoli Sports Club's vision
+ * and introducing the club's owners. It features a header section with the club's vision statement
+ * and a WhatsApp contact link, followed by a slider showcasing the club owners and their details.
+ * The page concludes with the application's footer.
+ *
+ * @returns {JSX.Element} The TheClub component.
+ */
+
 function TheClub() {
   return (
     <>

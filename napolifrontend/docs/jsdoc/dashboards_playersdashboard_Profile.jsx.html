@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: dashboards/playersdashboard/Profile.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: dashboards/playersdashboard/Profile.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { useState, useEffect } from "react";
+import axios from "axios";
+
+/**
+ * Profile component fetches and displays detailed information about a player.
+ * 
+ * This component retrieves the player's details from an API using the player's ID
+ * and authentication token stored in localStorage. It handles loading, error states,
+ * and displays the player's profile information if successfully fetched.
+ * 
+ * @component
+ * @returns {JSX.Element} The rendered Profile component.
+ * 
+ * @example
+ * // Usage
+ * &lt;Profile />
+ * 
+ * @state {object|null} playerDetails - The details of the player fetched from the API.
+ * @state {boolean} loading - Indicates whether the data is still being fetched.
+ * @state {string|null} error - Stores any error message encountered during the fetch process.
+ * 
+ * @effect Fetches player details from the API when the component mounts.
+ * 
+ * @errorHandling
+ * - Displays an error message if no authentication token or player ID is found.
+ * - Displays an error message if the API request fails.
+ * - Displays a message if the player is not found.
+ * 
+ * @loadingState
+ * - Displays a loading message while the data is being fetched.
+ * 
+ * @display
+ * - Renders the player's profile details including personal, contact, and financial information.
+ */
+export default function Profile() {
+  const [playerDetails, setPlayerDetails] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchPlayerDetails = async () => {
+      const token = localStorage.getItem("authToken");
+      const idNumber = localStorage.getItem("username"); // Retrieve the username stored in localStorage
+
+      if (!token || !idNumber) {
+        setError("No authentication token or player ID found. Please log in again.");
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const response = await axios.get(`https://MartinMaseko.pythonanywhere.com/api/players/`, {
+          headers: {
+            Authorization: `Token ${token}`,
+          },
+          params: {
+            id_number: idNumber,
+          },
+        });
+
+        if (response.data.length > 0) {
+          setPlayerDetails(response.data[0]);
+        } else {
+          setError("Player not found.");
+        }
+      } catch (err) {
+        console.error("Error fetching player details:", err);
+        setError("Failed to fetch player details.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPlayerDetails();
+  }, []);
+
+  if (loading) {
+    return &lt;p>Loading player details...&lt;/p>;
+  }
+
+  if (error) {
+    return &lt;p>{error}&lt;/p>;
+  }
+
+  if (!playerDetails) {
+    return &lt;p>No player details available.&lt;/p>;
+  }
+
+  return (
+    &lt;div className="player-details">
+      &lt;h3>Profile: {playerDetails.first_name} {playerDetails.last_name}&lt;/h3>
+      &lt;p>&lt;strong>Nationality:&lt;/strong> {playerDetails.nationality}&lt;/p>
+      &lt;p>&lt;strong>ID Number:&lt;/strong> {playerDetails.id_number}&lt;/p>
+      &lt;p>&lt;strong>Gender:&lt;/strong> {playerDetails.gender}&lt;/p>
+      &lt;p>&lt;strong>School:&lt;/strong> {playerDetails.school}&lt;/p>
+      &lt;p>&lt;strong>Previous Club:&lt;/strong> {playerDetails.previous_club}&lt;/p>
+      &lt;p>&lt;strong>Years of Training:&lt;/strong> {playerDetails.years_of_training}&lt;/p>
+      &lt;p>&lt;strong>Age Group:&lt;/strong> {playerDetails.age_group}&lt;/p>
+      &lt;p>&lt;strong>Notes:&lt;/strong> {playerDetails.notes}&lt;/p>
+      &lt;p>&lt;strong>Position:&lt;/strong> {playerDetails.position}&lt;/p>
+      &lt;p>&lt;strong>Goals:&lt;/strong> {playerDetails.goals}&lt;/p>
+      &lt;p>&lt;strong>Assists:&lt;/strong> {playerDetails.assists}&lt;/p>
+      &lt;p>&lt;strong>Mother's Name:&lt;/strong> {playerDetails.mother_name}&lt;/p>
+      &lt;p>&lt;strong>Mother's Phone:&lt;/strong> {playerDetails.mother_phone}&lt;/p>
+      &lt;p>&lt;strong>Mother's Email:&lt;/strong> {playerDetails.mother_email}&lt;/p>
+      &lt;p>&lt;strong>Father's Name:&lt;/strong> {playerDetails.father_name}&lt;/p>
+      &lt;p>&lt;strong>Father's Phone:&lt;/strong> {playerDetails.father_phone}&lt;/p>
+      &lt;p>&lt;strong>Father's Email:&lt;/strong> {playerDetails.father_email}&lt;/p>
+      &lt;p>&lt;strong>Amount Owed:&lt;/strong>R {playerDetails.amount_owed}&lt;/p>
+      &lt;p>&lt;strong>Amount Paid:&lt;/strong>R {playerDetails.amount_paid}&lt;/p>
+      &lt;p>&lt;strong>Balance:&lt;/strong>R {playerDetails.balance}&lt;/p>
+    &lt;/div>
+  );
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#Calendar">Calendar</a></li><li><a href="global.html#GameResults">GameResults</a></li><li><a href="global.html#HomeLayout">HomeLayout</a></li><li><a href="global.html#TheClub">TheClub</a></li><li><a href="global.html#getInitialEvents">getInitialEvents</a></li><li><a href="global.html#handleSubmit-Handlestheformsubmission.Itpreventsthedefaultformsubmission,validatestheinputfields,sendsaPOSTrequesttothebackendforauthentication,anduponsuccessfulauthentication,storesuserinformationin%2560localStorage%2560andredirectstheusertotheirdashboardbasedontheirassignedrole.Displaysanerrormessageifauthenticationfails.">handleSubmit - Handles the form submission. It prevents the default form submission,validates the input fields, sends a POST request to the backend for authentication,and upon successful authentication, stores user information in `localStorage` and redirectsthe user to their dashboard based on their assigned role. Displays an error message ifauthentication fails.</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Thu May 01 2025 00:39:55 GMT+0200 (South Africa Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

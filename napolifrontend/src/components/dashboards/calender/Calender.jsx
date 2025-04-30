@@ -15,6 +15,49 @@ const getInitialEvents = () => {
   return savedEvents ? JSON.parse(savedEvents) : {};
 };
 
+/**
+ * Calendar Component
+ *
+ * This component renders an interactive calendar that allows users to view, add, edit, and delete events.
+ * Users can navigate between months, select specific dates, and manage events for each date.
+ *
+ * Features:
+ * - Displays a calendar grid for the current month.
+ * - Allows navigation to previous and next months.
+ * - Enables users to add events with details such as text, time, address, and age group.
+ * - Supports editing and deleting existing events.
+ * - Saves events to local storage for persistence.
+ * - Displays events for the selected date in a list format.
+ *
+ * State Variables:
+ * - `events`: Stores the events for each date.
+ * - `currentDate`: Tracks the currently displayed month and year.
+ * - `selectedDate`: Tracks the currently selected date.
+ * - `newEventText`, `newEventTime`, `newEventAddress`, `newEventAgeGroup`: Manage input fields for adding new events.
+ * - `isEditing`, `editingIndex`, `editText`, `editTime`, `editAddress`, `editAgeGroup`: Manage editing state and input fields for editing events.
+ *
+ * Props:
+ * - None
+ *
+ * Dependencies:
+ * - `useState`, `useEffect`: React hooks for managing state and side effects.
+ * - `useSearchParams`: React Router hook for retrieving query parameters.
+ *
+ * Methods:
+ * - `daysInMonth(year, month)`: Calculates the number of days in a given month.
+ * - `firstDayOfMonth(year, month)`: Determines the first day of the month.
+ * - `nextMonth()`: Navigates to the next month.
+ * - `prevMonth()`: Navigates to the previous month.
+ * - `handleAddEvent()`: Adds a new event to the selected date.
+ * - `handleDeleteEvent(indexToDelete)`: Deletes an event from the selected date.
+ * - `handleEditEvent(index)`: Initiates the editing process for an event.
+ * - `handleSaveEdit()`: Saves the edited event.
+ * - `handleCancelEdit()`: Cancels the editing process.
+ * - `deselectDate()`: Deselects the currently selected date.
+ *
+ * Returns:
+ * - JSX structure for rendering the calendar, event input section, and event list.
+ */
 const Calendar = () => {
   // State variables for managing calendar data and UI
   const [events, setEvents] = useState(getInitialEvents());

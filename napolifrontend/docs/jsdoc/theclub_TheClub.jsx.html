@@ -27,54 +27,63 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>import React from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/pagination";
+import { Pagination } from "swiper/modules";
 import "./club.css";
 import Footer from "../footer/Footer";
 import logo from "../assets/Napoli-2020.png";
 
 /**
- * TheClub Component:
+ * @component
+ * @description Renders the 'The Club' page, providing information about the Napoli Sports Club's vision
+ * and introducing the club's owners. It features a header section with the club's vision statement
+ * and a WhatsApp contact link, followed by a slider showcasing the club owners and their details.
+ * The page concludes with the application's footer.
  *
- * This component displays information about the Napoli Sports Club, including its vision
- * and details about the club's owners. It also includes a link to contact the club via
- * WhatsApp and renders a Footer component.
+ * @returns {JSX.Element} The TheClub component.
  */
 
 function TheClub() {
-    return (
-      &lt;>
-        {/* Club Header Section: Contains logo, vision statement, and contact link */}
-        &lt;div className="club-header">
-          {/* Container for logo and vision details */}
-          &lt;div className="club-container">
-            {/* Club Logo */}
-            &lt;img src={logo} alt="Napoli Logo" className="club-logo" />
-  
-            {/* Vision Heading */}
-            &lt;h1 className="club-heading">Our Vision&lt;/h1>
-  
-            {/* Vision Statement */}
-            &lt;p className="club-vision" aria-live="polite">
-              To provide a first class football programme that will produce
-              outstanding football players ready for local and international clubs.
-              &lt;br />
-              To be an intermediary talent pool for professional clubs.
-            &lt;/p>
-  
-            {/* WhatsApp Contact Link */}
-            &lt;a href="https://wa.me/+27737378310">
-              &lt;img
-                id="whatsapp-icon"
-                width="40"
-                height="40"
-                src="https://img.icons8.com/ios-filled/40/228BE6/whatsapp--v1.png"
-                alt="WhatsApp icon"
-              />
-            &lt;/a>
-          &lt;/div>
-  
-          {/* Owner Information Section: Displays details about club owners */}
-          &lt;div className="ownerinfo-container">
-            {/* Owner 1: Mary Maseko */}
+  return (
+    &lt;>
+      {/* Club Header Section */}
+      &lt;div className="club-header">
+        &lt;div className="club-container">
+          &lt;img src={logo} alt="Napoli Logo" className="club-logo" />
+          &lt;h1 className="club-heading">Napoli Sports Club Vision&lt;/h1>
+          &lt;p className="club-vision" aria-live="polite">
+            To provide a first class football programme that will produce
+            outstanding football players ready for local and international clubs.
+            &lt;br />
+            To be an intermediary talent pool for professional clubs.
+          &lt;/p>
+          {/* WhatsApp Contact Link */}
+          &lt;a
+            href="https://wa.me/+27737378310"
+            aria-label="Contact us on WhatsApp"
+          >
+            &lt;img
+              id="whatsapp-icon"
+              width="40"
+              height="40"
+              src="https://img.icons8.com/fluency/40/whatsapp.png"
+              alt="WhatsApp icon"
+            />
+          &lt;/a>
+        &lt;/div>
+
+        {/* Owner Information Slider */}
+        &lt;Swiper
+          modules={[Pagination]}
+          pagination={{ clickable: true }}
+          spaceBetween={0}
+          slidesPerView={1}
+          className="ownerinfo-slider"
+        >
+          {/* Owner 1 */}
+          &lt;SwiperSlide>
             &lt;div className="owner-container">
               &lt;img
                 className="owner-icon"
@@ -84,9 +93,9 @@ function TheClub() {
                 alt="user-male-circle"
               />
               &lt;h2 className="owner-name">Mary Maseko&lt;/h2>
-              &lt;p className="owner-detials">
-                Mary Maseko is a co-owner of Napoli Sports Club. She is responsible
-                for the day-to-day running of the club.
+              &lt;p className="owner-details">
+                Mary Maseko is a co-owner and Chairperson of Napoli Sports Club. 
+                She also attends to the day-to-day running of the club.
                 &lt;br />
                 &lt;br />
                 Mary holds a B.Sc degree (Genetics and Botany) from the University
@@ -99,8 +108,10 @@ function TheClub() {
                 business partners.
               &lt;/p>
             &lt;/div>
-  
-            {/* Owner 2: Nancy Maseko */}
+          &lt;/SwiperSlide>
+
+          {/* Owner 2 */}
+          &lt;SwiperSlide>
             &lt;div className="owner-container">
               &lt;img
                 className="owner-icon"
@@ -110,7 +121,7 @@ function TheClub() {
                 alt="user-male-circle"
               />
               &lt;h2 className="owner-name">Nancy Maseko&lt;/h2>
-              &lt;p className="owner-detials">
+              &lt;p className="owner-details">
                 Nancy Maseko is a co-owner of Napoli Sports Club. She is
                 responsible for the sponsorship program of the club. Nancy holds a
                 B.A. degree in International Relations from Wheaton College,
@@ -126,8 +137,10 @@ function TheClub() {
                 A passion she shares with her business partners.
               &lt;/p>
             &lt;/div>
-  
-            {/* Owner 3: Karabo Khumalo */}
+          &lt;/SwiperSlide>
+
+          {/* Owner 3 */}
+          &lt;SwiperSlide>
             &lt;div className="owner-container">
               &lt;img
                 className="owner-icon"
@@ -137,7 +150,7 @@ function TheClub() {
                 alt="user-male-circle"
               />
               &lt;h2 className="owner-name">Karabo Khumalo&lt;/h2>
-              &lt;p className="owner-detials">
+              &lt;p className="owner-details">
                 Karabo Khumalo is a co-owner of Napoli Sports Club. Karabo is a well
                 seasoned ex player of the game we love and currently also serves as
                 the Sporting Director of the club.
@@ -154,16 +167,17 @@ function TheClub() {
                 delivers to an excellent level.
               &lt;/p>
             &lt;/div>
-          &lt;/div>
-        &lt;/div>
-  
-        {/* Club Footer Section */}
-        &lt;div className="club-footer-container">
-          &lt;Footer />
-        &lt;/div>
-      &lt;/>
-    );
-  }
+          &lt;/SwiperSlide>
+        &lt;/Swiper>
+      &lt;/div>
+
+      {/* Club Footer Section */}
+      &lt;div className="club-footer-container">
+        &lt;Footer />
+      &lt;/div>
+    &lt;/>
+  );
+}
 
 export default TheClub;</code></pre>
         </article>
@@ -175,13 +189,13 @@ export default TheClub;</code></pre>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#GameResults">GameResults</a></li><li><a href="global.html#HomeLayout">HomeLayout</a></li><li><a href="global.html#Navbar">Navbar</a></li><li><a href="global.html#TheClub">TheClub</a></li><li><a href="global.html#getInitialEvents">getInitialEvents</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#Calendar">Calendar</a></li><li><a href="global.html#GameResults">GameResults</a></li><li><a href="global.html#HomeLayout">HomeLayout</a></li><li><a href="global.html#TheClub">TheClub</a></li><li><a href="global.html#getInitialEvents">getInitialEvents</a></li><li><a href="global.html#handleSubmit-Handlestheformsubmission.Itpreventsthedefaultformsubmission,validatestheinputfields,sendsaPOSTrequesttothebackendforauthentication,anduponsuccessfulauthentication,storesuserinformationin%2560localStorage%2560andredirectstheusertotheirdashboardbasedontheirassignedrole.Displaysanerrormessageifauthenticationfails.">handleSubmit - Handles the form submission. It prevents the default form submission,validates the input fields, sends a POST request to the backend for authentication,and upon successful authentication, stores user information in `localStorage` and redirectsthe user to their dashboard based on their assigned role. Displays an error message ifauthentication fails.</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Wed Apr 23 2025 16:13:39 GMT+0200 (South Africa Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Thu May 01 2025 00:39:55 GMT+0200 (South Africa Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>
