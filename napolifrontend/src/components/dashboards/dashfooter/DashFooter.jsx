@@ -4,10 +4,22 @@ import { Link } from 'react-router-dom';
 
 /**
  * DashFooter Component
- * Renders the footer for the dashboard with navigation links and user profile management.
- * @param {string} username - The username of the logged-in user.
- * @param {Object} calendarEvents - The calendar events to pass to other components.
+ * 
+ * This component represents the footer section of the dashboard. It includes
+ * navigation links to various dashboard features, a user profile section, and
+ * the ability to upload and display a profile image.
+ * 
+ * @component
+ * @param {Object} props - The component props.
+ * @param {string} props.username - The username of the logged-in user.
+ * @param {Array} props.calendarEvents - An array of calendar events to be passed to the Game Results page.
+ * 
+ * @returns {JSX.Element} The rendered DashFooter component.
+ * 
+ * @example
+ * <DashFooter username="JohnDoe" calendarEvents={eventsArray} />
  */
+
 export default function DashFooter({ username, calendarEvents }) {
   // State to manage the visibility of the user profile dropdown
   const [showUserProfile, setShowUserProfile] = useState(false);

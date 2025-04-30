@@ -9,8 +9,61 @@ const CALENDAR_EVENTS_KEY = 'calendarEvents';
 
 /**
  * DataInputDisplay Component
- * Manages player data, including adding, editing, deleting, and displaying player details.
- * Allows uploading documents and filtering/searching players.
+ * 
+ * This component is responsible for managing and displaying player data, including
+ * adding, editing, deleting, and filtering players. It also handles document uploads
+ * and player registration.
+ * 
+ * @component
+ * 
+ * @returns {JSX.Element} The rendered DataInputDisplay component.
+ * 
+ * @description
+ * - Fetches player data from an API and displays it grouped by age group.
+ * - Allows users to add, edit, and delete player information.
+ * - Provides search and filtering functionality for players.
+ * - Displays detailed information for a selected player.
+ * - Handles document uploads for players.
+ * - Allows registering a player as a user.
+ * 
+ * @state
+ * - `formData` {Object} - State for managing form data for adding/editing players.
+ * - `players` {Array} - List of all players fetched from the API.
+ * - `filteredPlayers` {Array} - List of players filtered based on search or sorting.
+ * - `selectedPlayer` {Object|null} - The currently selected player for viewing details.
+ * - `showForm` {boolean} - Toggles the visibility of the player form.
+ * - `loading` {boolean} - Indicates whether data is being loaded.
+ * - `documents` {Array} - List of documents associated with the selected player.
+ * - `file` {File|null} - The file selected for upload.
+ * - `searchQuery` {string} - The current search query for filtering players.
+ * - `calendarEvents` {Object} - Calendar events retrieved from local storage.
+ * 
+ * @refs
+ * - `formRef` {React.RefObject} - Reference to the player form element.
+ * - `playerDetailsRef` {React.RefObject} - Reference to the player details section.
+ * 
+ * @functions
+ * - `handlePlayerClick(player)` - Handles player selection and scrolls to their details.
+ * - `handleToggleForm()` - Toggles the visibility of the player form.
+ * - `filterByAge()` - Filters players by age group.
+ * - `filterAlphabetically()` - Filters players alphabetically by first name.
+ * - `handleSearchChange(e)` - Handles search input changes and filters players by name or ID.
+ * - `handleSubmit(e)` - Handles form submission for adding a new player.
+ * - `handleEditSubmit(e)` - Handles form submission for editing an existing player.
+ * - `handleDocumentUpload(e)` - Handles document upload for the selected player.
+ * - `handleRegisterUser(playerId)` - Registers a player as a user.
+ * 
+ * @effects
+ * - `useEffect(fetchData, [])` - Fetches player data from the API on component mount.
+ * - `useEffect(fetchDocuments, [selectedPlayer])` - Fetches documents for the selected player.
+ * 
+ * @dependencies
+ * - `axios` - For making API requests.
+ * - `useState`, `useEffect`, `useRef` - React hooks for managing state and references.
+ * - `useSearchParams` - React Router hook for retrieving query parameters.
+ * 
+ * @example
+ * <DataInputDisplay />
  */
 
 export default function DataInputDisplay() {

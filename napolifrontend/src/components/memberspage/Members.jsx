@@ -7,8 +7,29 @@ import pcBanner from "./assests/pc-banner.png";
 
 /**
  * Members Component
- * Handles user login for members and redirects them to the appropriate dashboard based on their role.
+ * 
+ * This component renders a login form for members to authenticate and access their respective dashboards.
+ * It includes input fields for username and password, handles form submission, and redirects users based on their roles.
+ * 
+ * State Variables:
+ * - `formData`: Manages the input values for username and password.
+ * - `error`: Stores error messages for validation or login failures.
+ * 
+ * Functions:
+ * - `handleChange`: Updates the `formData` state when input fields change and clears any existing error messages.
+ * - `handleSubmit`: Validates the form, sends a login request to the backend, stores user details in localStorage, 
+ *   and redirects users to their respective dashboards based on their roles.
+ * 
+ * Dependencies:
+ * - `axios`: Used for making HTTP requests to the backend API.
+ * - `useNavigate`: React Router's hook for navigation.
+ * 
+ * Props: None
+ * 
+ * Returns:
+ * - A JSX structure containing the login form, error messages, and a WhatsApp contact link.
  */
+
 export default function Members() {
   // State to manage form data
   const [formData, setFormData] = useState({

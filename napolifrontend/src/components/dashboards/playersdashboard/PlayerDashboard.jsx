@@ -9,9 +9,42 @@ import axios from "axios";
 
 /**
  * PlayerDashboard Component
- * Displays the player's dashboard with navigation to Profile, Fixtures, and Club Fees.
- * Handles fetching player details and calendar events.
- * @param {string} username - The username of the logged-in player.
+ * 
+ * This component serves as the main dashboard for players, providing access to
+ * various features such as viewing their profile, fixtures, and club fees. It also
+ * manages the player's session and displays relevant information.
+ * 
+ * @component
+ * @param {Object} props - Component props.
+ * @param {string} props.username - The username of the logged-in player.
+ * 
+ * @returns {JSX.Element} The rendered PlayerDashboard component.
+ * 
+ * @example
+ * <PlayerDashboard username="player123" />
+ * 
+ * State Variables:
+ * - `dateTime` {string}: Current date and time displayed on the dashboard.
+ * - `loading` {boolean}: Indicates whether the dashboard is in a loading state.
+ * - `dropdownOpen` {boolean}: Controls the visibility of the dropdown menu.
+ * - `calendarEvents` {Object}: Stores calendar events loaded from local storage.
+ * - `activeComponent` {string}: Tracks the currently active dashboard tab.
+ * - `playerDetails` {Object|null}: Stores the details of the logged-in player.
+ * 
+ * Effects:
+ * - Fetches player details from the API on component mount.
+ * - Simulates a loading state for 1.5 seconds on component mount.
+ * - Updates the current date and time every minute.
+ * - Loads calendar events from local storage on component mount.
+ * 
+ * Functions:
+ * - `toggleDropdown`: Toggles the visibility of the dropdown menu.
+ * - `handleMenuClick`: Handles menu option clicks and updates the active component.
+ * - `renderActiveComponent`: Renders the active dashboard component based on the selected tab.
+ * 
+ * Conditional Rendering:
+ * - Displays a loading screen while data is being fetched.
+ * - Displays the active dashboard component based on the selected tab.
  */
 export default function PlayerDashboard({ username }) {
   // State variables for managing UI and data

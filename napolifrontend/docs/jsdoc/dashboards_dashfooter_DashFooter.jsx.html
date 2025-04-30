@@ -32,10 +32,22 @@ import { Link } from 'react-router-dom';
 
 /**
  * DashFooter Component
- * Renders the footer for the dashboard with navigation links and user profile management.
- * @param {string} username - The username of the logged-in user.
- * @param {Object} calendarEvents - The calendar events to pass to other components.
+ * 
+ * This component represents the footer section of the dashboard. It includes
+ * navigation links to various dashboard features, a user profile section, and
+ * the ability to upload and display a profile image.
+ * 
+ * @component
+ * @param {Object} props - The component props.
+ * @param {string} props.username - The username of the logged-in user.
+ * @param {Array} props.calendarEvents - An array of calendar events to be passed to the Game Results page.
+ * 
+ * @returns {JSX.Element} The rendered DashFooter component.
+ * 
+ * @example
+ * &lt;DashFooter username="JohnDoe" calendarEvents={eventsArray} />
  */
+
 export default function DashFooter({ username, calendarEvents }) {
   // State to manage the visibility of the user profile dropdown
   const [showUserProfile, setShowUserProfile] = useState(false);
@@ -82,8 +94,8 @@ export default function DashFooter({ username, calendarEvents }) {
               className="dash-icon"
               width="40"
               height="40"
-              src="https://img.icons8.com/ios/40/e9ecef/calendar--v1.png"
-              alt="Calendar"
+              src="https://img.icons8.com/external-flat-kendis-lasman/55/external-notif-schedule-notification-alert-flat-flat-kendis-lasman.png" 
+              alt="external-notif-schedule-notification-alert-flat-flat-kendis-lasman"
             />
           &lt;/Link>
 
@@ -93,8 +105,8 @@ export default function DashFooter({ username, calendarEvents }) {
               className="dash-icon"
               width="40"
               height="40"
-              src="https://img.icons8.com/ios/40/e9ecef/opened-folder.png"
-              alt="Data Input Display"
+              src="https://img.icons8.com/3d-fluency/100/opened-folder.png" 
+              alt="opened-folder"
             />
           &lt;/Link>
 
@@ -118,8 +130,8 @@ export default function DashFooter({ username, calendarEvents }) {
               className="dash-icon"
               width="45"
               height="45"
-              src="https://img.icons8.com/ios/45/e9ecef/notepad.png"
-              alt="Game Results"
+              src="https://img.icons8.com/cotton/55/football-goal.png" 
+              alt="football-goal"
             />
           &lt;/Link>
 
@@ -129,8 +141,8 @@ export default function DashFooter({ username, calendarEvents }) {
               className="dash-icon"
               width="50"
               height="50"
-              src="https://img.icons8.com/windows/50/e9ecef/user.png"
-              alt="User Profile"
+              src="https://img.icons8.com/3d-fluency/50/user-male-circle.png" 
+              alt="user-male-circle"
               onClick={() => setShowUserProfile(!showUserProfile)}
               style={{ cursor: 'pointer' }}
             />
@@ -164,15 +176,8 @@ export default function DashFooter({ username, calendarEvents }) {
                 &lt;/div>
 
                 {/* Logout Link */}
-                &lt;Link to="/members">
-                  &lt;img
-                    className="dash-icon"
-                    id="logout-icon"
-                    width="50"
-                    height="50"
-                    src="https://img.icons8.com/windows/50/e9ecef/logout-rounded.png"
-                    alt="Logout"
-                  />
+                &lt;Link to="/members"> 
+                  &lt;div className='logout-section'> Logout&lt;/div>
                 &lt;/Link>
               &lt;/div>
             )}
@@ -191,13 +196,13 @@ export default function DashFooter({ username, calendarEvents }) {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#GameResults">GameResults</a></li><li><a href="global.html#HomeLayout">HomeLayout</a></li><li><a href="global.html#Navbar">Navbar</a></li><li><a href="global.html#TheClub">TheClub</a></li><li><a href="global.html#getInitialEvents">getInitialEvents</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#Calendar">Calendar</a></li><li><a href="global.html#GameResults">GameResults</a></li><li><a href="global.html#HomeLayout">HomeLayout</a></li><li><a href="global.html#TheClub">TheClub</a></li><li><a href="global.html#getInitialEvents">getInitialEvents</a></li><li><a href="global.html#handleSubmit-Handlestheformsubmission.Itpreventsthedefaultformsubmission,validatestheinputfields,sendsaPOSTrequesttothebackendforauthentication,anduponsuccessfulauthentication,storesuserinformationin%2560localStorage%2560andredirectstheusertotheirdashboardbasedontheirassignedrole.Displaysanerrormessageifauthenticationfails.">handleSubmit - Handles the form submission. It prevents the default form submission,validates the input fields, sends a POST request to the backend for authentication,and upon successful authentication, stores user information in `localStorage` and redirectsthe user to their dashboard based on their assigned role. Displays an error message ifauthentication fails.</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Wed Apr 23 2025 16:13:39 GMT+0200 (South Africa Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Thu May 01 2025 00:39:55 GMT+0200 (South Africa Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

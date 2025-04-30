@@ -3,11 +3,30 @@ import "./homepage.css";
 
 /**
  * JoinForm Component
- * A form for users to join the Napoli Sports Club by submitting their details.
  * 
- * Props:
- * - onClose (function): Callback function to close the form.
+ * A React functional component that renders a membership form for users to join a club.
+ * The form collects various personal and club-related details from the user.
+ * 
+ * @component
+ * @param {Object} props - The props object.
+ * @param {Function} props.onClose - Callback function to close the form after submission.
+ * 
+ * @returns {JSX.Element} The rendered JoinForm component.
+ * 
+ * @example
+ * <JoinForm onClose={() => console.log('Form closed')} />
+ * 
+ * @description
+ * The form includes fields for:
+ * - Name, Surname, Age, Address, School Name, Grade
+ * - Previous Club, Position, Email, Phone
+ * - Reason for leaving the previous club
+ * 
+ * The component uses the `useState` hook to manage form data and updates the state
+ * on input changes. On form submission, the data is logged to the console and the
+ * `onClose` callback is triggered.
  */
+
 export default function JoinForm({ onClose }) {
   // State to manage form data
   const [formData, setFormData] = useState({

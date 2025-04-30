@@ -1,12 +1,21 @@
 import React, { useEffect, useState } from "react";
 import "./playersdashboard.css";
 
+
 /**
- * Fixtures Component
- * Displays a list of fixtures grouped by age group.
- * 
- * Props:
- * - calendarEvents (object): Optional. A collection of events grouped by age group.
+ * Fixtures component displays a list of grouped calendar events by age group.
+ * It retrieves events from the `calendarEvents` prop or falls back to localStorage.
+ * Events are grouped by their `ageGroup` property and displayed in a structured format.
+ *
+ * @component
+ * @param {Object} props - Component props.
+ * @param {Object} props.calendarEvents - An object containing calendar events grouped by some key.
+ * Each key maps to an array of event objects. Each event object may contain the following properties:
+ *   - `text` {string}: The description or title of the event.
+ *   - `time` {string}: The time of the event.
+ *   - `address` {string}: The address of the event.
+ *
+ * @returns {JSX.Element} A rendered list of fixtures grouped by age group, or a fallback message if no fixtures are available.
  */
 export default function Fixtures({ calendarEvents }) {
   const [groupedEvents, setGroupedEvents] = useState({}); // State to store grouped events

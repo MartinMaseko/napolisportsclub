@@ -5,9 +5,24 @@ import Footer from "../footer/Footer.jsx";
 import JoinForm from "./JoinForm.jsx";
 import loadingGif from "./assets/soccer-ball-gif.gif";
 
+
 /**
- * Home Component
- * Displays the homepage with a banner, membership information, and a join form.
+ * Home component for the Napoli Sports Club application.
+ * 
+ * This component serves as the homepage of the application, providing
+ * information about the club, a call-to-action to join as a member, and
+ * a contact link to reach the club via WhatsApp. It also includes a loading
+ * spinner that is displayed for 1.5 seconds when the component is first rendered.
+ * 
+ * Features:
+ * - Displays a banner image.
+ * - Provides information about the club and its offerings.
+ * - Includes a "Join Napoli" button to toggle the visibility of a join form.
+ * - Displays a WhatsApp contact link for easy communication.
+ * - Includes a footer section.
+ * 
+ * @component
+ * @returns {JSX.Element} The rendered Home component.
  */
 export default function Home() {
   // State to toggle the visibility of the join form

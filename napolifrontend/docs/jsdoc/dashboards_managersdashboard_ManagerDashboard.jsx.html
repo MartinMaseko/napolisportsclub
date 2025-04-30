@@ -37,7 +37,42 @@ const CALENDAR_EVENTS_KEY = "calendarEvents";
 
 /**
  * ManagerDashboard Component
- * Displays the manager's dashboard with weather updates, notifications, and navigation links.
+ * 
+ * This component represents the manager's dashboard for the Napoli Club App. 
+ * It includes various features such as displaying the current date and time, 
+ * fetching and displaying weather data, managing calendar events, and providing 
+ * navigation to other sections of the app.
+ * 
+ * State Variables:
+ * - `dateTime` (string): Current date and time.
+ * - `loading` (boolean): Indicates whether the dashboard is in a loading state.
+ * - `weatherData` (object|null): Weather data fetched from the OpenWeatherMap API.
+ * - `showNotifications` (boolean): Controls the visibility of the notifications dropdown.
+ * - `calendarEvents` (object): Calendar events loaded from local storage.
+ * - `hasCalendarEvents` (boolean): Indicates if there are any calendar events.
+ * 
+ * Refs:
+ * - `welcomeHeaderRef`: Ref for the welcome header element.
+ * 
+ * Effects:
+ * - Scrolls to the top of the page and focuses on the welcome header on mount.
+ * - Simulates a loading state for the dashboard.
+ * - Updates the current date and time every minute.
+ * - Fetches weather data for the manager's location.
+ * - Loads calendar events from local storage and checks for updates every second.
+ * - Toggles the `no-scroll` class on the body element when notifications are shown.
+ * 
+ * Props:
+ * - None
+ * 
+ * Returns:
+ * - JSX structure for the manager's dashboard, including:
+ *   - Header and navigation sections.
+ *   - Notifications dropdown with calendar events.
+ *   - Current date and time display.
+ *   - Dashboard tabs for navigating to game results, admin, and calendar sections.
+ *   - Weather information display.
+ *   - Footer section.
  */
 export default function ManagerDashboard() {
   // State variables for managing UI and data
@@ -152,6 +187,20 @@ export default function ManagerDashboard() {
     return () => clearInterval(intervalId); // Cleanup on unmount
   }, []);
 
+  // Toggle the no-scroll class on the body element
+  useEffect(() => {
+    if (showNotifications) {
+      document.body.classList.add("no-scroll");
+    } else {
+      document.body.classList.remove("no-scroll");
+    }
+
+    // Cleanup on unmount
+    return () => {
+      document.body.classList.remove("no-scroll");
+    };
+  }, [showNotifications]);
+
   // Show loading screen while data is being fetched
   if (loading) {
     return (
@@ -173,26 +222,25 @@ export default function ManagerDashboard() {
         &lt;nav className="dashboard-nav">
           &lt;img src={NapoliImg} alt="Napoli Logo" className="dash-logo" />
           &lt;div className="user-text">
-            &lt;h2 className="welcome-user">Welcome, {username}!&lt;/h2>
+            &lt;h2 className="welcome-user">Welcome {username}!&lt;/h2>
           &lt;/div>
 
           {/* Notifications Section */}
           &lt;div style={{ position: "relative" }}>
             &lt;img
               className="notifications-icon"
-              width="40"
-              height="40"
-              src="https://img.icons8.com/external-creatype-outline-colourcreatype/40/e9ecef/external-alarm-essential-ui-v2-creatype-outline-colourcreatype-2.png"
+              width="50"
+              height="50"
+              src="https://img.icons8.com/external-kiranshastry-solid-kiranshastry/50/FFFFFF/external-menu-multimedia-kiranshastry-solid-kiranshastry-1.png"
               alt="Notifications Icon"
               onClick={() => setShowNotifications(!showNotifications)}
               style={{ cursor: "pointer" }}
             />
             {showNotifications &amp;&amp; (
               &lt;div className="notifications-dropdown">
-                &lt;h3>Notifications&lt;/h3>
                 {hasCalendarEvents ? (
                   &lt;ul>
-                    &lt;h3>FIXTURES&lt;/h3>
+                    &lt;h3 id="fixture-Heading">FIXTURES&lt;/h3>
                     {Object.entries(calendarEvents).map(
                       ([date, eventsForDate]) =>
                         eventsForDate.map((event, index) => (
@@ -230,12 +278,12 @@ export default function ManagerDashboard() {
             >
               &lt;div className="dash-header-content">
                 &lt;img
-                  width="35"
-                  height="35"
-                  src="https://img.icons8.com/ios/35/e9ecef/notepad.png"
-                  alt="Game Results Icon"
+                  width="55"
+                  height="55"
+                  src="https://img.icons8.com/cotton/55/football-goal.png" 
+                  alt="football-goal"
                 />
-                &lt;p className="icon-text">Game Results&lt;/p>
+                &lt;p className="icon-text"> Game Results&lt;/p>
               &lt;/div>
             &lt;/Link>
           &lt;/div>
@@ -251,8 +299,8 @@ export default function ManagerDashboard() {
                 &lt;img
                   width="55"
                   height="55"
-                  src="https://img.icons8.com/ios/50/F2F2F2/opened-folder.png"
-                  alt="Admin Icon"
+                  src="https://img.icons8.com/3d-fluency/100/opened-folder.png" 
+                  alt="opened-folder"
                 />
                 &lt;p className="icon-text">Admin&lt;/p>
               &lt;/Link>
@@ -261,40 +309,41 @@ export default function ManagerDashboard() {
               to={`/calendar?username=${encodeURIComponent(username)}`}
               className="dashboard-option-3"
             >
-              &lt;img
-                width="55"
-                height="55"
-                src="https://img.icons8.com/ios/50/F2F2F2/calendar--v1.png"
-                alt="Calendar Icon"
-              />
+              &lt;img 
+                width="55" 
+                height="55" 
+                src="https://img.icons8.com/external-flat-kendis-lasman/55/external-notif-schedule-notification-alert-flat-flat-kendis-lasman.png" 
+                alt="external-notif-schedule-notification-alert-flat-flat-kendis-lasman"
+                />
               &lt;p className="icon-text">Calendar&lt;/p>
             &lt;/Link>
           &lt;/div>
 
           {/* Weather Section */}
           &lt;div className="dashboard-option-4">
-            &lt;h2 className="option-text">⛅ Weather&lt;/h2>
             {weatherData ? (
               &lt;div className="weather-content">
+                &lt;h2 className="weather-text">
+                &lt;img width="40" height="40" src="https://img.icons8.com/fluency/40/clouds--v3.png" alt="clouds--v3"/>
+                  Weather&lt;/h2>
                 &lt;p>
                   {weatherData.name}, {weatherData.sys.country}
                 &lt;/p>
                 &lt;p>Temperature: {Math.round(weatherData.main.temp)}°C&lt;/p>
                 &lt;p>Weather: {weatherData.weather[0].description}&lt;/p>
                 &lt;img
-                  src={`http://openweathermap.org/img/w/${weatherData.weather[0].icon}.png`}
-                  alt="Weather Icon"
-                />
+                    src={`http://openweathermap.org/img/w/${weatherData.weather[0].icon}.png`}
+                    alt="Weather Icon"
+                  />
               &lt;/div>
             ) : (
               &lt;p>Loading weather...&lt;/p>
             )}
           &lt;/div>
         &lt;/div>
-
-        {/* Footer Section */}
-        &lt;DashFooter username={username} calendarEvents={calendarEvents} />
       &lt;/main>
+      {/* Footer Section */}
+      &lt;DashFooter username={username} calendarEvents={calendarEvents} />
     &lt;/>
   );
 }</code></pre>
@@ -307,13 +356,13 @@ export default function ManagerDashboard() {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#GameResults">GameResults</a></li><li><a href="global.html#HomeLayout">HomeLayout</a></li><li><a href="global.html#Navbar">Navbar</a></li><li><a href="global.html#TheClub">TheClub</a></li><li><a href="global.html#getInitialEvents">getInitialEvents</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#Calendar">Calendar</a></li><li><a href="global.html#GameResults">GameResults</a></li><li><a href="global.html#HomeLayout">HomeLayout</a></li><li><a href="global.html#TheClub">TheClub</a></li><li><a href="global.html#getInitialEvents">getInitialEvents</a></li><li><a href="global.html#handleSubmit-Handlestheformsubmission.Itpreventsthedefaultformsubmission,validatestheinputfields,sendsaPOSTrequesttothebackendforauthentication,anduponsuccessfulauthentication,storesuserinformationin%2560localStorage%2560andredirectstheusertotheirdashboardbasedontheirassignedrole.Displaysanerrormessageifauthenticationfails.">handleSubmit - Handles the form submission. It prevents the default form submission,validates the input fields, sends a POST request to the backend for authentication,and upon successful authentication, stores user information in `localStorage` and redirectsthe user to their dashboard based on their assigned role. Displays an error message ifauthentication fails.</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Wed Apr 23 2025 16:13:39 GMT+0200 (South Africa Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Thu May 01 2025 00:39:55 GMT+0200 (South Africa Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -1,6 +1,37 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
+/**
+ * Profile component fetches and displays detailed information about a player.
+ * 
+ * This component retrieves the player's details from an API using the player's ID
+ * and authentication token stored in localStorage. It handles loading, error states,
+ * and displays the player's profile information if successfully fetched.
+ * 
+ * @component
+ * @returns {JSX.Element} The rendered Profile component.
+ * 
+ * @example
+ * // Usage
+ * <Profile />
+ * 
+ * @state {object|null} playerDetails - The details of the player fetched from the API.
+ * @state {boolean} loading - Indicates whether the data is still being fetched.
+ * @state {string|null} error - Stores any error message encountered during the fetch process.
+ * 
+ * @effect Fetches player details from the API when the component mounts.
+ * 
+ * @errorHandling
+ * - Displays an error message if no authentication token or player ID is found.
+ * - Displays an error message if the API request fails.
+ * - Displays a message if the player is not found.
+ * 
+ * @loadingState
+ * - Displays a loading message while the data is being fetched.
+ * 
+ * @display
+ * - Renders the player's profile details including personal, contact, and financial information.
+ */
 export default function Profile() {
   const [playerDetails, setPlayerDetails] = useState(null);
   const [loading, setLoading] = useState(true);

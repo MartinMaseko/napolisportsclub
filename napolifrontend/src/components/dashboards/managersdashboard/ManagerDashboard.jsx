@@ -9,7 +9,42 @@ const CALENDAR_EVENTS_KEY = "calendarEvents";
 
 /**
  * ManagerDashboard Component
- * Displays the manager's dashboard with weather updates, notifications, and navigation links.
+ * 
+ * This component represents the manager's dashboard for the Napoli Club App. 
+ * It includes various features such as displaying the current date and time, 
+ * fetching and displaying weather data, managing calendar events, and providing 
+ * navigation to other sections of the app.
+ * 
+ * State Variables:
+ * - `dateTime` (string): Current date and time.
+ * - `loading` (boolean): Indicates whether the dashboard is in a loading state.
+ * - `weatherData` (object|null): Weather data fetched from the OpenWeatherMap API.
+ * - `showNotifications` (boolean): Controls the visibility of the notifications dropdown.
+ * - `calendarEvents` (object): Calendar events loaded from local storage.
+ * - `hasCalendarEvents` (boolean): Indicates if there are any calendar events.
+ * 
+ * Refs:
+ * - `welcomeHeaderRef`: Ref for the welcome header element.
+ * 
+ * Effects:
+ * - Scrolls to the top of the page and focuses on the welcome header on mount.
+ * - Simulates a loading state for the dashboard.
+ * - Updates the current date and time every minute.
+ * - Fetches weather data for the manager's location.
+ * - Loads calendar events from local storage and checks for updates every second.
+ * - Toggles the `no-scroll` class on the body element when notifications are shown.
+ * 
+ * Props:
+ * - None
+ * 
+ * Returns:
+ * - JSX structure for the manager's dashboard, including:
+ *   - Header and navigation sections.
+ *   - Notifications dropdown with calendar events.
+ *   - Current date and time display.
+ *   - Dashboard tabs for navigating to game results, admin, and calendar sections.
+ *   - Weather information display.
+ *   - Footer section.
  */
 export default function ManagerDashboard() {
   // State variables for managing UI and data

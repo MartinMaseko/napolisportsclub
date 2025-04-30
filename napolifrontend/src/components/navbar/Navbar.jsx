@@ -3,16 +3,37 @@ import { NavLink } from 'react-router-dom';
 import napoliLogo from './assets/Napoli-2020.png';
 import './navbarstyle.css'; 
 
-
-
 /**
- * Navbar Component:
+ * @component
+ * @description Renders a login form for authenticated members to access their dashboards.
+ * Handles user input for username and password, submits login credentials to the backend,
+ * manages authentication state, and redirects users based on their roles upon successful login.
+ * Provides error handling for invalid credentials or login failures.
+ * Includes a link for users to contact support via WhatsApp.
  *
- * This component renders the navigation bar for the application. It includes the logo,
- * site navigation links, and social media links.  The component also handles the
- * mobile menu functionality, including toggling the menu's visibility and preventing
- * background scrolling when the menu is open.
+ * @state {object} formData - Stores the username and password entered by the user.
+ * @state {string} error - Holds any error message to be displayed to the user (e.g., validation errors, login failures).
+ *
+ * @function handleChange - Updates the `formData` state with the current value of the input field
+ * and clears any existing error messages when input changes.
+ * @param {object} event - The change event object from the input field.
+ * @returns {void}
+ *
+ * @function handleSubmit - Handles the form submission. It prevents the default form submission,
+ * validates the input fields, sends a POST request to the backend for authentication,
+ * and upon successful authentication, stores user information in `localStorage` and redirects
+ * the user to their dashboard based on their assigned role. Displays an error message if
+ * authentication fails.
+ * @param {object} event - The submit event object from the form.
+ * @returns {void}
+ *
+ * @dependency {module} axios - Used for making asynchronous HTTP requests to the backend API.
+ * @dependency {module} useNavigate - A hook from React Router for programmatically navigating between routes.
+ *
+ * @returns {JSX.Element} - A container displaying the login form with input fields for username and password,
+ * an error message area, a submit button, and a link to contact support via WhatsApp.
  */
+
 function Navbar() {
     // State to manage the menu's open/closed state.
     const [isMenuOpen, setIsMenuOpen] = useState(false);

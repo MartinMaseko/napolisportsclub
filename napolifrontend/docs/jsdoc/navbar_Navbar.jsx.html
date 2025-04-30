@@ -31,16 +31,37 @@ import { NavLink } from 'react-router-dom';
 import napoliLogo from './assets/Napoli-2020.png';
 import './navbarstyle.css'; 
 
-
-
 /**
- * Navbar Component:
+ * @component
+ * @description Renders a login form for authenticated members to access their dashboards.
+ * Handles user input for username and password, submits login credentials to the backend,
+ * manages authentication state, and redirects users based on their roles upon successful login.
+ * Provides error handling for invalid credentials or login failures.
+ * Includes a link for users to contact support via WhatsApp.
  *
- * This component renders the navigation bar for the application. It includes the logo,
- * site navigation links, and social media links.  The component also handles the
- * mobile menu functionality, including toggling the menu's visibility and preventing
- * background scrolling when the menu is open.
+ * @state {object} formData - Stores the username and password entered by the user.
+ * @state {string} error - Holds any error message to be displayed to the user (e.g., validation errors, login failures).
+ *
+ * @function handleChange - Updates the `formData` state with the current value of the input field
+ * and clears any existing error messages when input changes.
+ * @param {object} event - The change event object from the input field.
+ * @returns {void}
+ *
+ * @function handleSubmit - Handles the form submission. It prevents the default form submission,
+ * validates the input fields, sends a POST request to the backend for authentication,
+ * and upon successful authentication, stores user information in `localStorage` and redirects
+ * the user to their dashboard based on their assigned role. Displays an error message if
+ * authentication fails.
+ * @param {object} event - The submit event object from the form.
+ * @returns {void}
+ *
+ * @dependency {module} axios - Used for making asynchronous HTTP requests to the backend API.
+ * @dependency {module} useNavigate - A hook from React Router for programmatically navigating between routes.
+ *
+ * @returns {JSX.Element} - A container displaying the login form with input fields for username and password,
+ * an error message area, a submit button, and a link to contact support via WhatsApp.
  */
+
 function Navbar() {
     // State to manage the menu's open/closed state.
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -102,7 +123,9 @@ function Navbar() {
                     aria-expanded={isMenuOpen}
                     aria-label={isMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
                     >
-
+                    {isMenuOpen ? 
+                    &lt;img width="35" height="35" src="https://img.icons8.com/ios-glyphs/35/delete-sign.png" alt="delete-sign"/>
+                    : &lt;img width="35" height="35" src="https://img.icons8.com/material-outlined/35/004582/menu--v1.png" alt="menu--v1"/> }
                     {/* Dropdown menu list */}
                     &lt;ul className="dropdown-menu">
                         &lt;li>
@@ -139,10 +162,10 @@ function Navbar() {
                             {/* Social media icons */}
                             &lt;div className='social-icon'>
                                 &lt;a href="https://www.instagram.com/napoliclub/">
-                                    &lt;img width="40" height="40" src="https://img.icons8.com/ios-filled/40/228BE6/instagram-new--v1.png" alt="instagram-new--v1"/>
+                                    &lt;img width="40" height="40" src="https://img.icons8.com/fluency/40/instagram-new.png" alt="instagram-new"/>
                                 &lt;/a>
                                 &lt;a href="mailto:napolijhb@gmail.com">
-                                    &lt;img width="40" height="40" src="https://img.icons8.com/ios-filled/40/228BE6/new-post.png" alt="new-post"/>
+                                    &lt;img width="40" height="40" src="https://img.icons8.com/fluency/40/new-post.png" alt="new-post"/>
                                 &lt;/a>
                             &lt;/div>
                         &lt;/li>
@@ -163,13 +186,13 @@ export default Navbar;</code></pre>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#GameResults">GameResults</a></li><li><a href="global.html#HomeLayout">HomeLayout</a></li><li><a href="global.html#Navbar">Navbar</a></li><li><a href="global.html#TheClub">TheClub</a></li><li><a href="global.html#getInitialEvents">getInitialEvents</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#Calendar">Calendar</a></li><li><a href="global.html#GameResults">GameResults</a></li><li><a href="global.html#HomeLayout">HomeLayout</a></li><li><a href="global.html#TheClub">TheClub</a></li><li><a href="global.html#getInitialEvents">getInitialEvents</a></li><li><a href="global.html#handleSubmit-Handlestheformsubmission.Itpreventsthedefaultformsubmission,validatestheinputfields,sendsaPOSTrequesttothebackendforauthentication,anduponsuccessfulauthentication,storesuserinformationin%2560localStorage%2560andredirectstheusertotheirdashboardbasedontheirassignedrole.Displaysanerrormessageifauthenticationfails.">handleSubmit - Handles the form submission. It prevents the default form submission,validates the input fields, sends a POST request to the backend for authentication,and upon successful authentication, stores user information in `localStorage` and redirectsthe user to their dashboard based on their assigned role. Displays an error message ifauthentication fails.</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Wed Apr 23 2025 16:13:39 GMT+0200 (South Africa Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Thu May 01 2025 00:39:55 GMT+0200 (South Africa Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>
