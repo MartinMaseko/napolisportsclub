@@ -188,7 +188,8 @@ ul li a img:hover {
   color: #57bcdd;
 }
 
-#playerDetails-Heading {
+#playerDetails-Heading,
+#fixture-Heading {
   color: #57bcdd;
 }
 
