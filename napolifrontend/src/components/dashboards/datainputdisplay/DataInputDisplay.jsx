@@ -350,12 +350,12 @@ export default function DataInputDisplay() {
                 <button id="addplayer-btn" onClick={handleToggleForm}>
                     {showForm ? (
                         <>
-                            <img width="35" height="35" src="https://img.icons8.com/ios/35/FFFFFF/cancel.png" alt="cancel" />
-                            Cancel
+                            <img width="35" height="35" src="https://img.icons8.com/ios/35/004582/cancel.png" alt="cancel" />
+
                         </>
                     ) : (
                         <>
-                            <img width="35" height="35" src="https://img.icons8.com/windows/35/FFFFFF/add-user-male--v1.png" alt="add-user-male--v1" />
+                            <img width="30" height="30" src="https://img.icons8.com/external-kmg-design-flat-kmg-design/30/external-add-user-interface-essentials-kmg-design-flat-kmg-design.png" alt="external-add-user-interface-essentials-kmg-design-flat-kmg-design"/>
                             Add Player
                         </>
                     )}
@@ -586,7 +586,7 @@ export default function DataInputDisplay() {
             {/* Display selected player details */}
             {selectedPlayer && (
                 <div ref={playerDetailsRef} className="player-details">
-                    <h3>Details for {selectedPlayer.first_name} {selectedPlayer.last_name}</h3>
+                    <h3 id="playerDetails-Heading">Details for {selectedPlayer.first_name} {selectedPlayer.last_name}</h3>
                     <p><strong>Nationality:</strong> {selectedPlayer.nationality}</p>
                     <p><strong>ID Number:</strong> {selectedPlayer.id_number}</p>
                     <p><strong>Gender:</strong> {selectedPlayer.gender}</p>
@@ -617,7 +617,7 @@ export default function DataInputDisplay() {
                                 onChange={(e) => setFile(e.target.files[0])}
                             />
                         </div>
-                        <button type="submit">Upload</button>
+                        <button className="Dark-Btns" type="submit">Upload</button>
                     </form>
 
                     {/* Display Documents */}
@@ -656,9 +656,9 @@ export default function DataInputDisplay() {
                     </ul>
 
                     {/* Buttons Container */}
-                    <div style={{ display: "flex", gap: "10px", marginTop: "10px" }}>
+                    <div className="Btns-Container">
                         {/* Edit Button */}
-                        <button onClick={() => {
+                        <button className="Dark-Btns" onClick={() => {
                             setFormData(selectedPlayer); // Populate the form with the selected player's data
                             setShowForm(true); // Show the form for editing
                             setSelectedPlayer(null); // Close the details view
@@ -668,6 +668,7 @@ export default function DataInputDisplay() {
 
                         {/* Delete Button */}
                         <button
+                            className="Dark-Btns"
                             onClick={async () => {
                                 try {
                                     const token = localStorage.getItem('authToken'); // Retrieve the token
@@ -695,10 +696,14 @@ export default function DataInputDisplay() {
                         </button>
 
                         {/* Register Button */}
-                        <button onClick={() => handleRegisterUser(selectedPlayer.id)}>Register</button>
+                        <button 
+                            className="Dark-Btns"
+                            onClick={() => handleRegisterUser(selectedPlayer.id)}>Register</button>
 
                         {/* Close Button */}
-                        <button onClick={() => setSelectedPlayer(null)}>Close</button>
+                        <button 
+                            className="Dark-Btns"
+                            onClick={() => setSelectedPlayer(null)}>Close</button>
                     </div>
                 </div>
             )}
