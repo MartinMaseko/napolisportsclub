@@ -40,7 +40,7 @@
   margin-bottom: 80px;
   width: 280px;
   height: 450px;
-  font-size: 18px;
+  font-size: 12px;
   background: #1D1D1D;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   border-radius: 10px;
@@ -58,11 +58,10 @@
   margin-top: 20px;
   font-weight: 800;
   cursor: pointer;
-}
-
-.logout-section:hover {
+  font-size: 18px;
   color: #004582;
 }
+
 
 .profile-preview {
   margin-top: 50px;
