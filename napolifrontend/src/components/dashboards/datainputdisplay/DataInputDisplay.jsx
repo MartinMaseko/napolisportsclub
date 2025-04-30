@@ -362,6 +362,7 @@ export default function DataInputDisplay() {
                 </button>
             </div>
 
+
             {/* Form for adding a new player */}
             {showForm && (
                 <form ref={formRef} onSubmit={formData.id ? handleEditSubmit : handleSubmit} className="bordered-form">
@@ -568,6 +569,7 @@ export default function DataInputDisplay() {
                 )}
 
             {/* Display fetched data */}
+            <h3 id="data-headings">Club Players</h3>
             {loading ? (
                 <p>Loading...</p>
             ) : (
