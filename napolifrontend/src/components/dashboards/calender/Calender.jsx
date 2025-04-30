@@ -224,7 +224,7 @@ const Calendar = () => {
           <img
             width="35"
             height="35"
-            src="https://img.icons8.com/303030/35/circled-left-2--v1.png"
+            src="https://img.icons8.com/fluency/35/left.png"
             alt="Previous Month"
             onClick={prevMonth}
             style={{ cursor: 'pointer' }}
@@ -233,7 +233,7 @@ const Calendar = () => {
           <img
             width="35"
             height="35"
-            src="https://img.icons8.com/303030/35/circled-right-2--v1.png"
+            src="https://img.icons8.com/fluency/35/right.png"
             alt="Next Month"
             onClick={nextMonth}
             style={{ cursor: 'pointer' }}
@@ -242,13 +242,13 @@ const Calendar = () => {
 
         {/* Calendar Grid */}
         <div className="calendar-grid">
-          <div className="calendar-weekday">Sun</div>
-          <div className="calendar-weekday">Mon</div>
-          <div className="calendar-weekday">Tue</div>
-          <div className="calendar-weekday">Wed</div>
-          <div className="calendar-weekday">Thu</div>
-          <div className="calendar-weekday">Fri</div>
-          <div className="calendar-weekday">Sat</div>
+          <div className="calendar-weekday">S</div>
+          <div className="calendar-weekday">M</div>
+          <div className="calendar-weekday">T</div>
+          <div className="calendar-weekday">W</div>
+          <div className="calendar-weekday">T</div>
+          <div className="calendar-weekday">F</div>
+          <div className="calendar-weekday">S</div>
           {days}
         </div>
 
