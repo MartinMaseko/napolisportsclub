@@ -208,8 +208,8 @@ ul li a img:hover {
 
   dl {
     display: grid;
-    grid-template-columns: auto auto auto auto auto; /* Five equal-width columns */
-    grid-template-rows: auto auto;
+    grid-template-columns: auto auto auto auto; /* Four equal-width columns */
+    grid-template-rows: auto ;
     gap: 10px;
   }
 }

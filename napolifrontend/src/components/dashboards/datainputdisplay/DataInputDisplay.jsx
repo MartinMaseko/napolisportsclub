@@ -574,13 +574,28 @@ export default function DataInputDisplay() {
                 <p>Loading...</p>
             ) : (
                 <dl>
-                    {filteredPlayers.map((player, index) => (
-                        <dt key={index} onClick={() => {
-                            handlePlayerClick(player);
-                            setSelectedPlayer(player);
-                            }}>
-                            <strong>{player.first_name} {player.last_name}</strong>
-                        </dt>
+                    {Object.entries(
+                        filteredPlayers.reduce((groups, player) => {
+                            const { age_group } = player;
+                            if (!groups[age_group]) {
+                                groups[age_group] = [];
+                            }
+                            groups[age_group].push(player);
+                            return groups;
+                        }, {})
+                    ).map(([ageGroup, players]) => (
+                        <div key={ageGroup}>
+                            {/* Age Group Heading */}
+                            <h3>{ageGroup}</h3>
+                            {players.map((player, index) => (
+                                <dt key={index} onClick={() => {
+                                    handlePlayerClick(player);
+                                    setSelectedPlayer(player);
+                                }}>
+                                    <strong>{player.first_name} {player.last_name}</strong>
+                                </dt>
+                            ))}
+                        </div>
                     ))}
                 </dl>
             )}
