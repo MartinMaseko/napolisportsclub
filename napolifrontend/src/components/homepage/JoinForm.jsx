@@ -11,17 +11,22 @@ import "./homepage.css";
 export default function JoinForm({ onClose }) {
   // State to manage form data
   const [formData, setFormData] = useState({
-    name: "",
-    surname: "",
-    age: "",
-    address: "",
-    schoolName: "",
-    grade: "",
-    previousClub: "",
+    first_name: "",
+    last_name: "",
+    nationality: "",
+    id_number: "",
+    gender: "",
+    school: "",
+    previous_club: "",
+    years_of_training: 0,
+    age_group: "U12",
     position: "",
-    email: "",
-    phone: "",
-    migrateReason: "",
+    mother_name: "",
+    mother_phone: "",
+    mother_email: "",
+    father_name: "",
+    father_phone: "",
+    father_email: "",
   });
 
   /**
@@ -132,22 +137,13 @@ export default function JoinForm({ onClose }) {
 
         {/* Position Dropdown */}
         <label htmlFor="position">Position</label>
-        <select
+        <input
+          type="text"
           id="position"
           name="position"
           value={formData.position}
           onChange={handleInputChange}
-        >
-          <option value="Goalkeeper">Goalkeeper</option>
-          <option value="Center Back">Center Back</option>
-          <option value="Fullback">Fullback</option>
-          <option value="Defending/Holding Midfielder">Defending/Holding Midfielder</option>
-          <option value="Central Midfielder">Central Midfielder</option>
-          <option value="Attacking Midfielder">Attacking Midfielder</option>
-          <option value="Winger">Winger</option>
-          <option value="Striker">Striker</option>
-          <option value="Second Striker">Second Striker</option>
-        </select>
+          />
 
         {/* Email Input */}
         <label htmlFor="email">Email</label>

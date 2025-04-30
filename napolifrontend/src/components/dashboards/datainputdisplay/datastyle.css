@@ -140,6 +140,12 @@ ul li a img:hover {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
+.submittedforms-container {
+  padding: 0.5em 0em;
+  border-bottom: 1px solid #1D1D1D;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
 #age-filterbtn {
   width: 250px;
   height: 45px;
@@ -175,6 +181,11 @@ ul li a img:hover {
   border-radius: 5px;
   border: none;
   height: 45px;
+}
+
+#data-headings {
+  margin-top: 20px;
+  color: #57bcdd;
 }
 
 #playerDetails-Heading {
