@@ -139,20 +139,18 @@ export default function Members() {
           </form>
 
           {/* WhatsApp Contact Link */}
-          <a
-            href="https://wa.me/+27737378310"
-            aria-label="Contact us on WhatsApp"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <img
-              id="whatsapp-icon"
-              width="40"
-              height="40"
-              src="https://img.icons8.com/ios-filled/40/228BE6/whatsapp--v1.png"
-              alt="WhatsApp icon"
-            />
-          </a>
+            <a
+              href="https://wa.me/+27737378310"
+              aria-label="Contact us on WhatsApp"
+            >
+              <img
+                id="whatsapp-icon"
+                width="40"
+                height="40"
+                src="https://img.icons8.com/fluency/40/whatsapp.png"
+                alt="WhatsApp icon"
+              />
+            </a>
         </div>
       </div>
     </>
