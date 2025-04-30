@@ -175,10 +175,9 @@ export default function ManagerDashboard() {
             />
             {showNotifications && (
               <div className="notifications-dropdown">
-                <h3>Notifications</h3>
                 {hasCalendarEvents ? (
                   <ul>
-                    <h3>FIXTURES</h3>
+                    <h3 id="fixture-Heading">FIXTURES</h3>
                     {Object.entries(calendarEvents).map(
                       ([date, eventsForDate]) =>
                         eventsForDate.map((event, index) => (
