@@ -28,12 +28,32 @@ export default function ManagerDashboard() {
   const [showNotifications, setShowNotifications] = useState(false); // Notification dropdown visibility
   const [calendarEvents, setCalendarEvents] = useState({}); // Calendar events from Firebase
   const [hasCalendarEvents, setHasCalendarEvents] = useState(false); // Check if there are calendar events
+  const [newRegistrations, setNewRegistrations] = useState([]);
 
   const welcomeHeaderRef = useRef(null); // Ref for the welcome header
 
   // Retrieve username from query parameters
   const [searchParams] = useSearchParams();
   const username = searchParams.get("username");
+
+  useEffect(() => {
+    const newRegistrationsRef = ref(database, "newRegistrations");
+  
+    const unsubscribe = onValue(newRegistrationsRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        const registrations = Object.entries(data).map(([id, value]) => ({
+          id,
+          ...value,
+        }));
+        setNewRegistrations(registrations);
+      } else {
+        setNewRegistrations([]);
+      }
+    });
+  
+    return () => unsubscribe(); // Cleanup listener on unmount
+  }, []);
 
   /**
    * Fetch weather data for Northcliff, Johannesburg, South Africa.
@@ -211,6 +231,21 @@ export default function ManagerDashboard() {
                   </ul>
                 ) : (
                   <p>No new notifications</p>
+                )}
+                {newRegistrations.length > 0 ? (
+                  <ul>
+                    <h3 id="fixture-Heading">NEW REGISTRATIONS</h3>
+                    {newRegistrations.map((registration) => (
+                      <li key={registration.id}>
+                        <p className="notification-event">
+                          <strong>Name:</strong> {registration.first_name} {registration.last_name} <br />
+                          <strong>Age Group:</strong> {registration.age_group} <br />
+                        </p>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p>No new registrations</p>
                 )}
               </div>
             )}
