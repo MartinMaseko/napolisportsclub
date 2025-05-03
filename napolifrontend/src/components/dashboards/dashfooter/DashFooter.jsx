@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './dashfooter.css';
 import { Link } from 'react-router-dom';
+import { getDatabase, ref, set, onValue } from 'firebase/database';
 
 /**
  * DashFooter Component
@@ -21,25 +22,48 @@ import { Link } from 'react-router-dom';
  */
 
 export default function DashFooter({ username, calendarEvents }) {
+  const database = getDatabase(); // Initialize Firebase database
+
   // State to manage the visibility of the user profile dropdown
   const [showUserProfile, setShowUserProfile] = useState(false);
 
   // State to manage the user's profile image
-  const [profileImage, setProfileImage] = useState(
-    localStorage.getItem('profileImage') || null
-  );
+  const [profileImage, setProfileImage] = useState(null);
+
+  // State to manage the user's profile information
+  const [profileInfo, setProfileInfo] = useState({
+    role: 'Manager', // Default role
+  });
 
   /**
-   * Effect to sync the profile image with local storage.
-   * Adds or removes the profile image from local storage based on its state.
+   * Fetch user profile data from Firebase on component mount.
    */
   useEffect(() => {
-    if (profileImage) {
-      localStorage.setItem('profileImage', profileImage);
-    } else {
-      localStorage.removeItem('profileImage');
-    }
-  }, [profileImage]);
+    const userRef = ref(database, `users/${username}/profile`);
+    const unsubscribe = onValue(userRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        setProfileImage(data.profileImage || null);
+        setProfileInfo(data.profileInfo || { role: 'Manager' });
+      }
+    });
+
+    return () => unsubscribe();
+  }, [username, database]);
+
+  /**
+   * Save user profile data to Firebase.
+   */
+  const saveProfileToFirebase = (updatedProfile) => {
+    const userRef = ref(database, `users/${username}/profile`);
+    set(userRef, updatedProfile)
+      .then(() => {
+        console.log('Profile saved successfully!');
+      })
+      .catch((error) => {
+        console.error('Error saving profile:', error);
+      });
+  };
 
   /**
    * Handles the profile image upload and updates the profile image state.
@@ -50,7 +74,12 @@ export default function DashFooter({ username, calendarEvents }) {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
+        const updatedProfile = {
+          profileImage: reader.result,
+          profileInfo,
+        };
         setProfileImage(reader.result);
+        saveProfileToFirebase(updatedProfile);
       };
       reader.readAsDataURL(file);
     }
@@ -130,7 +159,7 @@ export default function DashFooter({ username, calendarEvents }) {
                     />
                   )}
                   <h4>Username: {username}</h4>
-                  <h4>Role: Manager</h4>
+                  <h4>Role: {profileInfo.role}</h4>
 
                   {/* Edit Profile Image */}
                   <div className="edit-profile">

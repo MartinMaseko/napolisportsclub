@@ -2,18 +2,23 @@ import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import './calender.css';
 import DashFooter from '../dashfooter/DashFooter.jsx';
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+import { getDatabase, ref, set, onValue, off } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
 
-const CALENDAR_EVENTS_KEY = 'calendarEvents';
 
-/**
- * Retrieves initial events from local storage.
- * If no events are found, returns an empty object.
- * @returns {Object} - Parsed events from local storage or an empty object.
- */
-const getInitialEvents = () => {
-  const savedEvents = localStorage.getItem(CALENDAR_EVENTS_KEY);
-  return savedEvents ? JSON.parse(savedEvents) : {};
-};
+const firebaseConfig = {
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,
+}
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const database = getDatabase(app);
 
 /**
  * Calendar Component
@@ -60,7 +65,7 @@ const getInitialEvents = () => {
  */
 const Calendar = () => {
   // State variables for managing calendar data and UI
-  const [events, setEvents] = useState(getInitialEvents());
+  const [events, setEvents] = useState({});
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(null);
   const [newEventText, setNewEventText] = useState('');
@@ -73,10 +78,56 @@ const Calendar = () => {
   const [editTime, setEditTime] = useState('');
   const [editAddress, setEditAddress] = useState('');
   const [editAgeGroup, setEditAgeGroup] = useState('');
+  // eslint-disable-next-line no-unused-vars
+  const [isLoading, setIsLoading] = useState(true);
 
   // Retrieve username from query parameters
   const [searchParams] = useSearchParams();
-  const username = searchParams.get('username');
+  const username = searchParams.get('username') || 'defaultUser';
+
+  // Firebase reference for shared events
+  const sharedEventsRef = ref(database, `sharedEvents`);
+
+
+
+  // Write events to /sharedEvents
+  const writeEventsData = async (eventsData) => {
+    try {
+      await set(sharedEventsRef, eventsData);
+      console.log("Shared events saved successfully!");
+    } catch (error) {
+      console.error("Error saving shared events:", error);
+    }
+  };
+
+  // --- Firebase Data Fetching and Sync ---
+  // Use useEffect to set up a listener when the component mounts
+  // Fetch shared events from Firebase
+  useEffect(() => {
+    setIsLoading(true);
+
+    const unsubscribe = onValue(
+      sharedEventsRef,
+      (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+          setEvents(data);
+        } else {
+          setEvents({});
+        }
+        setIsLoading(false);
+      },
+      (error) => {
+        console.error("Error fetching shared events:", error);
+        setIsLoading(false);
+      }
+    );
+
+    return () => {
+      off(sharedEventsRef, "value", unsubscribe);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   /**
    * Calculates the number of days in a given month.
@@ -84,6 +135,7 @@ const Calendar = () => {
    * @param {number} month - The month (0-indexed).
    * @returns {number} - Total days in the month.
    */
+
   const daysInMonth = (year, month) => new Date(year, month + 1, 0).getDate();
 
   /**
@@ -101,10 +153,6 @@ const Calendar = () => {
 
   const days = [];
 
-  // Save events to local storage whenever they change
-  useEffect(() => {
-    localStorage.setItem(CALENDAR_EVENTS_KEY, JSON.stringify(events));
-  }, [events]);
 
   // Generate empty slots for days before the first day of the month
   for (let i = 0; i < firstDay; i++) {
@@ -147,31 +195,34 @@ const Calendar = () => {
   /**
    * Handles adding a new event to the selected date.
    */
-  const handleAddEvent = () => {
+  const handleAddEvent = async () => {
     if (selectedDate && newEventText.trim() !== '' && newEventAgeGroup.trim() !== '') {
-      setEvents((prevEvents) => {
-        const updatedEvents = {
-          ...prevEvents,
-          [selectedDate]: [
-            ...(prevEvents[selectedDate] || []),
-            {
-              text: newEventText.trim(),
-              time: newEventTime,
-              address: newEventAddress,
-              ageGroup: newEventAgeGroup.trim(),
-            },
-          ],
-        };
-        return updatedEvents;
-      });
+      // Create a temporary updated events object
+      const updatedEvents = {
+        ...events,
+        [selectedDate]: [
+          ...(events[selectedDate] || []),
+          {
+            text: newEventText.trim(),
+            time: newEventTime,
+            address: newEventAddress,
+            ageGroup: newEventAgeGroup.trim(),
+          },
+        ],
+      };
 
-      // Clear input fields after adding the event
+      // Write the entire updated events object to Firebase
+      await writeEventsData(updatedEvents);
+
+      // The onValue listener will automatically update the 'events' state
+      // So we only need to clear the input fields here.
       setNewEventText('');
       setNewEventTime('');
       setNewEventAddress('');
       setNewEventAgeGroup('');
+
     } else {
-      console.log('Please fill in all fields before adding an event.');
+      console.log('Please fill in all required fields (Match and Age Group) before adding an event.');
     }
   };
 
@@ -210,27 +261,39 @@ const Calendar = () => {
 
   /**
    * Saves the edited event.
+   * Updates the state and then writes the new state to Firebase.
    */
-  const handleSaveEdit = () => {
-    if (selectedDate && events[selectedDate] && editText.trim() !== '' && editAgeGroup.trim() !== '') {
-      setEvents((prevEvents) => {
-        const updatedEvents = { ...prevEvents };
-        const updatedDayEvents = [...prevEvents[selectedDate]];
-        updatedDayEvents[editingIndex] = {
-          text: editText.trim(),
-          time: editTime,
-          address: editAddress,
-          ageGroup: editAgeGroup.trim(),
-        };
-        updatedEvents[selectedDate] = updatedDayEvents;
-        return updatedEvents;
-      });
+  const handleSaveEdit = async () => { 
+    if (selectedDate && events[selectedDate] && editingIndex !== null && editText.trim() !== '' && editAgeGroup.trim() !== '') {
+      // Create a temporary updated events object based on the current state
+      const updatedEvents = { ...events };
+      const updatedDayEvents = [...events[selectedDate]]; // Work with a copy of the array
+
+      // Update the specific event within the copied array
+      updatedDayEvents[editingIndex] = {
+        text: editText.trim(),
+        time: editTime,
+        address: editAddress,
+        ageGroup: editAgeGroup.trim(),
+      };
+
+      // Place the updated array back into the temporary events object
+      updatedEvents[selectedDate] = updatedDayEvents;
+
+      // Write the entire updated events object to Firebase
+      // The onValue listener will automatically update the component's 'events' state
+      await writeEventsData(updatedEvents);
+
+      // Reset editing state and clear input fields
       setIsEditing(false);
       setEditingIndex(null);
       setEditText('');
       setEditTime('');
       setEditAddress('');
       setEditAgeGroup('');
+    } else {
+      console.log('Please fill in all required fields (Match and Age Group) before saving.');
+      // Optionally, provide feedback to the user in the UI
     }
   };
 

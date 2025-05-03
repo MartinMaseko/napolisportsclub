@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import emailjs from "emailjs-com";
 import './contact.css';
 import Footer from '../footer/Footer.jsx';
 
@@ -28,6 +29,9 @@ export default function ContactPage() {
     message: '',
   });
 
+  // State to manage submission status
+  const [submissionStatus, setSubmissionStatus] = useState("");
+
   /**
    * Handles input changes in the form.
    * Updates the corresponding field in the formData state.
@@ -45,15 +49,31 @@ export default function ContactPage() {
    */
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData); // Replace with API call logic if needed
 
-    // Reset the form fields after submission
-    setFormData({
-      name: '',
-      phone: '',
-      email: '',
-      message: '',
-    });
+    // EmailJS configuration
+    const serviceID = "service_kcrc171"; // EmailJS Service ID
+    const templateID = "template_ta476tf"; // EmailJS Template ID
+    const userID = "Lpe2o5Y0d-HrJ4w4J"; // EmailJS User ID
+
+    emailjs
+      .send(serviceID, templateID, formData, userID)
+      .then(
+        (response) => {
+          console.log("SUCCESS!", response.status, response.text);
+          setSubmissionStatus("success");
+          // Reset the form fields after submission
+          setFormData({
+            name: "",
+            phone: "",
+            email: "",
+            message: "",
+          });
+        },
+        (error) => {
+          console.error("FAILED...", error);
+          setSubmissionStatus("error");
+        }
+      );
   };
 
   return (
@@ -124,6 +144,19 @@ export default function ContactPage() {
           {/* Submit Button */}
           <button id='contactform-submitbtn' type="submit">Submit</button>
         </form>
+        {/* Success Message */}
+        {submissionStatus === "success" && (
+            <p className="email-report">
+              Thank you for reaching out, we will be in contact with you soon.
+            </p>
+          )}
+
+          {/* Error Message */}
+          {submissionStatus === "error" && (
+            <p className="email-report">
+              Failed to send the message. Please try again later.
+            </p>
+          )}
       </div>
 
       {/* Footer Section */}

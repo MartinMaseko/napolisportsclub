@@ -61,6 +61,11 @@ textarea {
     z-index: 1000;
 }
 
+.email-report {
+    text-align: center;
+    color: whitesmoke;
+}
+
 @media (min-width: 768px) {
     .dark-page {
         display: grid;
