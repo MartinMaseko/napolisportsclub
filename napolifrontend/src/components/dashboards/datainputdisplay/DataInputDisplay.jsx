@@ -79,9 +79,9 @@ const firebaseConfig = {
     appId: process.env.REACT_APP_FIREBASE_APP_ID,
   };
   
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const database = getDatabase(app);
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const database = getDatabase(app);
 
 export default function DataInputDisplay() {
     // State for managing form data

@@ -36,6 +36,28 @@ export default function ManagerDashboard() {
   const username = searchParams.get("username");
 
   /**
+   * Fetch weather data for Northcliff, Johannesburg, South Africa.
+   */
+  useEffect(() => {
+    const fetchWeatherData = async () => {
+      try {
+        const response = await fetch(
+          `https://api.openweathermap.org/data/2.5/weather?q=Northcliff,Johannesburg,ZA&appid=310d3f519dd049d6582d6edaa9424ea3&units=metric`
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch weather data");
+        }
+        const data = await response.json();
+        setWeatherData(data);
+      } catch (error) {
+        console.error("Error fetching weather data:", error);
+      }
+    };
+
+    fetchWeatherData();
+  }, []);
+
+  /**
    * Fetch calendar events from Firebase for the logged-in user.
    */
   useEffect(() => {
