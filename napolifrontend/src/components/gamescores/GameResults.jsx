@@ -1,59 +1,29 @@
-import React, { useState, useEffect, useMemo } from "react";
-import { useLocation, useSearchParams } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
+import { initializeApp } from "firebase/app";
+import { getDatabase, ref, onValue, set, off } from "firebase/database";
 import DashFooter from "../dashboards/dashfooter/DashFooter";
 import "./gameresult.css";
 import NapoliImg from "../assets/Napoli-2020.png";
 
-/**
- * GameResults Component
- *
- * This component displays game results, including a summary of wins and losses,
- * and allows users to input scores for scheduled games. It retrieves game data
- * from the `location.state` and manages scores using local storage.
- *
- * Features:
- * - Displays a summary of wins and losses based on game scores.
- * - Lists scheduled games with input fields for home and away team scores.
- * - Saves and retrieves game scores from local storage.
- * - Dynamically calculates wins and losses based on the entered scores.
- *
- * Hooks:
- * - `useLocation`: Retrieves the current location object to access state data.
- * - `useMemo`: Memoizes the `calendarEvents` to prevent unnecessary re-renders.
- * - `useState`: Manages state for game scores, wins, and losses.
- * - `useSearchParams`: Retrieves the username from URL search parameters.
- * - `useEffect`: Saves game scores to local storage and recalculates wins/losses
- *   whenever relevant data changes.
- *
- * Props:
- * - None
- *
- * State:
- * - `calendarEvents` (object): Memoized events data from `location.state`.
- * - `gameScores` (object): Stores scores for each game, persisted in local storage.
- * - `wins` (number): Count of games won based on scores.
- * - `losses` (number): Count of games lost based on scores.
- *
- * Functions:
- * - `handleScoreChange(eventId, team, value)`: Updates the score for a specific game.
- *
- * Returns:
- * - JSX structure displaying the game results, score inputs, and summary.
- */
+// Firebase configuration
+const firebaseConfig = {
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const database = getDatabase(app);
 
 const GameResults = () => {
-  const location = useLocation();
-
-  // Memoize calendarEvents to avoid unnecessary re-renders
-  const calendarEvents = useMemo(() => location.state?.calendarEvents || {}, [location.state]);
-
-  // State to store game scores
-  const [gameScores, setGameScores] = useState(() => {
-    const savedScores = localStorage.getItem("gameScores");
-    return savedScores ? JSON.parse(savedScores) : {};
-  });
-
-  // State to store the number of wins and losses
+  const [calendarEvents, setCalendarEvents] = useState({});
+  const [gameScores, setGameScores] = useState({});
   const [wins, setWins] = useState(0);
   const [losses, setLosses] = useState(0);
 
@@ -61,17 +31,83 @@ const GameResults = () => {
   const [searchParams] = useSearchParams();
   const username = searchParams.get("username");
 
-  // Save gameScores to local storage whenever it changes
+  /**
+   * Fetch shared events from Firebase.
+   */
   useEffect(() => {
-    localStorage.setItem("gameScores", JSON.stringify(gameScores));
-  }, [gameScores]);
+    const sharedEventsRef = ref(database, `sharedEvents`);
 
-  // Calculate wins and losses based on displayed games in calendarEvents
+    const unsubscribe = onValue(
+      sharedEventsRef,
+      (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+          setCalendarEvents(data);
+        } else {
+          setCalendarEvents({});
+        }
+      },
+      (error) => {
+        console.error("Error fetching shared events:", error);
+      }
+    );
+
+    return () => {
+      off(sharedEventsRef, "value", unsubscribe);
+    };
+  }, []);
+
+  /**
+   * Fetch game scores from Firebase for the logged-in user.
+   */
+  useEffect(() => {
+    if (!username) return;
+
+    const userScoresRef = ref(database, `users/${username}/gameScores`);
+
+    const unsubscribe = onValue(
+      userScoresRef,
+      (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+          setGameScores(data);
+        } else {
+          setGameScores({});
+        }
+      },
+      (error) => {
+        console.error("Error fetching game scores:", error);
+      }
+    );
+
+    return () => {
+      off(userScoresRef, "value", unsubscribe);
+    };
+  }, [username]);
+
+  /**
+   * Save game scores to Firebase.
+   */
+  const saveGameScoresToFirebase = (updatedScores) => {
+    if (!username) return;
+
+    const userScoresRef = ref(database, `users/${username}/gameScores`);
+    set(userScoresRef, updatedScores)
+      .then(() => {
+        console.log("Game scores saved successfully!");
+      })
+      .catch((error) => {
+        console.error("Error saving game scores:", error);
+      });
+  };
+
+  /**
+   * Calculate wins and losses based on game scores.
+   */
   useEffect(() => {
     let winCount = 0;
     let lossCount = 0;
 
-    // Iterate over displayed games in calendarEvents
     Object.entries(calendarEvents).forEach(([date, events]) => {
       events.forEach((event, index) => {
         const eventId = `${date}-${index}`;
@@ -98,13 +134,16 @@ const GameResults = () => {
    * @param {string} value - The new score value.
    */
   const handleScoreChange = (eventId, team, value) => {
-    setGameScores((prevScores) => ({
-      ...prevScores,
+    const updatedScores = {
+      ...gameScores,
       [eventId]: {
-        ...prevScores[eventId],
-        [team]: value === "" ? "" : parseInt(value, 10), // Allow empty string for clearing input
+        ...gameScores[eventId],
+        [team]: value === "" ? "" : parseInt(value, 10),
       },
-    }));
+    };
+
+    setGameScores(updatedScores);
+    saveGameScoresToFirebase(updatedScores);
   };
 
   return (
@@ -132,41 +171,45 @@ const GameResults = () => {
         <div className="scheduled-games">
           {Object.entries(calendarEvents).length > 0 ? (
             Object.entries(calendarEvents).map(([date, events]) =>
-              events.map((event, index) => (
-                <div key={`${date}-${index}`} className="game-card">
-                  <p className="game-card-title">
-                    <strong>Game:</strong> {event.text}
-                  </p>
-                  <p>
-                    <strong>Age Group:</strong> {event.ageGroup}
-                  </p>
-                  <p>
-                    <strong>Date:</strong> {new Date(date).toLocaleDateString()}
-                  </p>
-                  <div className="score-inputs">
-                    <label className="score-label">
-                      Home Team Score:
-                      <input
-                        type="number"
-                        value={gameScores[`${date}-${index}`]?.homeScore || ""}
-                        onChange={(e) =>
-                          handleScoreChange(`${date}-${index}`, "homeScore", e.target.value)
-                        }
-                      />
-                    </label>
-                    <label>
-                      Away Team Score:
-                      <input
-                        type="number"
-                        value={gameScores[`${date}-${index}`]?.awayScore || ""}
-                        onChange={(e) =>
-                          handleScoreChange(`${date}-${index}`, "awayScore", e.target.value)
-                        }
-                      />
-                    </label>
+              events.map((event, index) => {
+                const eventId = `${date}-${index}`;
+                return (
+                  <div key={eventId} className="game-card">
+                    <p className="game-card-title">
+                      <strong>Game:</strong> {event.text}
+                    </p>
+                    <p>
+                      <strong>Age Group:</strong> {event.ageGroup}
+                    </p>
+                    <p>
+                      <strong>Date:</strong>{" "}
+                      {new Date(date).toLocaleDateString()}
+                    </p>
+                    <div className="score-inputs">
+                      <label className="score-label">
+                        Home Team Score:
+                        <input
+                          type="number"
+                          value={gameScores[eventId]?.homeScore || ""}
+                          onChange={(e) =>
+                            handleScoreChange(eventId, "homeScore", e.target.value)
+                          }
+                        />
+                      </label>
+                      <label>
+                        Away Team Score:
+                        <input
+                          type="number"
+                          value={gameScores[eventId]?.awayScore || ""}
+                          onChange={(e) =>
+                            handleScoreChange(eventId, "awayScore", e.target.value)
+                          }
+                        />
+                      </label>
+                    </div>
                   </div>
-                </div>
-              ))
+                );
+              })
             )
           ) : (
             <p>No scheduled games available.</p>

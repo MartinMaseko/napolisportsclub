@@ -6,6 +6,8 @@ import Profile from "./Profile";
 import ClubFees from "./ClubFees";
 import Fixtures from "./Fixtures";
 import axios from "axios";
+import { initializeApp } from "firebase/app";
+import { getDatabase, ref, onValue, off } from "firebase/database";
 
 /**
  * PlayerDashboard Component
@@ -46,6 +48,22 @@ import axios from "axios";
  * - Displays a loading screen while data is being fetched.
  * - Displays the active dashboard component based on the selected tab.
  */
+
+// Firebase configuration
+const firebaseConfig = {
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const database = getDatabase(app);
+
 export default function PlayerDashboard({ username }) {
   // State variables for managing UI and data
   const [dateTime, setDateTime] = useState(""); // Current date and time
@@ -124,11 +142,29 @@ export default function PlayerDashboard({ username }) {
   }, []);
 
   /**
-   * Loads calendar events from local storage.
+   * Fetch calendar events from Firebase.
    */
   useEffect(() => {
-    const savedEvents = JSON.parse(localStorage.getItem("calendarEvents")) || {};
-    setCalendarEvents(savedEvents);
+    const sharedEventsRef = ref(database, `sharedEvents`);
+
+    const unsubscribe = onValue(
+      sharedEventsRef,
+      (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+          setCalendarEvents(data);
+        } else {
+          setCalendarEvents({});
+        }
+      },
+      (error) => {
+        console.error("Error fetching calendar events:", error);
+      }
+    );
+
+    return () => {
+      off(sharedEventsRef, "value", unsubscribe);
+    };
   }, []);
 
   /**

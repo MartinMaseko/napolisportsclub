@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useSearchParams } from 'react-router-dom';
 import axios from "axios";
+import { initializeApp } from "firebase/app";
+import { getDatabase, ref, onValue, remove } from "firebase/database";
 import DashFooter from "../dashfooter/DashFooter";
 import './datastyle.css'
 import NapoliImg from  "../../assets/Napoli-2020.png";
@@ -66,6 +68,21 @@ const CALENDAR_EVENTS_KEY = 'calendarEvents';
  * <DataInputDisplay />
  */
 
+// Firebase configuration
+const firebaseConfig = {
+    apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+    authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+    databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL,
+    projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+    storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+    appId: process.env.REACT_APP_FIREBASE_APP_ID,
+  };
+  
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const database = getDatabase(app);
+
 export default function DataInputDisplay() {
     // State for managing form data
     const [formData, setFormData] = useState({
@@ -102,6 +119,8 @@ export default function DataInputDisplay() {
     const [file, setFile] = useState(null); 
     const [searchQuery, setSearchQuery] = useState("");
     const playerDetailsRef = useRef(null);
+    const [newRegistrations, setNewRegistrations] = useState([]); // State for new registrations
+    const [expandedRegistration, setExpandedRegistration] = useState(null); // State for expanded registration
 
     // Retrieve calendar events from local storage
     const [calendarEvents] = useState(() => {
@@ -138,6 +157,26 @@ export default function DataInputDisplay() {
             }, 100); // Small delay to ensure the form is rendered
         }
     };
+
+    // Fetch new registrations from Firebase
+    useEffect(() => {
+        const newRegistrationsRef = ref(database, "newRegistrations");
+
+        const unsubscribe = onValue(newRegistrationsRef, (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+            const registrations = Object.entries(data).map(([id, value]) => ({
+            id,
+            ...value,
+            }));
+            setNewRegistrations(registrations);
+        } else {
+            setNewRegistrations([]);
+        }
+        });
+
+        return () => unsubscribe();
+    }, []);
 
     // Fetch data from the API
     useEffect(() => {
@@ -232,7 +271,7 @@ export default function DataInputDisplay() {
             const token = localStorage.getItem('authToken');
             if (!token) {
                 console.error("No token found. User must be logged in.");
-                return; // Or redirect to login
+                return; 
             }
             const response = await axios.post("https://MartinMaseko.pythonanywhere.com/api/data/", formData, {
                 headers: {
@@ -379,6 +418,56 @@ export default function DataInputDisplay() {
             alert(error.response?.data?.error || "Failed to register user.");
         }
     };
+
+    // Handle adding a new registration to Django's API
+    const handleAddPlayer = async (registration) => {
+        try {
+        const token = localStorage.getItem("authToken");
+        if (!token) {
+            alert("Please log in to add players.");
+            return;
+        }
+
+        const response = await axios.post(
+            "https://MartinMaseko.pythonanywhere.com/api/players/",
+            registration,
+            {
+            headers: {
+                Authorization: `Token ${token}`,
+            },
+            }
+        );
+
+        alert("Player added successfully!");
+        setPlayers([...players, response.data]);
+
+        // Remove the registration from Firebase
+        const registrationRef = ref(database, `newRegistrations/${registration.id}`);
+        await remove(registrationRef);
+        } catch (error) {
+        console.error("Error adding player:", error);
+        alert("Failed to add player. Please try again.");
+        }
+    };
+
+    // Handle expanding a registration to show details
+    const handleExpandRegistration = (registration) => {
+        setExpandedRegistration(
+        expandedRegistration?.id === registration.id ? null : registration
+        );
+    };
+
+    const handleDeleteRegistration = async (registrationId) => {
+        try {
+          const registrationRef = ref(database, `newRegistrations/${registrationId}`);
+          await remove(registrationRef);
+          alert("Registration deleted successfully!");
+          setNewRegistrations(newRegistrations.filter((reg) => reg.id !== registrationId));
+        } catch (error) {
+          console.error("Error deleting registration:", error);
+          alert("Failed to delete registration. Please try again.");
+        }
+      };
 
     return (
         <>
@@ -620,6 +709,60 @@ export default function DataInputDisplay() {
                     <button type="submit">Submit</button>
                 </form>
                 )}
+
+             {/* New Registrations Section */}
+            <h3 id="data-headings">New Registrations</h3>
+            {newRegistrations.length > 0 ? (
+                <ul className="registrations-list">
+                {newRegistrations.map((registration) => (
+                    <li key={registration.id} className="registration-item">
+                    <div
+                        className="registration-summary"
+                        onClick={() => handleExpandRegistration(registration)}
+                    >
+                        <strong>
+                        {registration.first_name} {registration.last_name}
+                        </strong>
+                    </div>
+                    {expandedRegistration?.id === registration.id && (
+                        <div className="registration-details">
+                            <p><strong>First Name:</strong> {registration.first_name}</p>
+                            <p><strong>Last Name:</strong> {registration.last_name}</p>
+                            <p><strong>Nationality:</strong> {registration.nationality}</p>
+                            <p><strong>ID Number:</strong> {registration.id_number}</p>
+                            <p><strong>Gender:</strong> {registration.gender}</p>
+                            <p><strong>School:</strong> {registration.school}</p>
+                            <p><strong>Previous Club:</strong> {registration.previous_club}</p>
+                            <p><strong>Years of Training:</strong> {registration.years_of_training}</p>
+                            <p><strong>Age Group:</strong> {registration.age_group}</p>
+                            <p><strong>Position:</strong> {registration.position}</p>
+                            <p><strong>Mother's Name:</strong> {registration.mother_name}</p>
+                            <p><strong>Mother's Phone:</strong> {registration.mother_phone}</p>
+                            <p><strong>Mother's Email:</strong> {registration.mother_email}</p>
+                            <p><strong>Father's Name:</strong> {registration.father_name}</p>
+                            <p><strong>Father's Phone:</strong> {registration.father_phone}</p>
+                            <p><strong>Father's Email:</strong> {registration.father_email}</p>
+                        <button
+                            className="add-player-btn"
+                            onClick={() => handleAddPlayer(registration)}
+                        >
+                            Add Player
+                        </button>
+                        <button
+                            className="delete-registration-btn"
+                            onClick={() => handleDeleteRegistration(registration.id)}
+                        >
+                            Delete
+                        </button>
+                        </div>
+                    )}
+                    </li>
+                ))}
+                </ul>
+            ) : (
+                <p>No new registrations available.</p>
+            )}
+
 
             {/* Display fetched data */}
             <h3 id="data-headings">Club Players</h3>

@@ -1,34 +1,24 @@
 import React, { useState } from "react";
+import { initializeApp } from "firebase/app";
+import { getDatabase, ref, push } from "firebase/database";
 import "./homepage.css";
 
-/**
- * JoinForm Component
- * 
- * A React functional component that renders a membership form for users to join a club.
- * The form collects various personal and club-related details from the user.
- * 
- * @component
- * @param {Object} props - The props object.
- * @param {Function} props.onClose - Callback function to close the form after submission.
- * 
- * @returns {JSX.Element} The rendered JoinForm component.
- * 
- * @example
- * <JoinForm onClose={() => console.log('Form closed')} />
- * 
- * @description
- * The form includes fields for:
- * - Name, Surname, Age, Address, School Name, Grade
- * - Previous Club, Position, Email, Phone
- * - Reason for leaving the previous club
- * 
- * The component uses the `useState` hook to manage form data and updates the state
- * on input changes. On form submission, the data is logged to the console and the
- * `onClose` callback is triggered.
- */
+// Firebase configuration
+const firebaseConfig = {
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const database = getDatabase(app);
 
 export default function JoinForm({ onClose }) {
-  // State to manage form data
   const [formData, setFormData] = useState({
     first_name: "",
     last_name: "",
@@ -62,141 +52,185 @@ export default function JoinForm({ onClose }) {
 
   /**
    * Handles form submission.
-   * Logs the form data and triggers the onClose callback.
+   * Sends the form data to Firebase.
    * @param {Object} e - The event object from the form submission.
    */
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form Data:", formData);
-    onClose(); // Close the form after submission
+
+    try {
+      const newRegistrationRef = ref(database, "newRegistrations");
+      const newRegistration = {
+        ...formData,
+      };
+
+      await push(newRegistrationRef, newRegistration);
+
+      alert("Registration submitted successfully!");
+      setFormData({
+        first_name: "",
+        last_name: "",
+        nationality: "",
+        id_number: "",
+        gender: "",
+        school: "",
+        previous_club: "",
+        years_of_training: 0,
+        age_group: "U12",
+        position: "",
+        mother_name: "",
+        mother_phone: "",
+        mother_email: "",
+        father_name: "",
+        father_phone: "",
+        father_email: "",
+      });
+      onClose();
+    } catch (error) {
+      console.error("Error submitting registration:", error);
+      alert("Failed to submit registration. Please try again.");
+    }
   };
 
   return (
     <div className="join-form active" id="joinForm">
       <form id="membershipForm" onSubmit={handleSubmit}>
-        {/* Name Input */}
-        <label htmlFor="name">Name</label>
+        <label>First Name:</label>
         <input
           type="text"
-          id="name"
-          name="name"
-          value={formData.name}
+          name="first_name"
+          value={formData.first_name}
           onChange={handleInputChange}
           required
         />
 
-        {/* Surname Input */}
-        <label htmlFor="surname">Surname</label>
+        <label>Last Name:</label>
         <input
           type="text"
-          id="surname"
-          name="surname"
-          value={formData.surname}
+          name="last_name"
+          value={formData.last_name}
           onChange={handleInputChange}
           required
         />
 
-        {/* Age Input */}
-        <label htmlFor="age">Age</label>
+        <label>Nationality:</label>
+        <input
+          type="text"
+          name="nationality"
+          value={formData.nationality}
+          onChange={handleInputChange}
+        />
+
+        <label>ID Number:</label>
+        <input
+          type="text"
+          name="id_number"
+          value={formData.id_number}
+          onChange={handleInputChange}
+          required
+        />
+
+        <label>Gender:</label>
+        <input
+          type="text"
+          name="gender"
+          value={formData.gender}
+          onChange={handleInputChange}
+        />
+
+        <label>School:</label>
+        <input
+          type="text"
+          name="school"
+          value={formData.school}
+          onChange={handleInputChange}
+        />
+
+        <label>Previous Club:</label>
+        <input
+          type="text"
+          name="previous_club"
+          value={formData.previous_club}
+          onChange={handleInputChange}
+        />
+
+        <label>Years of Training:</label>
         <input
           type="number"
-          id="age"
-          name="age"
-          value={formData.age}
+          name="years_of_training"
+          value={formData.years_of_training}
           onChange={handleInputChange}
-          min="8"
-          max="23"
-          required
         />
 
-        {/* Address Input */}
-        <label htmlFor="address">Address</label>
+        <label>Age Group:</label>
+        <select
+          name="age_group"
+          value={formData.age_group}
+          onChange={handleInputChange}
+          required
+        >
+          <option value="U12">U12</option>
+          <option value="U14">U14</option>
+          <option value="U17">U17</option>
+          <option value="SENIOR">SENIOR</option>
+        </select>
+
+        <label>Position:</label>
         <input
           type="text"
-          id="address"
-          name="address"
-          value={formData.address}
-          onChange={handleInputChange}
-          required
-        />
-
-        {/* School Name Input */}
-        <label htmlFor="school-name">School Name</label>
-        <input
-          type="text"
-          id="school-name"
-          name="schoolName"
-          value={formData.schoolName}
-          onChange={handleInputChange}
-          required
-        />
-
-        {/* Grade Input */}
-        <label htmlFor="grade">Grade</label>
-        <input
-          type="number"
-          id="grade"
-          name="grade"
-          value={formData.grade}
-          onChange={handleInputChange}
-          max="12"
-          required
-        />
-
-        {/* Previous Club Input */}
-        <label htmlFor="previous-club">Previous Club</label>
-        <input
-          type="text"
-          id="previous-club"
-          name="previousClub"
-          value={formData.previousClub}
-          onChange={handleInputChange}
-          required
-        />
-
-        {/* Position Dropdown */}
-        <label htmlFor="position">Position</label>
-        <input
-          type="text"
-          id="position"
           name="position"
           value={formData.position}
           onChange={handleInputChange}
-          />
+        />
+        
+        <label>Mother's Name:</label>
+        <input
+          type="text"
+          name="mother_name"
+          value={formData.mother_name}
+          onChange={handleInputChange}
+        />
 
-        {/* Email Input */}
-        <label htmlFor="email">Email</label>
+        <label>Mother's Phone:</label>
+        <input
+          type="text"
+          name="mother_phone"
+          value={formData.mother_phone}
+          onChange={handleInputChange}
+        />
+
+        <label>Mother's Email:</label>
         <input
           type="email"
-          id="email"
-          name="email"
-          value={formData.email}
+          name="mother_email"
+          value={formData.mother_email}
           onChange={handleInputChange}
-          required
         />
 
-        {/* Phone Input */}
-        <label htmlFor="phone">Phone</label>
+        <label>Father's Name:</label>
         <input
-          type="tel"
-          id="phone"
-          name="phone"
-          value={formData.phone}
+          type="text"
+          name="father_name"
+          value={formData.father_name}
           onChange={handleInputChange}
-          required
         />
 
-        {/* Reason for Leaving Previous Club */}
-        <label htmlFor="migrate-reason">Reason for leaving your previous club</label>
-        <textarea
-          id="migrate-reason"
-          name="migrateReason"
-          value={formData.migrateReason}
+        <label>Father's Phone:</label>
+        <input
+          type="text"
+          name="father_phone"
+          value={formData.father_phone}
           onChange={handleInputChange}
-          rows="4"
         />
 
-        {/* Submit Button */}
+        <label>Father's Email:</label>
+        <input
+          type="email"
+          name="father_email"
+          value={formData.father_email}
+          onChange={handleInputChange}
+        />
+
         <button type="submit">Submit</button>
       </form>
     </div>
