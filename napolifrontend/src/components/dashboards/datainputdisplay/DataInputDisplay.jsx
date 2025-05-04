@@ -721,7 +721,7 @@ export default function DataInputDisplay() {
                         onClick={() => handleExpandRegistration(registration)}
                     >
                         <strong>
-                        {registration.first_name} {registration.last_name}
+                            {registration.first_name} {registration.last_name}
                         </strong>
                     </div>
                     {expandedRegistration?.id === registration.id && (
@@ -742,18 +742,20 @@ export default function DataInputDisplay() {
                             <p><strong>Father's Name:</strong> {registration.father_name}</p>
                             <p><strong>Father's Phone:</strong> {registration.father_phone}</p>
                             <p><strong>Father's Email:</strong> {registration.father_email}</p>
-                        <button
-                            className="add-player-btn"
-                            onClick={() => handleAddPlayer(registration)}
-                        >
-                            Add Player
-                        </button>
-                        <button
-                            className="delete-registration-btn"
-                            onClick={() => handleDeleteRegistration(registration.id)}
-                        >
-                            Delete
-                        </button>
+                            <div className="Btns-Container">
+                                <button
+                                    className="Dark-Btns"
+                                    onClick={() => handleAddPlayer(registration)}
+                                >
+                                    Add Player
+                                </button>
+                                <button
+                                    className="Dark-Btns"
+                                    onClick={() => handleDeleteRegistration(registration.id)}
+                                >
+                                    Delete
+                                </button>
+                            </div>
                         </div>
                     )}
                     </li>
@@ -762,7 +764,6 @@ export default function DataInputDisplay() {
             ) : (
                 <p>No new registrations available.</p>
             )}
-
 
             {/* Display fetched data */}
             <h3 id="data-headings">Club Players</h3>

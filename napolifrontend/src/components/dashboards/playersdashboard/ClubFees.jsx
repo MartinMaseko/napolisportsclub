@@ -76,12 +76,10 @@ export default function ClubFees({ playerDetails }) {
 
   return (
     <div className="clubfees-container">
-      <h2>Club Fees</h2>
+      <h2 className="cta-colour">Club Fees</h2>
 
       {/* Display the player's fee details */}
-      <p><strong>Amount Owed:</strong> R{updatedDetails.amount_owed.toFixed(2)}</p>
-      <p><strong>Amount Paid:</strong> R{updatedDetails.amount_paid.toFixed(2)}</p>
-      <p><strong>Balance Due:</strong> R{updatedDetails.balance.toFixed(2)}</p>
+      <p><strong className="cta-colour">Balance Due:</strong> R{updatedDetails.balance.toFixed(2)}</p>
 
       {/* Payment input and button */}
       <div className="payment-section">
@@ -91,7 +89,7 @@ export default function ClubFees({ playerDetails }) {
           value={paymentAmount}
           onChange={(e) => setPaymentAmount(e.target.value)}
         />
-        <button onClick={handlePayment}>Pay</button>
+        <button className="Pay-Btn" onClick={handlePayment}>Pay</button>
       </div>
     </div>
   );

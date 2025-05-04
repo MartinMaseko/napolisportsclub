@@ -11,11 +11,13 @@
     text-align: center;
 }
 
-.data-input-display dl{
+.data-input-display dl,
+.registration-details{
     text-align: start;
 }
 
-.data-input-display dt{
+.data-input-display dt,
+.registration-summary {
     margin-top: 20px;
     list-style: none;
     padding: 1em;
@@ -25,9 +27,11 @@
     border-radius: 10px;
     text-align: center;
     transition: transform 0.3s ease;
+    cursor: pointer;
 }
 
-.data-input-display dt:hover {
+.data-input-display dt:hover,
+.registration-summary:hover {
   color: #57bcdd;
   transform: scale(1.02);
 }
@@ -129,6 +133,14 @@ ul li a img {
 
 ul li a img:hover {
     transform: scale(1.1); 
+}
+
+.registrations-list {
+  padding-left: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-align: center;
 }
 
 .filter-btns-container {

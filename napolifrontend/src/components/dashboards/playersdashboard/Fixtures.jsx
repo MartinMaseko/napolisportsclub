@@ -44,12 +44,12 @@ export default function Fixtures({ calendarEvents }) {
 
   return (
     <div>
-      <h2>Fixtures</h2>
+      <h2 className="cta-colour">Fixtures</h2>
       {Object.keys(groupedEvents).length > 0 ? (
         // Render grouped events
         Object.entries(groupedEvents).map(([ageGroup, events]) => (
           <div key={ageGroup}>
-            <h3>{ageGroup}</h3>
+            <h3 className="cta-colour">{ageGroup}</h3>
             <ul className="gamedisplay-contianer">
               {events.map((event, index) => (
                 <li className="game-display" key={index}>

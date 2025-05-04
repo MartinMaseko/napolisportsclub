@@ -20,3 +20,6 @@ media/
 .vscode/
 .idea/
 .DS_Store
+
+# Environment Variables
+.env
