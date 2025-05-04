@@ -1,18 +1,15 @@
 /* Players Dashboard  */
 
 .playerdashboard-container {
-    color: black;
+    background: #262525;
+    color: whitesmoke;
     margin: 0;
-    height: 100vh;
-    min-height: auto;
+    min-height: 100vh;
+    padding: 1em;
 }
   
 .playerlout-container {
-    margin: 0.5em;
-    padding: 0.5em;
     border-radius: 10px;
-    background-color: #a9cec2;
-    box-shadow: 2px 2px 2px rgba(111, 151, 153, 0.7);
     height: auto;
 }
 
@@ -25,11 +22,26 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-bottom: 0.5px solid #e9ecef;
 }
 
 .active-component-container {
     border-top: 1px solid #e9ecef;
+}
+
+.cta-colour {
+    color: #2272A2;
+}
+
+.Pay-Btn {
+    background: #262525;
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+    padding: 1em;
+    width: 100%;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
 }
 
 #dropdown-container {
@@ -38,7 +50,8 @@
 }
 
 #dropdown-menu {
-    background-color: #a9cec2;
+    background: #1D1D1D;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     border: none;
     position: absolute;
     top: 100%; /* Position below the menu icon */
@@ -60,7 +73,7 @@
 #dropdown-menu li {
     padding: 10px 20px;
     cursor: pointer;
-    width: 275px;
+    width: 290px;
     text-align: center;
     font-weight: 600;
     transition: transform 0.3s ease;
@@ -69,13 +82,14 @@
 }
 
 #dropdown-menu li:hover {
-    background-color: #f0f0f0;
+    background: #262525;
+    color: #004582;
     transform: scale(1.02); 
 }
 
 .address-link {
     text-decoration: none;
-    color: black;
+    color: #2272A2;
     font-weight: 600;
 }
 

@@ -237,7 +237,7 @@ export default function PlayerDashboard({ username }) {
               className="player-menuicon"
               width="40"
               height="40"
-              src="https://img.icons8.com/material-outlined/100/000000/menu--v1.png"
+              src="https://img.icons8.com/material-outlined/100/FFFFFF/menu--v1.png"
               alt="Menu Icon"
               style={{ cursor: "pointer" }}
               onClick={toggleDropdown}
@@ -253,7 +253,7 @@ export default function PlayerDashboard({ username }) {
 
         {/* Player Info Section */}
         <p>
-          <strong>Player:</strong> {firstName} {lastName}
+          <strong className="cta-colour">Player:</strong> {firstName} {lastName}
         </p>
         <p>
           <strong>{dateTime}</strong>

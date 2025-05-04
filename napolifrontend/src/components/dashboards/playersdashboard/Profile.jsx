@@ -88,7 +88,7 @@ export default function Profile() {
 
   return (
     <div className="player-details">
-      <h3>Profile: {playerDetails.first_name} {playerDetails.last_name}</h3>
+      <h3 className="cta-colour">Profile: {playerDetails.first_name} {playerDetails.last_name}</h3>
       <p><strong>Nationality:</strong> {playerDetails.nationality}</p>
       <p><strong>ID Number:</strong> {playerDetails.id_number}</p>
       <p><strong>Gender:</strong> {playerDetails.gender}</p>
