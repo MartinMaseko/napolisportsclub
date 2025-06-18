@@ -68,6 +68,7 @@ export default function Footer() {
               title="Google Maps location of NorthCliff Primary School"
             />
           </ErrorBoundary>
+          <p>Developed by @ <a href="https://martinmasekodev.co.za/" target="_blank" rel="noopener noreferrer">Martin Maseko</a></p>
         </div>
       </footer>
     </>

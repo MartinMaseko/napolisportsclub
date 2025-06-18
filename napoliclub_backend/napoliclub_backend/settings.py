@@ -25,7 +25,12 @@ SECRET_KEY = 'django-insecure--5ela^67fb9c*g-srh6js&vv9t3&8r9q8!3kh0xmx1@w(ksif_
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['MartinMaseko.pythonanywhere.com', 'localhost', '192.168.0.140:3000']
+ALLOWED_HOSTS = [
+    'MartinMaseko.pythonanywhere.com',
+    'localhost',
+    '127.0.0.1',
+    '192.168.0.140:3000'
+]
 
 
 # Application definition
@@ -153,6 +158,6 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.AllowAny',
     ]
 }

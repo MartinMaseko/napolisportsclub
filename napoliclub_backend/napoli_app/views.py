@@ -19,6 +19,7 @@ logger = logging.getLogger(__name__)
 
 
 @api_view(['GET'])
+@permission_classes([AllowAny])
 def api_root(request):
     """
     Root API endpoint.

@@ -133,7 +133,7 @@ function Navbar() {
                         <li>
                             {/* Social media icons */}
                             <div className='social-icon'>
-                                <a href="https://www.instagram.com/napoliclub/">
+                                <a href="https://www.instagram.com/napoli_sportsclub/" target="_blank" rel="noopener noreferrer">
                                     <img width="40" height="40" src="https://img.icons8.com/fluency/40/instagram-new.png" alt="instagram-new"/>
                                 </a>
                                 <a href="mailto:napolijhb@gmail.com">
