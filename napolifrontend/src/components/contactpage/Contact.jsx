@@ -51,9 +51,9 @@ export default function ContactPage() {
     e.preventDefault();
 
     // EmailJS configuration
-    const serviceID = "service_kcrc171"; // EmailJS Service ID
-    const templateID = "template_ta476tf"; // EmailJS Template ID
-    const userID = "Lpe2o5Y0d-HrJ4w4J"; // EmailJS User ID
+    const serviceID = "service_ory44em"; // EmailJS Service ID
+    const templateID = "template_q2ii84t"; // EmailJS Template ID
+    const userID = "hi7GExRvUL7j7Ynll"; // EmailJS User ID
 
     emailjs
       .send(serviceID, templateID, formData, userID)
